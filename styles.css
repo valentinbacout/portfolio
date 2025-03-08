@@ -318,11 +318,19 @@ footer{
 }
 
 .timeline ol li:nth-child(12)::after{
-    width: 100px;
+    width: 445px;
     background: pink;
 }
 .timeline ol li:nth-child(12){
     transform: translateX(760px);
+}
+
+.timeline ol li:nth-child(13)::after{
+    width: 200px;
+    height: 7px;
+}
+.timeline ol li:nth-child(13){
+    transform: translateX(875px);
 }
 
 /*TEXTE DE LA TIMELINE*/
