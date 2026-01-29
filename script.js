@@ -615,17 +615,7 @@
       // Mettre à jour à chaque scroll horizontal
       scroller.addEventListener("scroll", updateScrollerFade, { passive: true });
 
-      // Bloquer le défilement horizontal via molette/trackpad (on garde le scroll vertical de la page)
-      scroller.addEventListener(
-        "wheel",
-        (e) => {
-          // trackpad horizontal => deltaX, molette+shift => shiftKey
-          if (Math.abs(e.deltaX) > 0 || e.shiftKey) {
-            e.preventDefault();
-          }
-        },
-        { passive: false }
-      );
+
 
 
       // Drag-to-scroll (click + drag like mobile)
@@ -673,6 +663,9 @@
         isDragging = false;
         scroller.classList.remove("is-dragging");
         try { scroller.releasePointerCapture?.(e.pointerId); } catch (_) { }
+
+          scheduleSnapEnd(); // <- AJOUTE ÇA
+
       }
 
       scroller.addEventListener("pointerup", endDrag);
@@ -1173,10 +1166,261 @@
 
   // Projects + Engagements horizontal scroller (same feel as the timeline)
   (function initHorizontalCardScrollers() {
-    const scrollers = document.querySelectorAll("#projects .projects, #projects-personal .engagements, #engagements-asso .engagements");
+    const scrollers = Array.from(document.querySelectorAll(".projects, .engagements"))
+      .filter((el) => el.querySelector(":scope > .project"));
     if (!scrollers.length) return;
 
     function attach(scroller) {
+      // === Centered infinite carousel (all card scrollers) ===
+      if (scroller.dataset.carouselInit === "1") return;
+      scroller.dataset.carouselInit = "1";
+
+      const baseCards = Array.from(scroller.querySelectorAll(":scope > .project"))
+        .filter((c) => !c.hasAttribute("data-clone"));
+      const realCount = baseCards.length;
+
+      const enableStaticMode = () => {
+  scroller.classList.add("is-static");
+  scroller.classList.remove("pr-can-scroll", "is-dragging");
+
+  // stop any horizontal scroll + reset position
+  scroller.style.overflowX = "hidden";
+  scroller.scrollLeft = 0;
+
+  // clear fade vars
+  scroller.style.removeProperty("--fadeL");
+  scroller.style.removeProperty("--fadeR");
+};
+
+// … puis juste après ton bloc realCount (ou juste après l’avoir calculé) :
+if (realCount <= 2) {
+  enableStaticMode();
+  return; // important : on ne branche pas les listeners scroll/drag/fade
+}
+
+      // --- Dots (pagination) for infinite carousel (>= 3 real cards) ---
+      let dotsWrap = null;
+      let dotEls = [];
+      let rafDots = null;
+
+      const ensureDots = () => {
+        if (realCount < 3) return;
+
+        // Avoid duplicates if init runs again
+        if (scroller.nextElementSibling?.classList?.contains("carousel-dots")) {
+          dotsWrap = scroller.nextElementSibling;
+          dotEls = Array.from(dotsWrap.querySelectorAll(".carousel-dot"));
+          return;
+        }
+
+        dotsWrap = document.createElement("div");
+        dotsWrap.className = "carousel-dots";
+        dotsWrap.setAttribute("aria-label", "Carousel pagination");
+
+        dotEls = Array.from({ length: realCount }).map((_, i) => {
+          const b = document.createElement("button");
+          b.type = "button";
+          b.className = "carousel-dot";
+          b.setAttribute("aria-label", `Aller à la carte ${i + 1}`);
+          b.addEventListener("click", (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const reals = Array.from(scroller.querySelectorAll(":scope > .project[data-real='1']"));
+            if (!reals[i]) return;
+            centerCard(reals[i], "smooth");
+          });
+          dotsWrap.appendChild(b);
+          return b;
+        });
+
+        scroller.insertAdjacentElement("afterend", dotsWrap);
+      };
+
+      const setActiveDot = (idx) => {
+        if (!dotEls.length) return;
+        dotEls.forEach((d, i) => d.classList.toggle("is-active", i === idx));
+      };
+
+      const updateDotsFromScroll = () => {
+        if (!dotsWrap) return;
+
+        const centered = getClosestCentered();
+        if (!centered) return;
+
+        let idx = 0;
+
+        if (centered.getAttribute("data-clone") === "last") {
+          idx = realCount - 1;
+        } else if (centered.getAttribute("data-clone") === "first") {
+          idx = 0;
+        } else {
+          const reals = Array.from(scroller.querySelectorAll(":scope > .project[data-real='1']"));
+          const found = reals.indexOf(centered);
+          idx = found >= 0 ? found : 0;
+        }
+
+        setActiveDot(idx);
+      };
+
+      const setCarouselPadding = () => {
+        const firstReal = scroller.querySelector(":scope > .project[data-real='1']") || scroller.querySelector(":scope > .project");
+        if (!firstReal) return;
+
+        const cardW = firstReal.getBoundingClientRect().width;
+        const pad = Math.max(16, (scroller.clientWidth - cardW) / 2);
+        scroller.style.setProperty("--carousel-pad", `${pad}px`);
+      };
+
+      const centerCard = (el, behavior = "auto") => {
+        if (!el) return;
+        const target = el.offsetLeft - (scroller.clientWidth - el.offsetWidth) / 2;
+        scroller.scrollTo({ left: target, behavior });
+      };
+
+      const getClosestCentered = () => {
+        const items = Array.from(scroller.querySelectorAll(":scope > .project"));
+        const centerX = scroller.scrollLeft + scroller.clientWidth / 2;
+
+        let best = null;
+        let bestDist = Infinity;
+
+        for (const it of items) {
+          const itCenter = it.offsetLeft + it.offsetWidth / 2;
+          const d = Math.abs(itCenter - centerX);
+          if (d < bestDist) {
+            bestDist = d;
+            best = it;
+          }
+        }
+        return best;
+      };
+
+// --- Force snap to closest card when interaction ends (wheel/drag/inertia) ---
+let snapEndTimer = null;
+let isPointerDown = false;
+
+const prefersReducedMotion = () =>
+  window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+
+const snapToClosest = (behavior = "smooth") => {
+  if (!scroller.classList.contains("is-carousel")) return;
+
+  const closest = getClosestCentered();
+  if (!closest) return;
+
+  centerCard(closest, prefersReducedMotion() ? "auto" : behavior);
+
+  // si clone -> jump sur le vrai
+  normalizeIfOnClone();
+
+  updateDotsFromScroll?.();
+};
+
+const scheduleSnapEnd = () => {
+  if (!scroller.classList.contains("is-carousel")) return;
+  if (isPointerDown) return;
+
+  if (snapEndTimer) clearTimeout(snapEndTimer);
+  snapEndTimer = setTimeout(() => snapToClosest("smooth"), 120);
+};
+
+scroller.addEventListener("scroll", () => {
+  if (dotsWrap) {
+    if (rafDots) cancelAnimationFrame(rafDots);
+    rafDots = requestAnimationFrame(updateDotsFromScroll);
+  }
+  scheduleSnapEnd();
+}, { passive: true });
+
+scroller.addEventListener("pointerdown", () => { isPointerDown = true; }, { passive: true });
+scroller.addEventListener("pointerup", () => { isPointerDown = false; scheduleSnapEnd(); }, { passive: true });
+scroller.addEventListener("pointercancel", () => { isPointerDown = false; scheduleSnapEnd(); }, { passive: true });
+scroller.addEventListener("wheel", scheduleSnapEnd, { passive: true });
+
+
+// Wheel => snap après arrêt de la molette
+scroller.addEventListener("wheel", scheduleSnapEnd, { passive: true });
+
+      // 1 card => centered
+      // 2 cards => one left / one right
+      // >= 3 cards => centered + infinite loop (clones)
+      if (realCount === 1) {
+        scroller.classList.remove("is-carousel");
+        scroller.style.justifyContent = "center";
+        scroller.style.removeProperty("--carousel-pad");
+      } else if (realCount === 2) {
+        scroller.classList.remove("is-carousel");
+        scroller.style.justifyContent = "space-between";
+        scroller.style.removeProperty("--carousel-pad");
+      } else {
+        scroller.classList.add("is-carousel");
+        scroller.style.justifyContent = "flex-start";
+
+        // Mark real cards
+        baseCards.forEach((c) => c.setAttribute("data-real", "1"));
+
+        // Add clones (last -> head, first -> tail)
+        const first = baseCards[0];
+        const last = baseCards[baseCards.length - 1];
+
+        const cloneLast = last.cloneNode(true);
+        cloneLast.setAttribute("data-clone", "last");
+        cloneLast.removeAttribute("data-real");
+
+        const cloneFirst = first.cloneNode(true);
+        cloneFirst.setAttribute("data-clone", "first");
+        cloneFirst.removeAttribute("data-real");
+
+        scroller.insertBefore(cloneLast, first);
+        scroller.appendChild(cloneFirst);
+
+        // Padding + initial center on first real card
+        setCarouselPadding();
+        centerCard(first, "auto");
+
+        ensureDots();
+        updateDotsFromScroll();
+
+        // Recompute padding on resize
+        window.addEventListener("resize", () => {
+          setCarouselPadding();
+        });
+
+        // Infinite loop jump when reaching clones (debounced)
+        let snapTimer = null;
+
+        const normalizeIfOnClone = () => {
+          const centered = getClosestCentered();
+          if (!centered || !centered.hasAttribute("data-clone")) return;
+
+          const reals = Array.from(scroller.querySelectorAll(":scope > .project[data-real='1']"));
+          if (!reals.length) return;
+
+          if (centered.getAttribute("data-clone") === "last") {
+            centerCard(reals[reals.length - 1], "auto");
+          } else if (centered.getAttribute("data-clone") === "first") {
+            centerCard(reals[0], "auto");
+          }
+        };
+
+        scroller.addEventListener(
+          "scroll",
+          () => {
+            if (dotsWrap) {
+              if (rafDots) cancelAnimationFrame(rafDots);
+              rafDots = requestAnimationFrame(updateDotsFromScroll);
+            }
+            if (snapTimer) clearTimeout(snapTimer);
+            snapTimer = setTimeout(() => {
+              normalizeIfOnClone();
+              updateDotsFromScroll();
+            }, 80);
+          },
+          { passive: true }
+        );
+      }
+
+
       function updateScrollerFade() {
         const max = scroller.scrollWidth - scroller.clientWidth;
 
@@ -1203,14 +1447,6 @@
       window.addEventListener("resize", updateScrollerFade);
       window.addEventListener("load", updateScrollerFade);
 
-      // Block horizontal wheel/trackpad scroll (keeps page vertical scroll behavior)
-      scroller.addEventListener(
-        "wheel",
-        (e) => {
-          if (Math.abs(e.deltaX) > 0 || e.shiftKey) e.preventDefault();
-        },
-        { passive: false }
-      );
 
       // Drag-to-scroll
       let isDragging = false;
