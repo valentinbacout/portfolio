@@ -569,7 +569,7 @@ a:hover {
   background: #000;
 }
 
-.project__media > iframe {
+.project__media>iframe {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -578,13 +578,15 @@ a:hover {
 }
 
 .project__media {
-  position: relative; /* déjà présent chez toi → OK */
+  position: relative;
+  /* déjà présent chez toi → OK */
 }
 
 .projects-wrapper {
   position: absolute;
   inset: 0;
-  pointer-events: auto; /* <-- autorise les clics */
+  pointer-events: auto;
+  /* <-- autorise les clics */
 }
 
 .video-strip iframe {
@@ -597,12 +599,15 @@ a:hover {
 
 /* Hide scrollbar for video carousels */
 .video-strip {
-  scrollbar-width: none;        /* Firefox */
-  -ms-overflow-style: none;     /* IE / old Edge */
+  scrollbar-width: none;
+  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE / old Edge */
 }
 
 .video-strip::-webkit-scrollbar {
-  display: none;                /* Chrome / Safari */
+  display: none;
+  /* Chrome / Safari */
 }
 
 .project__desc {
@@ -641,6 +646,19 @@ a:hover {
   /* position du texte */
   padding-left: 0;
   margin-bottom: 4px;
+}
+
+/* ✅ Listes dans project__desc comme dans engagements */
+.project__desc ul {
+  margin: 8px 0 0;
+  padding-left: 0;
+  list-style-position: outside;
+}
+
+.project__desc li {
+  margin-left: 14px;
+  margin-bottom: 6px;
+  color: var(--muted);
 }
 
 /* Logo */
@@ -697,7 +715,8 @@ a:hover {
   scroll-snap-type: x mandatory;
 
   -webkit-overflow-scrolling: touch;
-  pointer-events: auto; /* réactive le scroll */
+  pointer-events: auto;
+  /* réactive le scroll */
 }
 
 .video-strip iframe {
@@ -724,16 +743,22 @@ a:hover {
   font-weight: 700;
 
   cursor: pointer;
-  pointer-events: auto; /* important */
+  pointer-events: auto;
+  /* important */
   display: none;
 
-    box-shadow:
+  box-shadow:
     0 0 0 2px rgba(0, 0, 0, 0.35),
     0 8px 24px rgba(0, 0, 0, 0.45);
 }
 
-.scroll-btn.left { left: 8px; }
-.scroll-btn.right { right: 8px; }
+.scroll-btn.left {
+  left: 8px;
+}
+
+.scroll-btn.right {
+  right: 8px;
+}
 
 @media (min-width: 900px) {
   .scroll-btn {

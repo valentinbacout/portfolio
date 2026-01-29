@@ -41,43 +41,8 @@
     return (I18N[lang] && I18N[lang][key]) || (I18N.fr && I18N.fr[key]) || "";
   }
 
-  
-  function applyGenericI18n(lang) {
-    // 1) Basic text nodes
-    $$("[data-i18n]").forEach((el) => {
-      const key = el.dataset.i18n;
-      if (!key) return;
-      el.textContent = t(lang, key);
-    });
-
-    // 2) HTML nodes (use sparingly)
-    $$("[data-i18n-html]").forEach((el) => {
-      const key = el.dataset.i18nHtml;
-      if (!key) return;
-      el.innerHTML = t(lang, key);
-    });
-
-    // 3) Placeholder
-    $$("[data-i18n-placeholder]").forEach((el) => {
-      const key = el.dataset.i18nPlaceholder;
-      if (!key) return;
-      el.setAttribute("placeholder", t(lang, key));
-    });
-
-    // 4) Attributes mapping: data-i18n-attr="title:gate.title;aria-label:nav.about"
-    $$("[data-i18n-attr]").forEach((el) => {
-      const raw = (el.dataset.i18nAttr || "").trim();
-      if (!raw) return;
-      raw.split(";").map((s) => s.trim()).filter(Boolean).forEach((pair) => {
-        const [attr, key] = pair.split(":").map((s) => (s || "").trim());
-        if (!attr || !key) return;
-        el.setAttribute(attr, t(lang, key));
-      });
-    });
-  }
-
-function applyTranslations(lang) {
-    applyGenericI18n(lang);
+  function applyTranslations(lang) {
+    applyI18nGeneric(lang);
     const navMenu = document.getElementById("navMenu");
     if (navMenu) {
       const links = navMenu.querySelectorAll("a.nav__link");
@@ -201,6 +166,32 @@ function applyTranslations(lang) {
       if (el) el.textContent = t(lang, key);
     };
 
+    // Generic i18n engine (scales with new content without editing this script)
+    function applyI18nGeneric(lang) {
+      // Text content
+      document.querySelectorAll("[data-i18n]").forEach((el) => {
+        const key = el.getAttribute("data-i18n");
+        if (!key) return;
+        el.textContent = t(lang, key);
+      });
+
+      // HTML content (when translations include markup)
+      document.querySelectorAll("[data-i18n-html]").forEach((el) => {
+        const key = el.getAttribute("data-i18n-html");
+        if (!key) return;
+        el.innerHTML = t(lang, key);
+      });
+
+      // Attributes (placeholder, aria-label, title, ...)
+      document.querySelectorAll("[data-i18n-attr]").forEach((el) => {
+        const raw = el.getAttribute("data-i18n-attr") || "";
+        const [attr, key] = raw.split(":").map((s) => s.trim());
+        if (!attr || !key) return;
+        el.setAttribute(attr, t(lang, key));
+      });
+    }
+
+
     setText("#about .section__title", "about.title");
     setText("#about .section__subtitle", "about.subtitle");
 
@@ -247,97 +238,6 @@ function applyTranslations(lang) {
     setText("#engagements-asso .section__title", "engagements.title");
     setText("#engagements-asso .section__subtitle", "engagements.subtitle");
 
-    const projA = document.querySelector('#projects .project[data-project="a"]');
-    const projB = document.querySelector('#projects .project[data-project="b"]');
-    const projC = document.querySelector('#projects .project[data-project="c"]');
-    const projD = document.querySelector('#projects .project[data-project="d"]');
-        const projE = document.querySelector('#projects .project[data-project="e"]');
-
-
-    // NodeList of project cards (used below)
-    const projects = document.querySelectorAll("#projects .project");
-
-    if (projects[0]) {
-      projects[0].querySelector(".project__title").textContent = t(lang, "project.a.title");
-      projects[0].querySelector(".project__pill").textContent = t(lang, "project.a.pill");
-      projects[0].querySelector(".project__desc").textContent = t(lang, "project.a.desc");
-
-      const stats = projects[0].querySelectorAll(".project__stat");
-      stats.forEach((st) => {
-        const k = st.querySelector(".k");
-        const v = st.querySelector(".v");
-        if (!k || !v) return;
-
-        if (k.textContent.trim() === "Rôle" || k.textContent.trim() === "Role") {
-          k.textContent = t(lang, "project.a.role.k");
-          v.textContent = t(lang, "project.a.role.v");
-        }
-        if (k.textContent.trim() === "Client") {
-          k.textContent = t(lang, "project.a.client.k");
-          v.textContent = t(lang, "project.a.client.v");
-        }
-        if (k.textContent.trim() === "Livrables" || k.textContent.trim() === "Deliverables") {
-          k.textContent = t(lang, "project.a.deliverables.k");
-          v.textContent = t(lang, "project.a.deliverables.v");
-        }
-        if (k.textContent.trim() === "Détails" || k.textContent.trim() === "Details") {
-          k.textContent = t(lang, "project.a.details.k");
-          v.textContent = t(lang, "project.a.details.v");
-        }
-      });
-    }
-
-    if (projects[1]) {
-      projects[1].querySelector(".project__title").textContent = t(lang, "project.b.title");
-      projects[1].querySelector(".project__pill").textContent = t(lang, "project.b.pill");
-      projects[1].querySelector(".project__desc").textContent = t(lang, "project.b.desc");
-
-      const stats = projects[1].querySelectorAll(".project__stat");
-      stats.forEach((st) => {
-        const k = st.querySelector(".k");
-        const v = st.querySelector(".v");
-        if (!k || !v) return;
-
-        if (k.textContent.trim() === "Techno" || k.textContent.trim() === "Tech") {
-          k.textContent = t(lang, "project.b.tech.k");
-          v.textContent = t(lang, "project.b.tech.v");
-        }
-        if (k.textContent.trim() === "Focus") {
-          k.textContent = t(lang, "project.b.focus.k");
-          v.textContent = t(lang, "project.b.focus.v");
-        }
-        if (k.textContent.trim() === "Mesures" || k.textContent.trim() === "Metrics") {
-          k.textContent = t(lang, "project.b.measures.k");
-          v.textContent = t(lang, "project.b.measures.v");
-        }
-        if (k.textContent.trim() === "Statut" || k.textContent.trim() === "Status") {
-          k.textContent = t(lang, "project.b.status.k");
-          v.textContent = t(lang, "project.b.status.v");
-        }
-      });
-    }
-
-    if (projects[2]) {
-      projects[2].querySelector(".project__title").textContent = t(lang, "project.c.title");
-      projects[2].querySelector(".project__pill").textContent = t(lang, "project.c.pill");
-      projects[2].querySelector(".project__desc").textContent = t(lang, "project.c.desc");
-
-      const stats = projects[2].querySelectorAll(".project__stat");
-      stats.forEach((st) => {
-        const k = st.querySelector(".k");
-        const v = st.querySelector(".v");
-        if (!k || !v) return;
-
-        const label = k.textContent.trim();
-        if (label === "Secteur" || label === "Sector") k.textContent = t(lang, "project.c.sector.k");
-        if (label === "Stack") k.textContent = t(lang, "project.c.stack.k");
-        if (label === "Résultat" || label === "Result") k.textContent = t(lang, "project.c.result.k");
-        if (label === "Dates") k.textContent = t(lang, "project.c.dates.k");
-
-        v.textContent = t(lang, "project.c.value.conf");
-      });
-    }
-
     setText("#contact .section__title", "contact.title");
     setText("#contact .section__subtitle", "contact.subtitle");
 
@@ -357,9 +257,17 @@ function applyTranslations(lang) {
       if (btn) btn.textContent = t(lang, "contact.top");
     }
 
-    const year = document.getElementById("year");
-    if (year) year.textContent = new Date().getFullYear();
-          }
+    const footerCopy = document.querySelector(".footer__copy");
+    if (footerCopy) {
+      const year = document.getElementById("year");
+      const rights = t(lang, "footer.rights");
+      footerCopy.innerHTML = `© <span id="year">${year ? year.textContent : ""}</span> Valentin Bacout — ${rights}`;
+    }
+    const footerNote = document.querySelector(".footer__note");
+    if (footerNote) footerNote.childNodes[0].textContent = `${t(lang, "footer.mode")} `;
+    const footerAccessBtn = document.getElementById("footerAccessBtn");
+    if (footerAccessBtn) footerAccessBtn.textContent = t(lang, "footer.access");
+  }
 
   function setLang(lang, persist = true) {
     document.documentElement.lang = lang;
@@ -374,9 +282,6 @@ function applyTranslations(lang) {
     if (btnB) btnB.textContent = `🌐 ${txt}`;
 
     applyTranslations(lang);
-
-    // Timeline needs a rerender (event titles are drawn from JS)
-    window.VBTimeline?.render?.();
 
     // Refresh theme/access labels in current language
     const currentTheme = document.documentElement.dataset.theme || getSystemTheme();
@@ -541,11 +446,11 @@ function applyTranslations(lang) {
   }
 
   // Access gate events
-// Au chargement : accès RESTREINT direct, sans afficher la modale
-document.addEventListener("DOMContentLoaded", () => {
-  setAccess(ACCESS.RESTRICTED);
-  closeGate(); // sécurité : s’assure que la modale est fermée
-});
+  // Au chargement : accès RESTREINT direct, sans afficher la modale
+  document.addEventListener("DOMContentLoaded", () => {
+    setAccess(ACCESS.RESTRICTED);
+    closeGate(); // sécurité : s’assure que la modale est fermée
+  });
 
   // Requirement: ask the visitor *every page load*.
   // We still store the choice while the page is open, but we clear it on load.
@@ -629,7 +534,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (footerAccessBtn) {
     footerAccessBtn.addEventListener("click", () => {
       openGate();
-const err = $("#gateError");
+      const err = $("#gateError");
       if (err) err.textContent = "";
     });
   }
@@ -651,22 +556,22 @@ const err = $("#gateError");
            - time / start / end can be "YYYY-MM-DD" or "today"
            ========================================================================== */
     const events = [
-      { id: "E1", type: "point", time: "2019-07-31", titleKey: "timeline.event.e1", desc: "", color: "#73aff6" },
-      { id: "E2", type: "range", start: "2019-09-01", end: "2021-07-31", titleKey: "timeline.event.e2", desc: "", color: "#e31017" },
-      { id: "E3", type: "range", start: "2021-09-01", end: "2024-07-19", titleKey: "timeline.event.e3", desc: "", color: "#e31017" },
-      { id: "E4", type: "range", start: "2021-12-01", end: "2022-05-15", titleKey: "timeline.event.e4", desc: "", color: "#ffc0cb" },
-      { id: "E5", type: "range", start: "2022-09-01", end: "2023-01-01", titleKey: "timeline.event.e5", desc: "", color: "#E87900" },
-      { id: "E6", type: "range", start: "2023-02-01", end: "2024-02-01", titleKey: "timeline.event.e6", desc: "", color: "#ffc0cb" },
-      { id: "E7", type: "range", start: "2023-09-01", end: "2024-02-01", titleKey: "timeline.event.e7", desc: "", color: "#303086" },
-      { id: "E8", type: "range", start: "2023-12-01", end: "2024-02-01", titleKey: "timeline.event.e8", desc: "", color: "#303086" },
-      { id: "E9", type: "range", start: "2024-03-05", end: "2024-07-19", titleKey: "timeline.event.e9", desc: "", color: "#0E5A88" },
-      { id: "E10", type: "point", time: "2024-09-01", titleKey: "timeline.event.e10", desc: "", color: "#e31017" },
-      { id: "E11", type: "range", start: "2024-10-01", end: "today", titleKey: "timeline.event.e11", desc: "", color: "#ffc0cb" },
-      { id: "E12", type: "range", start: "2025-03-01", end: "today", titleKey: "timeline.event.e12", desc: "", color: "#2a91dc" },
+      { id: "E1", type: "point", time: "2019-07-31", title: "Baccalauréat Scientifique - mention très bien", desc: "", color: "#73aff6" },
+      { id: "E2", type: "range", start: "2019-09-01", end: "2021-08-15", title: "INSA Hauts-de-France - Classes préparatoires intégrées", desc: "", color: "#e31017" },
+      { id: "E3", type: "range", start: "2021-09-01", end: "2024-07-19", title: "INSA Hauts-de-France - Cycle ingénieur", desc: "", color: "#e31017" },
+      { id: "E4", type: "range", start: "2021-12-01", end: "2022-05-15", title: "Responsable communication - Liste Campagne BDE", desc: "", color: "#ffc0cb" },
+      { id: "E5", type: "range", start: "2022-09-01", end: "2023-01-01", title: "Stage ingénieur R&D au Cerema de Bron", desc: "", color: "#E87900" },
+      { id: "E6", type: "range", start: "2023-02-01", end: "2024-02-01", title: "Responsable du pôle communication BDE INSA HDF", desc: "", color: "#ffc0cb" },
+      { id: "E7", type: "range", start: "2023-09-01", end: "2024-02-01", title: "PLP (Plateau Projet) - Projet de fin d'étude", desc: "", color: "#303086" },
+      { id: "E8", type: "range", start: "2023-12-01", end: "2024-02-01", title: "Projet de parcours VINCI - Aide à la manutention de chariots médicaux", desc: "", color: "#303086" },
+      { id: "E9", type: "range", start: "2024-03-05", end: "2024-07-19", title: "Stage ingénieur Process et Maintenance à Joubert", desc: "", color: "#0E5A88" },
+      { id: "E10", type: "point", time: "2024-09-01", title: "Diplôme INSA Hauts-de-France - Ingénieur en mécanique énergétique", desc: "", color: "#e31017" },
+      { id: "E11", type: "range", start: "2024-10-01", end: "today", title: "Secrétaire Général INSA Alumni Hauts-de-France", desc: "", color: "#ffc0cb" },
+      { id: "E12", type: "range", start: "2025-03-01", end: "today", title: "Ingénieur en conception mécanique chez DELEO", desc: "", color: "#2a91dc" },
 
 
       /* A dedicated “Today” point (kept as in original) */
-      { id: "TODAY", type: "point", time: "today", titleKey: "timeline.event.today", desc: "", color: "#ffffff" },
+      { id: "TODAY", type: "point", time: "today", title: "Aujourd’hui", desc: "", color: "#ffffff" },
     ];
 
     /* ==========================================================================
@@ -1045,8 +950,6 @@ const err = $("#gateError");
     function render() {
       clearStage();
 
-      const lang = document.documentElement.dataset.lang || getSavedLang() || LANGS.FR;
-
       const zoom = parseInt(zoomEl.value, 10) / 100;
       const pxPerMs = (PX_PER_UNIT_BASE * zoom) / DAY_MS;
 
@@ -1138,7 +1041,7 @@ const err = $("#gateError");
         if (isTodayEvent) {
           // "Today" card = title only
           card.innerHTML = `
-                <h3><span><b>${escapeHtml(e.titleKey ? t(lang, e.titleKey) : e.title)}</b></span></h3>
+                <h3><span><b>${escapeHtml(e.title)}</b></span></h3>
               `;
         } else {
           // Normal events: show date range + title (+ optional desc)
@@ -1149,7 +1052,7 @@ const err = $("#gateError");
 
           card.innerHTML = `
                 <h3><span>${escapeHtml(dateTitle)}</span></h3>
-                <p><b>${escapeHtml(e.titleKey ? t(lang, e.titleKey) : e.title)}</b></p>
+                <p><b>${escapeHtml(e.title)}</b></p>
                 ${e.desc ? `<p>${escapeHtml(e.desc)}</p>` : ``}
               `;
         }
@@ -1258,9 +1161,6 @@ const err = $("#gateError");
 
     render();
 
-    // Expose timeline for i18n rerender
-    window.VBTimeline = { render };
-
     // Auto-scroll to the end at load (latest events)
     window.addEventListener("load", () => {
       const scroller = root.querySelector(".th-scroller");
@@ -1356,7 +1256,7 @@ const err = $("#gateError");
         scroller.classList.remove("is-dragging");
         try {
           scroller.releasePointerCapture?.(e.pointerId);
-        } catch (_) {}
+        } catch (_) { }
       }
 
       scroller.addEventListener("pointerup", endDrag);
@@ -1465,44 +1365,44 @@ const err = $("#gateError");
   });
 
   // ===== Video carousels (inside project cards) =====
-(function initVideoCarousels() {
-  const wrappers = document.querySelectorAll(".projects-wrapper");
+  (function initVideoCarousels() {
+    const wrappers = document.querySelectorAll(".projects-wrapper");
 
-  wrappers.forEach((wrapper) => {
-    const strip = wrapper.querySelector(".video-strip");
-    const left = wrapper.querySelector(".scroll-btn.left");
-    const right = wrapper.querySelector(".scroll-btn.right");
+    wrappers.forEach((wrapper) => {
+      const strip = wrapper.querySelector(".video-strip");
+      const left = wrapper.querySelector(".scroll-btn.left");
+      const right = wrapper.querySelector(".scroll-btn.right");
 
-    if (!strip || (!left && !right)) return;
+      if (!strip || (!left && !right)) return;
 
-    // Scroll by one "page" (1 iframe width)
-    const step = () => strip.clientWidth;
+      // Scroll by one "page" (1 iframe width)
+      const step = () => strip.clientWidth;
 
-    left?.addEventListener("click", (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      strip.scrollBy({ left: -step(), behavior: "smooth" });
+      left?.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        strip.scrollBy({ left: -step(), behavior: "smooth" });
+      });
+
+      right?.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        strip.scrollBy({ left: step(), behavior: "smooth" });
+      });
+
+      // Optional: allow wheel horizontal inside the strip
+      strip.addEventListener(
+        "wheel",
+        (e) => {
+          // convert vertical wheel to horizontal scroll when hovering the strip
+          if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+            strip.scrollBy({ left: e.deltaY, behavior: "auto" });
+            e.preventDefault();
+          }
+        },
+        { passive: false }
+      );
     });
-
-    right?.addEventListener("click", (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      strip.scrollBy({ left: step(), behavior: "smooth" });
-    });
-
-    // Optional: allow wheel horizontal inside the strip
-    strip.addEventListener(
-      "wheel",
-      (e) => {
-        // convert vertical wheel to horizontal scroll when hovering the strip
-        if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
-          strip.scrollBy({ left: e.deltaY, behavior: "auto" });
-          e.preventDefault();
-        }
-      },
-      { passive: false }
-    );
-  });
-})();
+  })();
 
 })();

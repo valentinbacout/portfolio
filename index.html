@@ -19,9 +19,9 @@
   <!-- Access gate (password / restricted) -->
   <div aria-labelledby="gateTitle" aria-modal="true" class="gate" id="accessGate" role="dialog" hidden>
     <div class="gate__card">
-      <div class="gate__badge" data-i18n="gate.badge">Accès</div>
+      <div class="gate__badge">Accès</div>
       <h2 class="gate__title" id="gateTitle">Bienvenue sur le portfolio</h2>
-      <p class="gate__subtitle" data-i18n="gate.subtitle">
+      <p class="gate__subtitle">
         Certaines sections contiennent des informations confidentielles (clients, détails techniques, KPI…).
         Vous pouvez <b>débloquer l’accès complet</b> via mot de passe ou <b>continuer en mode restreint</b>.
       </p>
@@ -40,8 +40,8 @@
       <div class="gate__hint" hidden="" id="gateHint">
         <ul>
           <li>Les éléments marqués <b>Confidentiel</b> seront floutés.</li>
-          <li data-i18n="gate.hint.2">Vous verrez toujours la structure complète du site (navigation, timeline, sections).</li>
-          <li data-i18n="gate.hint.3">Vous pouvez débloquer plus tard via le menu “Accès”.</li>
+          <li>Vous verrez toujours la structure complète du site (navigation, timeline, sections).</li>
+          <li>Vous pouvez débloquer plus tard via le menu “Accès”.</li>
         </ul>
       </div>
     </div>
@@ -59,11 +59,11 @@
       </div>
 
       <nav class="header__center" id="navMenu" aria-label="Primary navigation">
-        <a href="#timeline" class="nav__link" data-i18n="nav.timeline">Parcours</a>
-        <a href="#projects" class="nav__link" data-i18n="nav.projects">Projects</a>
-        <a href="#projects-personal" class="nav__link" data-i18n="nav.projectsPersonal">Extra</a>
-        <a href="#engagements-asso" class="nav__link" data-i18n="nav.engagements">Engagements asso</a>
-        <a href="#skills" class="nav__link" data-i18n="nav.skills">Skills</a>
+        <a href="#timeline" class="nav__link">Parcours</a>
+        <a href="#projects" class="nav__link">Projects</a>
+        <a href="#projects-personal" class="nav__link">Extra</a>
+        <a href="#engagements-asso" class="nav__link">Engagements asso</a>
+        <a href="#skills" class="nav__link">Skills</a>
       </nav>
 
       <div class="header__right">
@@ -95,13 +95,13 @@
     </div>
 
     <nav class="sidebar__nav" id="navMenuMobile" aria-label="Mobile navigation">
-      <a href="#about" class="sidebar__link" data-i18n="nav.about">About</a>
-      <a href="#timeline" class="sidebar__link" data-i18n="nav.timeline">Parcours</a>
-      <a href="#projects" class="sidebar__link" data-i18n="nav.projects">Projects</a>
-      <a href="#projects-personal" class="sidebar__link" data-i18n="nav.projectsPersonal">Extra</a>
-      <a href="#engagements-asso" class="sidebar__link" data-i18n="nav.engagements">Engagements asso</a>
-      <a href="#skills" class="sidebar__link" data-i18n="nav.skills">Skills</a>
-      <a href="#contact" class="sidebar__link" data-i18n="nav.contact">Contact</a>
+      <a href="#about" class="sidebar__link">About</a>
+      <a href="#timeline" class="sidebar__link">Parcours</a>
+      <a href="#projects" class="sidebar__link">Projects</a>
+      <a href="#projects-personal" class="sidebar__link">Extra</a>
+      <a href="#engagements-asso" class="sidebar__link">Engagements asso</a>
+      <a href="#skills" class="sidebar__link">Skills</a>
+      <a href="#contact" class="sidebar__link">Contact</a>
     </nav>
     <div class="sidebar__sep" aria-hidden="true"></div>
 
@@ -124,31 +124,33 @@
     <section class="hero">
       <div class="container hero__grid">
         <div class="hero__content">
-          <h1 class="hero__title"><span data-i18n="hero.title.prefix">Bonjour, je m'appelle</span> <span class="accent">Valentin Bacout</span><span data-i18n="hero.title.suffix">.</span></h1>
-          <p class="hero__lead" data-i18n="hero.lead">Je suis Ingénieur en conception mécanique.</p>
+          <h1 class="hero__title">Bonjour, je m'appelle <span class="accent">Valentin Bacout</span>.</h1>
+          <p class="hero__lead">
+            Je suis Ingénieur en conception mécanique.
+          </p>
           <div class="hero__cta">
-            <a class="btn btn--primary" href="#timeline" data-i18n="timeline.title">Parcours</a>
-            <a class="btn btn--primary" href="#projects" data-i18n="hero.cta.projects">Projets</a>
-            <a class="btn btn--primary" href="#skills" data-i18n="skills.title">Compétences</a>
+            <a class="btn btn--primary" href="#timeline">Parcours</a>
+            <a class="btn btn--primary" href="#projects">Projets</a>
+            <a class="btn btn--primary" href="#skills">Compétences</a>
           </div>
           <div aria-label="Liens rapides" class="hero__links">
             <a aria-label="LinkedIn" class="linkPill" href="https://www.linkedin.com/in/valentin-bacout-a363611b1/"
-              target="_blank" data-i18n="hero.link.linkedin">LinkedIn</a>
+              target="_blank">LinkedIn</a>
             <a aria-label="CV" class="linkPill" href="img/CV_Valentin_Bacout.pdf" target="_blank"
-              draggable="false" data-i18n="hero.link.cv">CV</a>
+              draggable="false">CV</a>
           </div>
           <div aria-label="Résumé" class="hero__meta">
             <div class="metaCard">
-              <div class="metaCard__label" data-i18n="meta.specialty">Spécialité</div>
-              <div class="metaCard__value" data-i18n="meta.specialty.value">Conception / CAO / prototypage</div>
+              <div class="metaCard__label">Spécialité</div>
+              <div class="metaCard__value">Conception / CAO / prototypage</div>
             </div>
             <div class="metaCard">
-              <div class="metaCard__label" data-i18n="meta.references">Références</div>
-              <div class="metaCard__value" data-i18n="meta.references.value">(Confidentiel)</div>
+              <div class="metaCard__label">Références</div>
+              <div class="metaCard__value">(Confidentiel)</div>
             </div>
             <div class="metaCard">
-              <div class="metaCard__label" data-i18n="meta.location">Localisation</div>
-              <div class="metaCard__value" data-i18n="meta.location.value">France</div>
+              <div class="metaCard__label">Localisation</div>
+              <div class="metaCard__value">France</div>
             </div>
           </div>
         </div>
@@ -160,8 +162,8 @@
     <section class="section" id="about">
       <div class="container">
         <div class="section__head">
-          <h2 class="section__title" data-i18n="about.title">À propos</h2>
-          <p class="section__subtitle" data-i18n="contact.subtitle"></p>
+          <h2 class="section__title">À propos</h2>
+          <p class="section__subtitle"></p>
         </div>
         <div class="grid2">
           <div class="card">
@@ -192,7 +194,7 @@
     <section class="section section--alt" id="timeline">
       <div class="container">
         <div class="section__head">
-          <h2 class="section__title" data-i18n="timeline.title">Parcours</h2>
+          <h2 class="section__title">Parcours</h2>
         </div>
         <div class="th-wrap">
           <div class="th-controls">
@@ -217,145 +219,157 @@
     <section class="section" id="projects">
       <div class="container">
         <div class="section__head">
-          <h2 class="section__title" data-i18n="projects.title">Projets</h2>
+          <h2 class="section__title">Projets</h2>
           <p class="section__subtitle">
-            Cartes projets “modernisées” (conserve la logique de sections, et la possibilité de masquer des détails).
+            Une sélection de projets représentatifs de mon parcours et des compétences que j’ai développées.
           </p>
         </div>
         <div class="projects">
           <!-- DELEO - SUBLIM-->
+          <article class="project" data-project="e">
+            <div class="project__top">
+              <div class="project__head">
+                <h3 class="project__title" data-i18n="project.e.title"></h3>
+                <p class="project__meta" data-i18n="project.e.meta"></p>
+              </div>
+              <span class="project__pill" data-i18n="project.e.pill"></span>
+            </div>
+            <img alt="Illustration du projet" class="project__img" src="img/Sublim-1.png" draggable="false" />
+            <p class="project__desc" data-i18n="project.e.desc"></p>
+            <div class="project__grid">
+              <div class="project__stat">
+                <div class="k" data-i18n="project.e.role.k"></div>
+                <div class="v" data-i18n="project.e.role.v"></div>
+              </div>
+              <div class="project__stat">
+                <div class="k" data-i18n="project.e.details.k"></div>
+                <div class="v" data-i18n="project.e.details.v"></div>
+              </div>
+              <!--
+              <div class="project__stat">
+                <div class="k" data-i18n="project.e.deliverables.k"></div>
+                <div class="v" data-i18n="project.e.deliverables.v"></div>
+              </div>
+              <div class="project__stat">
+                <div class="k" data-i18n="project.e.client.k"></div>
+                <div class="v" data-i18n="project.e.client.v"></div>
+              </div>-->
+            </div>
+          </article>
+
+          <!-- JOUBERT-->
           <article class="project" data-project="a">
             <div class="project__top">
               <div class="project__head">
-                <h3 class="project__title">Chef de projet SUBLIM</h3>
-                <p class="project__meta">DELEO S.A.S. — Depuis 2025</p>
+                <h3 class="project__title" data-i18n="project.a.title"></h3>
+                <p class="project__meta" data-i18n="project.a.meta"></p>
+
               </div>
-              <span class="project__pill">Industrie</span>
+              <span class="project__pill" data-i18n="project.a.pill"></span>
             </div>
-            <img alt="Illustration du projet" class="project__img" src="img/Sublim-1.png" draggable="false" />
-            <p class="project__desc">
-              Amélioration de la maintenance et optimisation de process en environnement industriel, avec approche
-              terrain et support technique.
-            </p>
+
+            <!--<img alt="Illustration du projet" class="project__img" src="img/joubert-1.PNG" draggable="false" />-->
+
+            <div class="project__desc" data-i18n-html="project.a.desc"></div>
+
             <div class="project__grid">
               <div class="project__stat">
-                <div class="k">Rôle</div>
-                <div class="v">Chef de projet - Ingénieur Mécanique</div>
+                <div class="k" data-i18n="project.a.role.k"></div>
+                <div class="v" data-i18n="project.a.role.v"></div>
               </div>
+
               <div class="project__stat">
-                <div class="k">Focus</div>
-                <div class="v">Maintenance / fiabilité</div>
+                <div class="k" data-i18n="project.a.details.k"></div>
+                <div class="v" data-i18n="project.a.details.v"></div>
               </div>
+
               <div class="project__stat">
-                <div class="k">Livrables</div>
-                <div class="v">Méthodes, amélioration process</div>
+                <div class="k" data-i18n="project.a.deliverables.k"></div>
+                <div class="v" data-i18n="project.a.deliverables.v"></div>
               </div>
+
               <div class="project__stat">
-                <div class="k">Résultats</div>
-                <div class="v">(Confidentiel)</div>
+                <div class="k" data-i18n="project.a.client.k"></div>
+                <div class="v" data-i18n="project.a.client.v"></div>
               </div>
             </div>
           </article>
-          <!-- JOUBERT
+
+          <!-- PLP -->
           <article class="project" data-project="d">
             <div class="project__top">
               <div class="project__head">
-                <h3 class="project__title">Stage Ingénieur Process &amp; Maintenance</h3>
-                <p class="project__meta">Joubert S.A.(M) Sdn Bhd (Malaisie) — 5 mois (2024)</p>
+                <h3 class="project__title" data-i18n="project.d.title"></h3>
+                <p class="project__meta" data-i18n="project.d.meta"></p>
               </div>
-              <span class="project__pill">Industrie</span>
+              <span class="project__pill" data-i18n="project.d.pill"></span>
             </div>
-            <img alt="Illustration du projet" class="project__img" src="img/joubert-1.PNG" draggable="false"
-              data-confidential="" />
-            <p class="project__desc" data-confidential="">
-              Amélioration de la maintenance et optimisation de process en environnement industriel, avec approche
-              terrain et support technique.
-            </p>
-            <div class="project__grid" data-confidential="">
-              <div class="project__stat">
-                <div class="k">Rôle</div>
-                <div class="v">Ingénieur support / amélioration continue</div>
-              </div>
-              <div class="project__stat">
-                <div class="k">Focus</div>
-                <div class="v">Maintenance / fiabilité</div>
-              </div>
-              <div class="project__stat">
-                <div class="k">Livrables</div>
-                <div class="v">Méthodes, amélioration process</div>
-              </div>
-              <div class="project__stat">
-                <div class="k">Résultats</div>
-                <div class="v">(Confidentiel)</div>
-              </div>
-            </div>
-          </article>-->
-          <!--PLP
-          <article class="project" data-project="c">
-            <div class="project__top">
-              <div class="project__head">
-                <h3 class="project__title">PLP (Plateau Projet) — PFE</h3>
-                <p class="project__meta">INSA Hauts-de-France &amp; LAMIH — Septembre 2023 à Février 2024</p>
-              </div>
-              <span class="project__pill">PFE</span>
-            </div>
-            <img alt="Illustration du projet" class="project__img" src="img/plp-1.png" draggable="false" />
-            <p class="project__desc">
-              Étude de la capacité d’absorption de différentes structures lattices hybrides avec des gradients de
-              réseaux.
-            </p>
+
+            <!--<img alt="Illustration du projet" class="project__img" src="img/plp-1.png" draggable="false" />-->
+
+            <p class="project__desc" data-i18n="project.d.desc"></p>
+
             <div class="project__grid">
               <div class="project__stat">
-                <div class="k">Travail</div>
-                <div class="v">Amélioration et prototypage d’un puit de chute existant</div>
+                <div class="k" data-i18n="project.d.work.k"></div>
+                <div class="v" data-i18n="project.d.work.v"></div>
               </div>
+
               <div class="project__stat">
-                <div class="k">Développement</div>
-                <div class="v">Code Python pour générer des géométries lattices sous FreeCAD</div>
+                <div class="k" data-i18n="project.d.dev.k"></div>
+                <div class="v" data-i18n="project.d.dev.v"></div>
               </div>
+
               <div class="project__stat">
-                <div class="k">Outils</div>
-                <div class="v">Python, FreeCAD, Catia V5</div>
+                <div class="k" data-i18n="project.d.tools.k"></div>
+                <div class="v" data-i18n="project.d.tools.v"></div>
               </div>
+
               <div class="project__stat">
-                <div class="k">Compétences</div>
-                <div class="v">Prototypage, Impression 3D</div>
+                <div class="k" data-i18n="project.d.skills.k"></div>
+                <div class="v" data-i18n="project.d.skills.v"></div>
               </div>
             </div>
-          </article>-->
-          <!--VINCI
+          </article>
+
+          <!--VINCI-->
           <article class="project" data-project="b">
             <div class="project__top">
               <div class="project__head">
-                <h3 class="project__title">Projet VINCI — Manutention de chariots médicaux</h3>
-                <p class="project__meta">INSA Hauts-de-France — 2 mois (2023–2024)</p>
+                <h3 class="project__title" data-i18n="project.b.title"></h3>
+                <p class="project__meta" data-i18n="project.b.meta"></p>
+
               </div>
-              <span class="project__pill">Prototype</span>
+              <span class="project__pill" data-i18n="project.b.pill"></span>
             </div>
-            <img alt="Illustration du projet" class="project__img" src="img/chariot-1.png" draggable="false" />
-            <p class="project__desc">
-              Conception d’une solution d’aide à la manutention, orientée ergonomie et sécurité utilisateur, avec
-              approche développement produit.
-            </p>
+
+            <!--<img alt="Illustration du projet" class="project__img" src="img/chariot-1.png" draggable="false" />-->
+
+            <p class="project__desc" data-i18n="project.b.desc"></p>
+
             <div class="project__grid">
               <div class="project__stat">
-                <div class="k">Techno</div>
-                <div class="v">Conception + prototypage</div>
+                <div class="k" data-i18n="project.b.tech.k"></div>
+                <div class="v" data-i18n="project.b.tech.v"></div>
               </div>
+
               <div class="project__stat">
-                <div class="k">Focus</div>
-                <div class="v">Ergonomie / sécurité</div>
+                <div class="k" data-i18n="project.b.focus.k"></div>
+                <div class="v" data-i18n="project.b.focus.v"></div>
               </div>
+
               <div class="project__stat">
-                <div class="k">Livrables</div>
-                <div class="v">CAO, concepts, itérations</div>
+                <div class="k" data-i18n="project.b.measures.k"></div>
+                <div class="v" data-i18n="project.b.measures.v"></div>
               </div>
+
               <div class="project__stat">
-                <div class="k">Statut</div>
-                <div class="v">Finalisé</div>
+                <div class="k" data-i18n="project.b.status.k"></div>
+                <div class="v" data-i18n="project.b.status.v"></div>
               </div>
             </div>
-          </article>-->
+          </article>
+
           <!--CEREMA
           <article class="project" data-project="a">
             <div class="project__top">
@@ -400,7 +414,7 @@
     <section class="section section--alt" id="projects-personal">
       <div class="container">
         <div class="section__head">
-          <h2 class="section__title" data-i18n="projectsPersonal.title">Projets extras</h2>
+          <h2 class="section__title">Projets extras</h2>
           <p class="section__subtitle">Je suis également passionné par le montage photos/vidéos et les LEGO. J'ai eu
             l'occasion de mettre à profit mes passions au sein de différents engagements associatifs ou de projets
             personnels</p>
@@ -451,8 +465,8 @@
               <ul>
                 <li>
                   Portfolio personnel :
-                  <a href="https://valentinbacout.github.io/portfolio/" target="_blank" rel="noopener">
-                    valentinbacout.github.io/portfolio
+                  <a href="https://valentinbacout.github.io/Portfolio_maj/" target="_blank" rel="noopener">
+                    valentinbacout.github.io/Portfolio
                   </a>
                 </li>
                 <li>
@@ -570,7 +584,7 @@
     <section class="section" id="engagements-asso">
       <div class="container">
         <div class="section__head">
-          <h2 class="section__title" data-i18n="engagements.title">Engagements associatifs</h2>
+          <h2 class="section__title">Engagements associatifs</h2>
           <p class="section__subtitle">Rôles, responsabilités et implication collective.</p>
         </div>
 
@@ -653,44 +667,44 @@
     <section class="section section--alt" id="skills">
       <div class="container">
         <div class="section__head">
-          <h2 class="section__title" data-i18n="skills.title">Compétences</h2>
-          <p class="section__subtitle" data-i18n="skills.subtitle">Synthèse — outils et domaines (exemples).</p>
+          <h2 class="section__title">Compétences</h2>
+          <p class="section__subtitle">Synthèse — outils et domaines (exemples).</p>
         </div>
         <div class="skills">
           <article class="card">
-            <h3 data-i18n="skills.conception">Conception</h3>
+            <h3>Conception</h3>
             <ul class="tags">
-              <li data-i18n="skills.tag.cad">CAD / 3D</li>
-              <li data-i18n="skills.tag.dfm">DFM / DFA</li>
-              <li data-i18n="skills.tag.materials">Choix matériaux</li>
-              <li data-i18n="skills.tag.tolerancing">Tolérancement</li>
+              <li>CAD / 3D</li>
+              <li>DFM / DFA</li>
+              <li>Choix matériaux</li>
+              <li>Tolérancement</li>
             </ul>
           </article>
           <article class="card">
-            <h3 data-i18n="skills.proto">Prototypage &amp; essais</h3>
+            <h3>Prototypage &amp; essais</h3>
             <ul class="tags">
-              <li data-i18n="skills.tag.printing">Impression 3D</li>
-              <li data-i18n="skills.tag.testbenches">Bancs d’essai</li>
-              <li data-i18n="skills.tag.validation">Validation</li>
-              <li data-i18n="skills.tag.procedures">Procédures internes</li>
+              <li>Impression 3D</li>
+              <li>Bancs d’essai</li>
+              <li>Validation</li>
+              <li>Procédures internes</li>
             </ul>
           </article>
           <article class="card">
-            <h3 data-i18n="skills.industrial">Industrialisation</h3>
+            <h3>Industrialisation</h3>
             <ul class="tags">
-              <li data-i18n="skills.tag.injection">Injection plastique</li>
-              <li data-i18n="skills.tag.sheetmetal">Tôlerie</li>
-              <li data-i18n="skills.tag.assembly">Assemblage</li>
-              <li data-i18n="skills.tag.suppliers">Fournisseurs</li>
+              <li>Injection plastique</li>
+              <li>Tôlerie</li>
+              <li>Assemblage</li>
+              <li>Fournisseurs</li>
             </ul>
           </article>
           <article class="card">
-            <h3 data-i18n="skills.management">Gestion</h3>
+            <h3>Gestion</h3>
             <ul class="tags">
-              <li data-i18n="skills.tag.planning">Planification</li>
-              <li data-i18n="skills.tag.milestones">Revues jalons</li>
-              <li data-i18n="skills.tag.risk">Risque</li>
-              <li data-i18n="skills.tag.budgets">Budgets</li>
+              <li>Planification</li>
+              <li>Revues jalons</li>
+              <li>Risque</li>
+              <li>Budgets</li>
             </ul>
           </article>
         </div>
@@ -701,12 +715,12 @@
     <section class="section" id="contact">
       <div class="container">
         <div class="section__head">
-          <h2 class="section__title" data-i18n="contact.title">Contact</h2>
+          <h2 class="section__title">Contact</h2>
           <p class="section__subtitle"></p>
         </div>
         <div class="grid2">
           <div class="card">
-            <h3 data-i18n="contact.reach">Me joindre</h3>
+            <h3>Me joindre</h3>
             <div class="contact">
               <a class="contact__link" href="#">valentin.bacout@gmail.com</a>
               <a class="contact__link" href="https://www.linkedin.com/in/valentin-bacout-a363611b1/"
@@ -715,8 +729,8 @@
             </div>
           </div>
           <div class="card">
-            <h3 data-i18n="contact.availability">Disponibilité</h3>
-            <p data-i18n="contact.availability.p">Ouvert aux échanges. Dites-moi le contexte et l’objectif.</p>
+            <h3>Disponibilité</h3>
+            <p>Ouvert aux échanges. Dites-moi le contexte et l’objectif.</p>
           </div>
         </div>
       </div>
@@ -727,9 +741,9 @@
     <!-- ===================== -->
     <footer class="footer">
       <div class="container footer__inner">
-        <p class="footer__copy">© <span id="year"></span> Valentin Bacout — <span data-i18n="footer.rights">Tous droits réservés.</span></p>
+        <p class="footer__copy">© <span id="year"></span> Valentin Bacout — Tous droits réservés.</p>
         <div class="footer__right">
-          <p class="footer__note"><span data-i18n="footer.mode">Mode :</span> <span id="modeFooter">—</span></p>
+          <p class="footer__note">Mode : <span id="modeFooter">—</span></p>
           <button class="btn btn--ghost btn--small" id="footerAccessBtn" title="Ouvrir la fenêtre d’accès"
             type="button">
             Accès
