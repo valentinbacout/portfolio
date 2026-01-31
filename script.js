@@ -1149,6 +1149,7 @@
       let dotsWrap = null;
       let dotEls = [];
       let rafDots = null;
+      let rafFocus = null;
 
       const ensureDots = () => {
         if (realCount < 3) return;
@@ -1176,6 +1177,7 @@
             const target = reals.find((el) => el.dataset.realIndex === String(i));
             if (!target) return;
             centerCard(target, "smooth");
+            requestAnimationFrame(updateSideClasses);
           });
           dotsWrap.appendChild(b);
           return b;
@@ -1211,19 +1213,34 @@
 
       const centerCard = (el, behavior = "auto") => {
         if (!el) return;
-        const target = el.offsetLeft - (scroller.clientWidth - el.offsetWidth) / 2;
+
+        // Compute centering using viewport geometry (robust to padding / transforms)
+        const scRect = scroller.getBoundingClientRect();
+        const elRect = el.getBoundingClientRect();
+
+        const scCenter = scRect.left + scRect.width / 2;
+        const elCenter = elRect.left + elRect.width / 2;
+
+        const delta = elCenter - scCenter; // >0 means element is to the right of center
+        const target = scroller.scrollLeft + delta;
+
         scroller.scrollTo({ left: target, behavior });
       };
 
       const getClosestCentered = () => {
         const items = Array.from(scroller.querySelectorAll(":scope > .project"));
-        const centerX = scroller.scrollLeft + scroller.clientWidth / 2;
+        if (!items.length) return null;
+
+        // Use viewport geometry so "center" matches what the user actually sees
+        const scRect = scroller.getBoundingClientRect();
+        const centerX = scRect.left + scRect.width / 2;
 
         let best = null;
         let bestDist = Infinity;
 
         for (const it of items) {
-          const itCenter = it.offsetLeft + it.offsetWidth / 2;
+          const r = it.getBoundingClientRect();
+          const itCenter = r.left + r.width / 2;
           const d = Math.abs(itCenter - centerX);
           if (d < bestDist) {
             bestDist = d;
@@ -1232,6 +1249,35 @@
         }
         return best;
       };
+
+      const updateSideClasses = () => {
+        if (!scroller.classList.contains("is-carousel")) return;
+
+        const items = Array.from(scroller.querySelectorAll(":scope > .project"));
+        if (!items.length) return;
+
+        // reset
+        items.forEach((el) => {
+          el.classList.remove("is-left", "is-center", "is-right", "is-off");
+        });
+
+        const centered = getClosestCentered();
+        if (!centered) return;
+
+        const idx = items.indexOf(centered);
+        const left = idx > 0 ? items[idx - 1] : null;
+        const right = idx >= 0 && idx < items.length - 1 ? items[idx + 1] : null;
+
+        centered.classList.add("is-center");
+        if (left) left.classList.add("is-left");
+        if (right) right.classList.add("is-right");
+
+        // optional: de-emphasize the rest
+        items.forEach((el) => {
+          if (el !== centered && el !== left && el !== right) el.classList.add("is-off");
+        });
+      };
+
 
       // --- Force snap to closest card when interaction ends (wheel/drag/inertia) ---
       let snapEndTimer = null;
@@ -1257,6 +1303,7 @@
         normalizeIfOnClone();
 
         updateDotsFromScroll?.();
+        updateSideClasses();
       };
 
       const scheduleSnapEnd = () => {
@@ -1273,6 +1320,10 @@
           if (rafDots) cancelAnimationFrame(rafDots);
           rafDots = requestAnimationFrame(updateDotsFromScroll);
         }
+
+        if (rafFocus) cancelAnimationFrame(rafFocus);
+        rafFocus = requestAnimationFrame(updateSideClasses);
+
         scheduleSnapEnd();
       }, { passive: true });
 
@@ -1330,10 +1381,15 @@
         };
 
         // prepend last N as "head" clones (keep order)
+        // ⚠️ Important: when using insertBefore(scroller.firstChild) in a forward forEach,
+        // the visual order ends up reversed and the clone just before the first real card
+        // becomes the clone of the *first* card (=> duplicate on the left).
+        // So we insert in reverse order to keep the natural sequence and ensure the
+        // immediate-left card is the clone of the last real card.
         const headSrc = baseCards.slice(-cloneCount);
-        headSrc.forEach((src) => {
-          scroller.insertBefore(makeClone(src, "head"), scroller.firstChild);
-        });
+        for (let i = headSrc.length - 1; i >= 0; i--) {
+          scroller.insertBefore(makeClone(headSrc[i], "head"), scroller.firstChild);
+        }
 
         // append first N as "tail" clones
         const tailSrc = baseCards.slice(0, cloneCount);
@@ -1344,6 +1400,7 @@
         // Padding + initial center on first real card
         setCarouselPadding();
         centerCard(first, "auto");
+        updateSideClasses();
 
         ensureDots();
         updateDotsFromScroll();
