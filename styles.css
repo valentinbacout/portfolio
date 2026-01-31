@@ -575,6 +575,17 @@ a:hover {
       transparent 100%);
 }
 
+/* ✅ Supprime le flou de bord sur mobile */
+@media (max-width: 700px) {
+
+  .projects.pr-can-scroll,
+  .engagements.pr-can-scroll {
+    -webkit-mask-image: none !important;
+    mask-image: none !important;
+  }
+
+}
+
 /* Carousel dots (pagination) */
 .carousel-dots {
   display: flex;
