@@ -1173,8 +1173,9 @@
             e.preventDefault();
             e.stopPropagation();
             const reals = Array.from(scroller.querySelectorAll(":scope > .project[data-real='1']"));
-            if (!reals[i]) return;
-            centerCard(reals[i], "smooth");
+            const target = reals.find((el) => el.dataset.realIndex === String(i));
+            if (!target) return;
+            centerCard(target, "smooth");
           });
           dotsWrap.appendChild(b);
           return b;
@@ -1194,19 +1195,8 @@
         const centered = getClosestCentered();
         if (!centered) return;
 
-        let idx = 0;
-
-        if (centered.getAttribute("data-clone") === "last") {
-          idx = realCount - 1;
-        } else if (centered.getAttribute("data-clone") === "first") {
-          idx = 0;
-        } else {
-          const reals = Array.from(scroller.querySelectorAll(":scope > .project[data-real='1']"));
-          const found = reals.indexOf(centered);
-          idx = found >= 0 ? found : 0;
-        }
-
-        setActiveDot(idx);
+        const idx = Number(centered.dataset.realIndex ?? 0);
+        setActiveDot(Number.isFinite(idx) ? idx : 0);
       };
 
       const setCarouselPadding = () => {
@@ -1214,7 +1204,8 @@
         if (!firstReal) return;
 
         const cardW = firstReal.getBoundingClientRect().width;
-        const pad = Math.max(16, (scroller.clientWidth - cardW) / 2);
+        const raw = (scroller.clientWidth - cardW) / 2;
+        const pad = Math.max(16, Math.min(raw, cardW));
         scroller.style.setProperty("--carousel-pad", `${pad}px`);
       };
 
@@ -1245,9 +1236,14 @@
       // --- Force snap to closest card when interaction ends (wheel/drag/inertia) ---
       let snapEndTimer = null;
       let isPointerDown = false;
+      let didDragForSnap = false;
+      let clickScrollLock = false;
 
       const prefersReducedMotion = () =>
         window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+
+      // Will be assigned in carousel mode (>= 3 cards)
+      let normalizeIfOnClone = () => {};
 
       const snapToClosest = (behavior = "smooth") => {
         if (!scroller.classList.contains("is-carousel")) return;
@@ -1266,6 +1262,7 @@
       const scheduleSnapEnd = () => {
         if (!scroller.classList.contains("is-carousel")) return;
         if (isPointerDown) return;
+        if (clickScrollLock) return;
 
         if (snapEndTimer) clearTimeout(snapEndTimer);
         snapEndTimer = setTimeout(() => snapToClosest("smooth"), 120);
@@ -1279,13 +1276,17 @@
         scheduleSnapEnd();
       }, { passive: true });
 
-      scroller.addEventListener("pointerdown", () => { isPointerDown = true; }, { passive: true });
-      scroller.addEventListener("pointerup", () => { isPointerDown = false; scheduleSnapEnd(); }, { passive: true });
-      scroller.addEventListener("pointercancel", () => { isPointerDown = false; scheduleSnapEnd(); }, { passive: true });
-      scroller.addEventListener("wheel", scheduleSnapEnd, { passive: true });
-
-
-      // Wheel => snap après arrêt de la molette
+      scroller.addEventListener("pointerdown", () => { isPointerDown = true; didDragForSnap = false; }, { passive: true });
+      scroller.addEventListener("pointerup", () => {
+        isPointerDown = false;
+        // Snap only if user actually dragged (not on a simple tap/click)
+        if (didDragForSnap) scheduleSnapEnd();
+      }, { passive: true });
+      scroller.addEventListener("pointercancel", () => {
+        isPointerDown = false;
+        if (didDragForSnap) scheduleSnapEnd();
+      }, { passive: true });
+      // Wheel => snap après arrêt de la molette / trackpad inertia
       scroller.addEventListener("wheel", scheduleSnapEnd, { passive: true });
 
       // 1 card => centered
@@ -1303,23 +1304,42 @@
         scroller.classList.add("is-carousel");
         scroller.style.justifyContent = "flex-start";
 
-        // Mark real cards
-        baseCards.forEach((c) => c.setAttribute("data-real", "1"));
+        // Mark real cards + index them
+        baseCards.forEach((c, i) => {
+          c.setAttribute("data-real", "1");
+          c.dataset.realIndex = String(i);
+        });
 
-        // Add clones (last -> head, first -> tail)
+        // --- Multi-clone infinite loop (fix wide screens) ---
         const first = baseCards[0];
-        const last = baseCards[baseCards.length - 1];
 
-        const cloneLast = last.cloneNode(true);
-        cloneLast.setAttribute("data-clone", "last");
-        cloneLast.removeAttribute("data-real");
+        // compute how many cards can be visible, then clone that many (+1 safety)
+        const cs = getComputedStyle(scroller);
+        const gap = parseFloat(cs.gap || "0") || 0;
+        const cardW = first.getBoundingClientRect().width || first.offsetWidth || 1;
+        const visibleCount = Math.max(1, Math.ceil(scroller.clientWidth / (cardW + gap)));
+        const cloneCount = Math.min(baseCards.length, visibleCount + 1);
 
-        const cloneFirst = first.cloneNode(true);
-        cloneFirst.setAttribute("data-clone", "first");
-        cloneFirst.removeAttribute("data-real");
+        // helper to make a clone
+        const makeClone = (src, where) => {
+          const cl = src.cloneNode(true);
+          cl.setAttribute("data-clone", where); // "head" or "tail"
+          cl.removeAttribute("data-real");
+          cl.dataset.realIndex = src.dataset.realIndex; // map back to the real
+          return cl;
+        };
 
-        scroller.insertBefore(cloneLast, first);
-        scroller.appendChild(cloneFirst);
+        // prepend last N as "head" clones (keep order)
+        const headSrc = baseCards.slice(-cloneCount);
+        headSrc.forEach((src) => {
+          scroller.insertBefore(makeClone(src, "head"), scroller.firstChild);
+        });
+
+        // append first N as "tail" clones
+        const tailSrc = baseCards.slice(0, cloneCount);
+        tailSrc.forEach((src) => {
+          scroller.appendChild(makeClone(src, "tail"));
+        });
 
         // Padding + initial center on first real card
         setCarouselPadding();
@@ -1336,18 +1356,19 @@
         // Infinite loop jump when reaching clones (debounced)
         let snapTimer = null;
 
-        const normalizeIfOnClone = () => {
+        normalizeIfOnClone = () => {
           const centered = getClosestCentered();
           if (!centered || !centered.hasAttribute("data-clone")) return;
 
-          const reals = Array.from(scroller.querySelectorAll(":scope > .project[data-real='1']"));
-          if (!reals.length) return;
+          const idx = centered.dataset.realIndex;
+          if (idx == null) return;
 
-          if (centered.getAttribute("data-clone") === "last") {
-            centerCard(reals[reals.length - 1], "auto");
-          } else if (centered.getAttribute("data-clone") === "first") {
-            centerCard(reals[0], "auto");
-          }
+          const real = scroller.querySelector(
+            `:scope > .project[data-real='1'][data-real-index='${idx}']`
+          );
+          if (!real) return;
+
+          centerCard(real, "auto");
         };
 
         scroller.addEventListener(
@@ -1365,7 +1386,7 @@
           },
           { passive: true }
         );
-      }
+}
 
 
       function updateScrollerFade() {
@@ -1403,8 +1424,9 @@
 
       function isInteractiveTarget(el) {
         if (!el) return false;
-        return el.closest("input, textarea, select, button, a, label") !== null;
+        return el.closest("input, textarea, select, button, a, label, iframe, video") !== null;
       }
+
 
       scroller.addEventListener("pointerdown", (e) => {
         if (scroller.classList.contains("dots-only")) return; // ✅ dots-only desktop
@@ -1427,7 +1449,7 @@
           if (!isDragging) return;
 
           const dx = e.clientX - dragStartX;
-          if (!dragMoved && Math.abs(dx) > 3) dragMoved = true;
+          if (!dragMoved && Math.abs(dx) > 3) { dragMoved = true; didDragForSnap = true; }
 
           scroller.scrollLeft = dragStartScrollLeft - dx;
           e.preventDefault();
