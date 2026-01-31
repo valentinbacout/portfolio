@@ -1250,6 +1250,19 @@
         return best;
       };
 
+      // Track which card is centered to stop videos when it leaves center
+      let lastCentered = null;
+
+      function stopIframesIn(el) {
+        if (!el) return;
+        el.querySelectorAll("iframe").forEach((ifr) => {
+          const src = ifr.getAttribute("src");
+          if (!src) return;
+          // Reset src => stops playback (YouTube, etc.)
+          ifr.setAttribute("src", src);
+        });
+      }
+
       const updateSideClasses = () => {
         if (!scroller.classList.contains("is-carousel")) return;
 
@@ -1263,6 +1276,13 @@
 
         const centered = getClosestCentered();
         if (!centered) return;
+
+        // Stop any playing video when its card is no longer centered
+        if (lastCentered && lastCentered !== centered) {
+          stopIframesIn(lastCentered);
+        }
+        lastCentered = centered;
+
 
         const idx = items.indexOf(centered);
         const left = idx > 0 ? items[idx - 1] : null;
