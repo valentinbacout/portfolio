@@ -615,6 +615,7 @@ a:hover {
 .project {
   flex: 0 0 clamp(320px, 70vw, 520px);
   border: 1px solid var(--stroke);
+  border-left: 4px solid var(--project-accent, var(--accent));
   background: linear-gradient(180deg, var(--panel), transparent);
   border-radius: var(--radius-lg);
   padding: 18px;

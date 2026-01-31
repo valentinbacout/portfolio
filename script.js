@@ -517,6 +517,11 @@
       { id: "TODAY", type: "point", time: "today", title: "Aujourd’hui", desc: "", color: "#ffffff" },
     ];
 
+    // Build a quick lookup: timelineEventId -> color (for linking project cards to timeline colors)
+    const timelineColorById = new Map(events.map(e => [e.id, e.color]));
+    window.VBTimelineColors = timelineColorById;
+
+
     /* ==========================================================================
        DOM ELEMENTS
        ========================================================================== */
@@ -1715,5 +1720,35 @@
       );
     });
   })();
+
+
+
+  // Apply left color stripe on project cards (Projects / Extras / Associatif)
+  function applyProjectAccents() {
+    const map = window.VBTimelineColors;
+
+    const selectors = [
+      "#projects .project",
+      "#projects-personal .project",
+      "#engagements-asso .project"
+    ].join(",");
+
+    document.querySelectorAll(selectors).forEach((el) => {
+      // Priority: explicit data-color > data-timeline (event id)
+      const direct = el.getAttribute("data-color");
+      const tlId = el.getAttribute("data-timeline");
+
+      let c = null;
+
+      if (direct && direct.trim()) c = direct.trim();
+      else if (tlId && map && map.get(tlId)) c = map.get(tlId);
+
+      if (c) el.style.setProperty("--project-accent", c);
+      // If no color specified, CSS falls back to --accent
+    });
+  }
+
+  // Run once on load; safe to call again if DOM is updated later
+  applyProjectAccents();
 
 })();
