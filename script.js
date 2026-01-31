@@ -393,50 +393,6 @@
   if (yearEl) yearEl.textContent = String(new Date().getFullYear());
 
 
-  // Mobile nav (responsive drawer)
-  const navToggle = $("#navToggle");
-  const navDrawer = $("#navDrawer");
-  const navMenu = $("#navMenu");
-  const navOverlay = $("#navOverlay");
-
-
-  function setNav(open) {
-    document.body.classList.toggle("nav-open", open);
-
-    if (navToggle) navToggle.setAttribute("aria-expanded", open ? "true" : "false");
-    if (navDrawer) navDrawer.setAttribute("aria-hidden", open ? "false" : "true");
-    if (navOverlay) navOverlay.hidden = !open;
-  }
-
-  if (navToggle) {
-    navToggle.addEventListener("click", () => {
-      const isOpen = document.body.classList.contains("nav-open");
-      setNav(!isOpen);
-    });
-  }
-
-  if (navOverlay) {
-    navOverlay.addEventListener("click", () => setNav(false));
-  }
-
-  // Close on click a link (mobile)
-  if (navMenu) {
-    navMenu.addEventListener("click", (e) => {
-      const a = e.target && e.target.closest ? e.target.closest("a.nav__link") : null;
-      if (a) setNav(false);
-    });
-  }
-
-  // ESC closes drawer (en plus de ton ESC gate)
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && document.body.classList.contains("nav-open")) setNav(false);
-  });
-
-  // Close button (X)
-  const navCloseBtn = document.querySelector("[data-nav-close='true']");
-  if (navCloseBtn) {
-    navCloseBtn.addEventListener("click", () => setNav(false));
-  }
   // Scroll top
   const scrollTopBtn = $("#scrollTop");
   if (scrollTopBtn) {
@@ -444,13 +400,7 @@
       window.scrollTo({ top: 0, behavior: "smooth" });
     });
   }
-
   // Access gate events
-  // Au chargement : accès RESTREINT direct, sans afficher la modale
-  document.addEventListener("DOMContentLoaded", () => {
-    setAccess(ACCESS.RESTRICTED);
-    closeGate(); // sécurité : s’assure que la modale est fermée
-  });
 
   // Requirement: ask the visitor *every page load*.
   // We still store the choice while the page is open, but we clear it on load.
@@ -502,7 +452,6 @@
       gateHint.hidden = !gateHint.hidden;
     });
   }
-  const langToggle = document.getElementById("langToggle");
   const langSwitch = document.getElementById("langSwitch");
   const langSwitchMobile = document.getElementById("langSwitchMobile");
 
@@ -511,12 +460,8 @@
     const next = current === LANGS.FR ? LANGS.EN : LANGS.FR;
     setLang(next, true);
   };
-
-  if (langToggle) langToggle.addEventListener("click", onLangClick);
   if (langSwitch) langSwitch.addEventListener("click", onLangClick);
   if (langSwitchMobile) langSwitchMobile.addEventListener("click", onLangClick);
-
-  const themeToggle = $("#themeToggle");
   const themeSwitch = document.getElementById("themeSwitch");
   const themeSwitchMobile = document.getElementById("themeSwitchMobile");
 
@@ -525,8 +470,6 @@
     const next = current === THEMES.DARK ? THEMES.LIGHT : THEMES.DARK;
     applyTheme(next, true);
   };
-
-  if (themeToggle) themeToggle.addEventListener("click", onThemeClick);
   if (themeSwitch) themeSwitch.addEventListener("click", onThemeClick);
   if (themeSwitchMobile) themeSwitchMobile.addEventListener("click", onThemeClick);
 
@@ -663,9 +606,6 @@
         isDragging = false;
         scroller.classList.remove("is-dragging");
         try { scroller.releasePointerCapture?.(e.pointerId); } catch (_) { }
-
-        scheduleSnapEnd(); // <- AJOUTE ÇA
-
       }
 
       scroller.addEventListener("pointerup", endDrag);
@@ -934,7 +874,6 @@
       }
 
       return best.zoom;
-      updateScrollerFade();
     }
 
     /* ==========================================================================
