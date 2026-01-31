@@ -1137,29 +1137,12 @@
         return; // important : on ne branche pas les listeners scroll/drag/fade
       }
       // Desktop: dots-only (pas de drag / pas de wheel/trackpad)
+      // Desktop: dots-only = pas de drag souris, MAIS trackpad OK
       const isDesktop = window.matchMedia?.("(hover: hover) and (pointer: fine)")?.matches;
       if (isDesktop) {
         scroller.classList.add("dots-only");
-
-        // on coupe le fade (facultatif mais plus propre)
-        scroller.classList.remove("pr-can-scroll");
-        scroller.style.removeProperty("--fadeL");
-        scroller.style.removeProperty("--fadeR");
-
-        // on empêche wheel/trackpad de scroller le carousel
-        scroller.addEventListener(
-          "wheel",
-          (e) => {
-            // Si l'utilisateur scroll verticalement → laisser passer
-            if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
-              return; // ✅ scroll page normal
-            }
-
-            // Si scroll horizontal (trackpad) → empêcher
-            e.preventDefault();
-          },
-          { passive: false }
-        );
+        // ✅ on ne bloque plus le wheel/trackpad
+        // ✅ on laisse le fade fonctionner normalement
       }
 
       // --- Dots (pagination) for infinite carousel (>= 3 real cards) ---

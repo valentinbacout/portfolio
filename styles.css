@@ -1670,12 +1670,12 @@ html[data-theme="light"] .scroll-btn:hover {
 
   .projects.dots-only,
   .engagements.dots-only {
-    overflow-x: hidden !important;
-    /* pas de scroll manuel */
+    overflow-x: auto !important;
+    /* ✅ trackpad horizontal autorisé */
     cursor: default;
     user-select: auto;
-    touch-action: pan-y pinch-zoom;
-    /* on garde le scroll vertical page */
+    touch-action: pan-x pinch-zoom;
+    /* ✅ autorise le geste horizontal */
     -webkit-user-select: auto;
   }
 }
