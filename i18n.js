@@ -53,7 +53,7 @@ const I18N = {
         "hero.lead": "Je suis diplômé ingénieur en mécanique énergétique, spécialisé en conception.",
         "hero.cta.projects": "Projets",
         "hero.cta.about": "À propos",
-        "hero.cta.contact": "Contacts",
+        "hero.cta.contact": "Contact",
         "hero.link.linkedin": "LinkedIn",
         "hero.link.cv": "CV",
 
@@ -215,7 +215,7 @@ const I18N = {
         "nav.timeline": "Career",
         "nav.projects": "Projects",
         "nav.projectsPersonal": "Extra", // ✅ MODIF : affichage header "Extras"
-        "nav.engagements": "Engagements associatifs",
+        "nav.engagements": "Community work",
         "nav.skills": "Skills",
         "nav.contact": "Contact",
 
@@ -345,7 +345,7 @@ const I18N = {
         "project.b.measures.k": "Deliverables",
         "project.b.measures.v": "CAD, proof of concept, functional prototype",
         "project.b.status.k": "Status",
-        "project.b.status.v": "Completed prorotype",
+        "project.b.status.v": "Completed prototype",
 
 
         // --- Project D (PLP)
@@ -375,14 +375,14 @@ const I18N = {
         "project.e.client.k": "Results",
         "project.e.client.v": "(Confidential)",
         "project.e.deliverables.k": "Deliverables",
-        "project.e.deliverables.v": "Méthodes, amélioration process",
+        "project.e.deliverables.v": "Methods, process improvement",
         "project.e.details.k": "Challenges",
         "project.e.details.v": "Reliability / Continuous Improvement",
 
         // -------------------------------------------------------------------------
         // EXTRAS / ENGAGEMENTS
         // -------------------------------------------------------------------------
-        "projectsPersonal.title": "Projects extras",
+        "projectsPersonal.title": "Extra projects",
         "engagements.title": "Personal and community projects",
         "engagements.subtitle":
             "Associations, personal initiatives and continuous improvement.",
