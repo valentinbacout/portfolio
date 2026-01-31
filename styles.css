@@ -1718,6 +1718,44 @@ html[data-theme="light"] .scroll-btn:hover {
   opacity: 0.55;
 }
 
+/* Side cards are clickable in carousel mode */
+.projects.is-carousel>.project.is-left,
+.projects.is-carousel>.project.is-right,
+.engagements.is-carousel>.project.is-left,
+.engagements.is-carousel>.project.is-right {
+  cursor: pointer;
+}
+
+.projects.is-carousel>.project.is-center,
+.engagements.is-carousel>.project.is-center {
+  cursor: default;
+}
+
+/* ==========================================
+   Interactions autorisées UNIQUEMENT sur la card centrée
+   ========================================== */
+
+/* Désactive les iframes (YouTube) sur les cards non centrées */
+.projects.is-carousel>.project:not(.is-center) iframe,
+.engagements.is-carousel>.project:not(.is-center) iframe {
+  pointer-events: none;
+}
+
+/* Désactive les liens externes sur les cards non centrées
+   (ex: tes liens portfolio en target=_blank dans "projects-personal") */
+.projects.is-carousel>.project:not(.is-center) a[target="_blank"],
+.engagements.is-carousel>.project:not(.is-center) a[target="_blank"] {
+  pointer-events: none;
+}
+
+/* (optionnel) feedback visuel : “désactivé” */
+.projects.is-carousel>.project:not(.is-center) a[target="_blank"],
+.engagements.is-carousel>.project:not(.is-center) a[target="_blank"] {
+  opacity: 0.6;
+  cursor: default;
+  text-decoration: none;
+}
+
 /* Respect reduced motion */
 @media (prefers-reduced-motion: reduce) {
 

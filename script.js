@@ -1279,6 +1279,33 @@
       };
 
 
+      // --- Click navigation: left/right card centers it, center card does nothing ---
+      scroller.addEventListener("click", (e) => {
+        // Ignore clicks on interactive elements inside cards
+        const interactive = e.target?.closest?.("a, button, input, textarea, select, label, iframe, video");
+        if (interactive) return;
+
+        const card = e.target?.closest?.(".project");
+        if (!card || card.parentElement !== scroller) return;
+
+        // Only side cards trigger navigation
+        if (card.classList.contains("is-left") || card.classList.contains("is-right")) {
+          e.preventDefault();
+          e.stopPropagation();
+
+          clickScrollLock = true;
+          centerCard(card, "smooth");
+
+          requestAnimationFrame(() => {
+            // If we landed on a clone, jump to the real one (keeps infinite loop seamless)
+            normalizeIfOnClone?.();
+            updateDotsFromScroll?.();
+            updateSideClasses();
+            clickScrollLock = false;
+          });
+        }
+      });
+
       // --- Force snap to closest card when interaction ends (wheel/drag/inertia) ---
       let snapEndTimer = null;
       let isPointerDown = false;
