@@ -1688,3 +1688,18 @@ html[data-theme="light"] .scroll-btn {
 html[data-theme="light"] .scroll-btn:hover {
   background: rgba(255, 255, 255, 0.88);
 }
+
+/* Desktop: navigation uniquement via dots */
+@media (hover: hover) and (pointer: fine) {
+
+  .projects.dots-only,
+  .engagements.dots-only {
+    overflow-x: hidden !important;
+    /* pas de scroll manuel */
+    cursor: default;
+    user-select: auto;
+    touch-action: pan-y pinch-zoom;
+    /* on garde le scroll vertical page */
+    -webkit-user-select: auto;
+  }
+}

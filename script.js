@@ -664,7 +664,7 @@
         scroller.classList.remove("is-dragging");
         try { scroller.releasePointerCapture?.(e.pointerId); } catch (_) { }
 
-          scheduleSnapEnd(); // <- AJOUTE ÇA
+        scheduleSnapEnd(); // <- AJOUTE ÇA
 
       }
 
@@ -1180,23 +1180,48 @@
       const realCount = baseCards.length;
 
       const enableStaticMode = () => {
-  scroller.classList.add("is-static");
-  scroller.classList.remove("pr-can-scroll", "is-dragging");
+        scroller.classList.add("is-static");
+        scroller.classList.remove("pr-can-scroll", "is-dragging");
 
-  // stop any horizontal scroll + reset position
-  scroller.style.overflowX = "hidden";
-  scroller.scrollLeft = 0;
+        // stop any horizontal scroll + reset position
+        scroller.style.overflowX = "hidden";
+        scroller.scrollLeft = 0;
 
-  // clear fade vars
-  scroller.style.removeProperty("--fadeL");
-  scroller.style.removeProperty("--fadeR");
-};
+        // clear fade vars
+        scroller.style.removeProperty("--fadeL");
+        scroller.style.removeProperty("--fadeR");
+      };
 
-// … puis juste après ton bloc realCount (ou juste après l’avoir calculé) :
-if (realCount <= 2) {
-  enableStaticMode();
-  return; // important : on ne branche pas les listeners scroll/drag/fade
-}
+      // … puis juste après ton bloc realCount (ou juste après l’avoir calculé) :
+      if (realCount <= 2) {
+        enableStaticMode();
+        return; // important : on ne branche pas les listeners scroll/drag/fade
+      }
+      // Desktop: dots-only (pas de drag / pas de wheel/trackpad)
+      const isDesktop = window.matchMedia?.("(hover: hover) and (pointer: fine)")?.matches;
+      if (isDesktop) {
+        scroller.classList.add("dots-only");
+
+        // on coupe le fade (facultatif mais plus propre)
+        scroller.classList.remove("pr-can-scroll");
+        scroller.style.removeProperty("--fadeL");
+        scroller.style.removeProperty("--fadeR");
+
+        // on empêche wheel/trackpad de scroller le carousel
+        scroller.addEventListener(
+          "wheel",
+          (e) => {
+            // Si l'utilisateur scroll verticalement → laisser passer
+            if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+              return; // ✅ scroll page normal
+            }
+
+            // Si scroll horizontal (trackpad) → empêcher
+            e.preventDefault();
+          },
+          { passive: false }
+        );
+      }
 
       // --- Dots (pagination) for infinite carousel (>= 3 real cards) ---
       let dotsWrap = null;
@@ -1295,51 +1320,51 @@ if (realCount <= 2) {
         return best;
       };
 
-// --- Force snap to closest card when interaction ends (wheel/drag/inertia) ---
-let snapEndTimer = null;
-let isPointerDown = false;
+      // --- Force snap to closest card when interaction ends (wheel/drag/inertia) ---
+      let snapEndTimer = null;
+      let isPointerDown = false;
 
-const prefersReducedMotion = () =>
-  window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+      const prefersReducedMotion = () =>
+        window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
 
-const snapToClosest = (behavior = "smooth") => {
-  if (!scroller.classList.contains("is-carousel")) return;
+      const snapToClosest = (behavior = "smooth") => {
+        if (!scroller.classList.contains("is-carousel")) return;
 
-  const closest = getClosestCentered();
-  if (!closest) return;
+        const closest = getClosestCentered();
+        if (!closest) return;
 
-  centerCard(closest, prefersReducedMotion() ? "auto" : behavior);
+        centerCard(closest, prefersReducedMotion() ? "auto" : behavior);
 
-  // si clone -> jump sur le vrai
-  normalizeIfOnClone();
+        // si clone -> jump sur le vrai
+        normalizeIfOnClone();
 
-  updateDotsFromScroll?.();
-};
+        updateDotsFromScroll?.();
+      };
 
-const scheduleSnapEnd = () => {
-  if (!scroller.classList.contains("is-carousel")) return;
-  if (isPointerDown) return;
+      const scheduleSnapEnd = () => {
+        if (!scroller.classList.contains("is-carousel")) return;
+        if (isPointerDown) return;
 
-  if (snapEndTimer) clearTimeout(snapEndTimer);
-  snapEndTimer = setTimeout(() => snapToClosest("smooth"), 120);
-};
+        if (snapEndTimer) clearTimeout(snapEndTimer);
+        snapEndTimer = setTimeout(() => snapToClosest("smooth"), 120);
+      };
 
-scroller.addEventListener("scroll", () => {
-  if (dotsWrap) {
-    if (rafDots) cancelAnimationFrame(rafDots);
-    rafDots = requestAnimationFrame(updateDotsFromScroll);
-  }
-  scheduleSnapEnd();
-}, { passive: true });
+      scroller.addEventListener("scroll", () => {
+        if (dotsWrap) {
+          if (rafDots) cancelAnimationFrame(rafDots);
+          rafDots = requestAnimationFrame(updateDotsFromScroll);
+        }
+        scheduleSnapEnd();
+      }, { passive: true });
 
-scroller.addEventListener("pointerdown", () => { isPointerDown = true; }, { passive: true });
-scroller.addEventListener("pointerup", () => { isPointerDown = false; scheduleSnapEnd(); }, { passive: true });
-scroller.addEventListener("pointercancel", () => { isPointerDown = false; scheduleSnapEnd(); }, { passive: true });
-scroller.addEventListener("wheel", scheduleSnapEnd, { passive: true });
+      scroller.addEventListener("pointerdown", () => { isPointerDown = true; }, { passive: true });
+      scroller.addEventListener("pointerup", () => { isPointerDown = false; scheduleSnapEnd(); }, { passive: true });
+      scroller.addEventListener("pointercancel", () => { isPointerDown = false; scheduleSnapEnd(); }, { passive: true });
+      scroller.addEventListener("wheel", scheduleSnapEnd, { passive: true });
 
 
-// Wheel => snap après arrêt de la molette
-scroller.addEventListener("wheel", scheduleSnapEnd, { passive: true });
+      // Wheel => snap après arrêt de la molette
+      scroller.addEventListener("wheel", scheduleSnapEnd, { passive: true });
 
       // 1 card => centered
       // 2 cards => one left / one right
@@ -1460,6 +1485,7 @@ scroller.addEventListener("wheel", scheduleSnapEnd, { passive: true });
       }
 
       scroller.addEventListener("pointerdown", (e) => {
+        if (scroller.classList.contains("dots-only")) return; // ✅ dots-only desktop
         if (e.pointerType === "mouse" && e.button !== 0) return;
         if (isInteractiveTarget(e.target)) return;
 
@@ -1475,6 +1501,7 @@ scroller.addEventListener("wheel", scheduleSnapEnd, { passive: true });
       scroller.addEventListener(
         "pointermove",
         (e) => {
+          if (scroller.classList.contains("dots-only")) return;
           if (!isDragging) return;
 
           const dx = e.clientX - dragStartX;
