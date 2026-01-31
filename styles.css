@@ -1693,10 +1693,7 @@ html[data-theme="light"] .scroll-btn:hover {
 /* Center card */
 .projects.is-carousel>.project.is-center,
 .engagements.is-carousel>.project.is-center {
-  transform: scale(1.00);
-  opacity: 1;
-  filter: none;
-  position: relative;
+
   z-index: 2;
 }
 
@@ -1705,10 +1702,7 @@ html[data-theme="light"] .scroll-btn:hover {
 .projects.is-carousel>.project.is-right,
 .engagements.is-carousel>.project.is-left,
 .engagements.is-carousel>.project.is-right {
-  transform: scale(1.00);
-  opacity: 0.75;
-  filter: saturate(0.9);
-  position: relative;
+
   z-index: 1;
 }
 
