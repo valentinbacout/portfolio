@@ -100,7 +100,7 @@ const I18N = {
         // SKILLS
         // -------------------------------------------------------------------------
         "skills.title": "Compétences",
-        "skills.subtitle": "Synthèse — outils et domaines (exemples).",
+        "skills.subtitle": "",
         "skills.conception": "Conception",
         "skills.proto": "Prototypage & essais",
         "skills.industrial": "Industrialisation",
@@ -118,12 +118,12 @@ const I18N = {
         "project.a.meta": "Joubert S.A.(M) Sdn Bhd (Malaisie) — 5 mois (2024)",
         "project.a.pill": "Industrie",
         "project.a.desc": `
-  <ul>
-    <li>Digitalisation maintenance & production dans un site industriel international.</li>
-    <li>Création d’un catalogue CAO de pièces de rechange (plans + STEP), réduisant les délais fournisseurs de plusieurs semaines à quelques jours</li>
-    <li>Formalisation des process via Working Instructions (WI).</li>
-  </ul>
-`,
+        <ul>
+            <li>Digitalisation maintenance & production dans un site industriel international.</li>
+            <li>Création d’un catalogue CAO de pièces de rechange (plans + STEP), réduisant les délais fournisseurs de plusieurs semaines à quelques jours</li>
+            <li>Formalisation des process via Working Instructions (WI).</li>
+        </ul>
+        `,
         "project.a.role.k": "Rôle",
         "project.a.role.v": "Ingénieur conception & industrialisation",
         "project.a.details.k": "Enjeux",
@@ -185,7 +185,7 @@ const I18N = {
         "projectsPersonal.title": "Projets extras",
         "engagements.title": "Engagements associatifs",
         "engagements.subtitle":
-            "Associatif, initiatives personnelles et développement continu.",
+            "",
 
         // -------------------------------------------------------------------------
         // CONTACT
@@ -193,10 +193,7 @@ const I18N = {
         "contact.title": "Contact",
         "contact.subtitle": "",
         "contact.reach": "Me joindre",
-        "contact.reach.p": "Remplacez par vos liens (email, LinkedIn, GitHub…).",
-        "contact.availability": "Disponibilité",
-        "contact.availability.p": "Ouvert aux échanges. Dites-moi le contexte et l’objectif.",
-        "contact.top": "Revenir en haut",
+
 
         // -------------------------------------------------------------------------
         // FOOTER
@@ -312,7 +309,7 @@ const I18N = {
         // SKILLS
         // -------------------------------------------------------------------------
         "skills.title": "Skills",
-        "skills.subtitle": "Overview — tools and domains (examples).",
+        "skills.subtitle": "",
         "skills.conception": "Design",
         "skills.proto": "Prototyping & testing",
         "skills.industrial": "Industrialization",
@@ -399,7 +396,7 @@ const I18N = {
         "projectsPersonal.title": "Extra projects",
         "engagements.title": "Personal and community projects",
         "engagements.subtitle":
-            "Associations, personal initiatives and continuous improvement.",
+            "",
 
         // -------------------------------------------------------------------------
         // CONTACT
@@ -407,10 +404,6 @@ const I18N = {
         "contact.title": "Contact",
         "contact.subtitle": "",
         "contact.reach": "Get in touch",
-        "contact.reach.p": "Replace with your links (email, LinkedIn, GitHub…).",
-        "contact.availability": "Availability",
-        "contact.availability.p": "Open to discussion. Tell me the context and the goal.",
-        "contact.top": "Back to top",
 
         // -------------------------------------------------------------------------
         // FOOTER
