@@ -1801,9 +1801,11 @@ html[data-theme="light"] .scroll-btn:hover {
 .project__moreBtn .less {
   display: none;
 }
+
 .project__more[open] .project__moreBtn .more {
   display: none;
 }
+
 .project__more[open] .project__moreBtn .less {
   display: inline;
 }
@@ -1812,8 +1814,35 @@ html[data-theme="light"] .scroll-btn:hover {
 .project__more .project__meta {
   margin-top: 10px;
 }
+
 .project__more .project__pill {
   margin-top: 10px;
   display: inline-flex;
   width: fit-content;
+}
+
+@media (max-width: 700px) {
+
+  .projects,
+  .engagements {
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+    scroll-snap-type: none;
+    touch-action: auto;
+  }
+
+  .project {
+    width: 100%;
+    flex: none;
+  }
+}
+
+@media (max-width: 700px) {
+
+  /* ✅ Supprime les ombres des cards sur mobile */
+  .project,
+  .engagement {
+    box-shadow: none !important;
+  }
 }

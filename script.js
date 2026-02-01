@@ -1148,7 +1148,29 @@
         scroller.style.removeProperty("--fadeR");
       };
 
-      // … puis juste après ton bloc realCount (ou juste après l’avoir calculé) :
+
+      // Mobile: force static stacked mode (no clones, no horizontal swipe)
+      const isMobile = () =>
+        window.matchMedia?.("(max-width: 700px)")?.matches ||
+        window.matchMedia?.("(hover: none) and (pointer: coarse)")?.matches;
+
+      const purgeClonesAndDots = () => {
+        // Remove any already-created clones (e.g., if user resized from desktop to mobile)
+        scroller.querySelectorAll(":scope > .project[data-clone]").forEach((n) => n.remove());
+
+        // Remove dots if they exist
+        const maybeDots = scroller.nextElementSibling;
+        if (maybeDots?.classList?.contains("carousel-dots")) maybeDots.remove();
+      };
+
+      // If we are on mobile, do NOT init the infinite carousel at all.
+      if (isMobile()) {
+        purgeClonesAndDots();
+        enableStaticMode();
+        return;
+      }
+
+      // For <=2 cards, also keep it static everywhere
       if (realCount <= 2) {
         enableStaticMode();
         return; // important : on ne branche pas les listeners scroll/drag/fade
@@ -1161,6 +1183,40 @@
         // ✅ on ne bloque plus le wheel/trackpad
         // ✅ on laisse le fade fonctionner normalement
       }
+
+      // Watch responsive changes: if we enter mobile later, purge clones + force static.
+      if (scroller.dataset.mobileWatcher !== "1") {
+        scroller.dataset.mobileWatcher = "1";
+        let wasMobile = false;
+        try { wasMobile = window.matchMedia?.("(max-width: 700px)")?.matches || false; } catch (_) {}
+        window.addEventListener(
+          "resize",
+          () => {
+            const nowMobile =
+              window.matchMedia?.("(max-width: 700px)")?.matches ||
+              window.matchMedia?.("(hover: none) and (pointer: coarse)")?.matches;
+
+            if (nowMobile && !wasMobile) {
+              wasMobile = true;
+              // minimal cleanup + static mode (no reload)
+              scroller.querySelectorAll(":scope > .project[data-clone]").forEach((n) => n.remove());
+              const maybeDots = scroller.nextElementSibling;
+              if (maybeDots?.classList?.contains("carousel-dots")) maybeDots.remove();
+              enableStaticMode();
+            } else if (!nowMobile && wasMobile) {
+              // If user goes back to desktop widths, a full re-init is safest.
+              // Reload only on desktop-like environments where resize is intentional.
+              wasMobile = false;
+              if (window.matchMedia?.("(hover: hover) and (pointer: fine)")?.matches) {
+                window.location.reload();
+              }
+            }
+          },
+          { passive: true }
+        );
+      }
+
+
 
       // --- Dots (pagination) for infinite carousel (>= 3 real cards) ---
       let dotsWrap = null;
