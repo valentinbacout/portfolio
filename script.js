@@ -129,8 +129,6 @@
       ctas.forEach((a) => {
         const href = a.getAttribute("href") || "";
         if (href === "#projects") a.textContent = t(lang, "hero.cta.projects");
-        if (href === "#timeline") a.textContent = t(lang, "hero.cta.timeline");
-        if (href === "#skills") a.textContent = t(lang, "hero.cta.skills");
         if (href === "#about") a.textContent = t(lang, "hero.cta.about");
         if (href === "#contact") a.textContent = t(lang, "hero.cta.contact");
       });
@@ -1746,11 +1744,8 @@
     // Use native scrollIntoView; your CSS scroll-margin-top handles header offset
     target.scrollIntoView({ behavior: "smooth", block: "start" });
 
-    // Keep URL hash in sync (defer to avoid some mobile browsers cancelling smooth scroll)
-    setTimeout(() => {
-      // replaceState avoids adding a new history entry every time
-      history.replaceState(null, "", `#${id}`);
-    }, 250);
+    // Keep URL hash in sync
+    history.pushState(null, "", `#${id}`);
   });
 
   // ===== Video carousels (inside project cards) =====
