@@ -21,37 +21,8 @@
 
 <body>
   <div id="top"></div>
-  <!-- Access gate (password / restricted) -->
-  <div aria-labelledby="gateTitle" aria-modal="true" class="gate" id="accessGate" role="dialog" hidden>
-    <div class="gate__card">
-      <div class="gate__badge">Accès</div>
-      <h2 class="gate__title" id="gateTitle">Bienvenue sur le portfolio</h2>
-      <p class="gate__subtitle">
-        Certaines sections contiennent des informations confidentielles (clients, détails techniques, KPI…).
-        Vous pouvez <b>débloquer l’accès complet</b> via mot de passe ou <b>continuer en mode restreint</b>.
-      </p>
-      <form autocomplete="off" class="gate__form" id="gateForm">
-        <label class="gate__label" for="gatePassword">Mot de passe</label>
-        <div class="gate__row">
-          <input class="gate__input" id="gatePassword" inputmode="text" placeholder="••••••••" type="password" />
-          <button class="btn btn--primary" type="submit">Débloquer</button>
-        </div>
-        <div aria-live="polite" class="gate__error" id="gateError"></div>
-      </form>
-      <div class="gate__actions">
-        <button class="btn btn--ghost" id="btnRestricted" type="button">Accéder sans mot de passe (restreint)</button>
-        <button class="btn btn--link" id="btnLearn" type="button">Qu’est-ce qui est restreint ?</button>
-      </div>
-      <div class="gate__hint" hidden="" id="gateHint">
-        <ul>
-          <li>Les éléments marqués <b>Confidentiel</b> seront floutés.</li>
-          <li>Vous verrez toujours la structure complète du site (navigation, timeline, sections).</li>
-          <li>Vous pouvez débloquer plus tard via le menu “Accès”.</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-  <!-- ===================== -->
+  
+<!-- ===================== -->
   <!-- DESKTOP HEADER -->
   <header class="header header--desktop" id="headerDesktop">
     <div class="header__inner container">
@@ -179,9 +150,7 @@
               Je privilégie les solutions simples, réparables, et sûres.
             </p>
             <p>
-              Références, chiffres, et détails d’architecture peuvent être masqués en mode restreint.
-            </p>
-          </div>
+                        </div>
           <div class="card">
             <h3>Ce que vous trouverez</h3>
             <ul class="list">
@@ -748,14 +717,7 @@
     <footer class="footer">
       <div class="container footer__inner">
         <p class="footer__copy">© <span id="year"></span> Valentin Bacout — Tous droits réservés.</p>
-        <div class="footer__right">
-          <p class="footer__note">Mode : <span id="modeFooter">—</span></p>
-          <button class="btn btn--ghost btn--small" id="footerAccessBtn" title="Ouvrir la fenêtre d’accès"
-            type="button">
-            Accès
-          </button>
         </div>
-      </div>
     </footer>
   </main>
   <script src="i18n.js"></script>

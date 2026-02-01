@@ -7,17 +7,7 @@
 */
 
 (() => {
-  const STORAGE_KEY = "vb_portfolio_access";
-  const ACCESS = {
-    FULL: "full",
-    RESTRICTED: "restricted",
-  };
-
-  // Change this password (simple demo).
-  // If you want better security, replace with a SHA-256 hash and compare hashes.
-  const ACCESS_PASSWORD = "0";
-
-  const $ = (sel, root = document) => root.querySelector(sel);
+const $ = (sel, root = document) => root.querySelector(sel);
   const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
 
   const THEME_KEY = "vb_portfolio_theme";
@@ -70,43 +60,6 @@
         if (href === "#projects-personal") a.textContent = t(lang, "nav.projectsPersonal");
         if (href === "#engagements-asso") a.textContent = t(lang, "nav.engagements");
       });
-    }
-
-
-    // Gate
-    const gate = document.getElementById("accessGate");
-    if (gate) {
-      const badge = gate.querySelector(".gate__badge");
-      if (badge) badge.textContent = t(lang, "gate.badge");
-
-      const title = document.getElementById("gateTitle");
-      if (title) title.textContent = t(lang, "gate.title");
-
-      const subtitle = gate.querySelector(".gate__subtitle");
-      if (subtitle) subtitle.textContent = t(lang, "gate.subtitle");
-
-      const label = gate.querySelector('label[for="gatePassword"]');
-      if (label) label.textContent = t(lang, "gate.label");
-
-      const input = document.getElementById("gatePassword");
-      if (input) input.setAttribute("placeholder", t(lang, "gate.placeholder"));
-
-      const unlockBtn = gate.querySelector('#gateForm button[type="submit"]');
-      if (unlockBtn) unlockBtn.textContent = t(lang, "gate.unlock");
-
-      const btnRestricted = document.getElementById("btnRestricted");
-      if (btnRestricted) btnRestricted.textContent = t(lang, "gate.restricted");
-
-      const btnLearn = document.getElementById("btnLearn");
-      if (btnLearn) btnLearn.textContent = t(lang, "gate.learn");
-
-      const hint = document.getElementById("gateHint");
-      if (hint) {
-        const lis = hint.querySelectorAll("li");
-        if (lis[0]) lis[0].textContent = t(lang, "gate.hint.1");
-        if (lis[1]) lis[1].textContent = t(lang, "gate.hint.2");
-        if (lis[2]) lis[2].textContent = t(lang, "gate.hint.3");
-      }
     }
 
     // Hero
@@ -263,10 +216,6 @@
       const rights = t(lang, "footer.rights");
       footerCopy.innerHTML = `© <span id="year">${year ? year.textContent : ""}</span> Valentin Bacout — ${rights}`;
     }
-    const footerNote = document.querySelector(".footer__note");
-    if (footerNote) footerNote.childNodes[0].textContent = `${t(lang, "footer.mode")} `;
-    const footerAccessBtn = document.getElementById("footerAccessBtn");
-    if (footerAccessBtn) footerAccessBtn.textContent = t(lang, "footer.access");
   }
 
   function setLang(lang, persist = true) {
@@ -282,14 +231,8 @@
     if (btnB) btnB.textContent = `🌐 ${txt}`;
 
     applyTranslations(lang);
-
-    // Refresh theme/access labels in current language
-    const currentTheme = document.documentElement.dataset.theme || getSystemTheme();
-    const themeLabel = document.getElementById("themeLabel");
-    if (themeLabel) {
-      themeLabel.textContent = currentTheme === THEMES.DARK ? "🌙" : "☀️";
-    }
   }
+
 
   function initLang() {
     const saved = getSavedLang();
@@ -352,53 +295,6 @@
   // Expose helpers (optional)
   window.VBPortfolio = { setLang, applyTheme };
 
-  function setAccess(mode) {
-    const isRestricted = mode === ACCESS.RESTRICTED;
-    document.body.classList.toggle("is-restricted", isRestricted);
-    localStorage.setItem(STORAGE_KEY, mode);
-
-    const label = $("#accessModeLabel");
-    const footer = $("#modeFooter");
-
-    const lang = document.documentElement.dataset.lang || getSavedLang() || LANGS.FR;
-    const text = isRestricted ? t(lang, "chip.access.restricted") : t(lang, "chip.access.full");
-    if (label) label.textContent = `${t(lang, "chip.access")} : ${text}`;
-    if (footer) footer.textContent = text;
-  }
-
-  function getAccess() {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved === ACCESS.FULL || saved === ACCESS.RESTRICTED) return saved;
-    return null;
-  }
-
-  function openGate() {
-    const gate = $("#accessGate");
-    if (!gate) return;
-
-    gate.hidden = false;
-    document.body.classList.add("gate-open");
-
-    // Accessibility: prevent background from being read by screen readers
-    const main = document.querySelector("main");
-    if (main) main.setAttribute("aria-hidden", "true");
-
-    const input = $("#gatePassword");
-    if (input) input.focus();
-  }
-
-  function closeGate() {
-    const gate = $("#accessGate");
-    if (!gate) return;
-
-    gate.hidden = true;
-    document.body.classList.remove("gate-open");
-
-    const main = document.querySelector("main");
-    if (main) main.removeAttribute("aria-hidden");
-
-  }
-
 
   // Init year
   const yearEl = $("#year");
@@ -412,58 +308,9 @@
       window.scrollTo({ top: 0, behavior: "smooth" });
     });
   }
-  // Access gate events
 
-  // Requirement: ask the visitor *every page load*.
-  // We still store the choice while the page is open, but we clear it on load.
-  try { localStorage.removeItem(STORAGE_KEY); } catch (_) { }
-  setAccess(ACCESS.RESTRICTED);
 
-  const gateForm = $("#gateForm");
-  const gateError = $("#gateError");
-  const gateHint = $("#gateHint");
-
-  if (gateForm) {
-    gateForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const input = $("#gatePassword");
-      const val = (input?.value || "").trim();
-
-      if (!ACCESS_PASSWORD || ACCESS_PASSWORD === "CHANGE_ME") {
-        if (gateError) {
-          const lang = document.documentElement.dataset.lang || getSavedLang() || LANGS.FR;
-          gateError.textContent = t(lang, "gate.error.not_configured");
-        }
-        return;
-      }
-
-      if (val === ACCESS_PASSWORD) {
-        setAccess(ACCESS.FULL);
-        if (gateError) gateError.textContent = "";
-        closeGate();
-      } else {
-        if (gateError) {
-          const lang = document.documentElement.dataset.lang || getSavedLang() || LANGS.FR;
-          gateError.textContent = t(lang, "gate.error.wrong");
-        }
-      }
-    });
-  }
-
-  const btnRestricted = $("#btnRestricted");
-  if (btnRestricted) {
-    btnRestricted.addEventListener("click", () => {
-      setAccess(ACCESS.RESTRICTED);
-      closeGate();
-    });
-  }
-
-  const btnLearn = $("#btnLearn");
-  if (btnLearn && gateHint) {
-    btnLearn.addEventListener("click", () => {
-      gateHint.hidden = !gateHint.hidden;
-    });
-  }
+  // Lang switch (desktop + mobile)
   const langSwitch = document.getElementById("langSwitch");
   const langSwitchMobile = document.getElementById("langSwitchMobile");
 
@@ -474,6 +321,8 @@
   };
   if (langSwitch) langSwitch.addEventListener("click", onLangClick);
   if (langSwitchMobile) langSwitchMobile.addEventListener("click", onLangClick);
+
+  // Theme switch (desktop + mobile)
   const themeSwitch = document.getElementById("themeSwitch");
   const themeSwitchMobile = document.getElementById("themeSwitchMobile");
 
@@ -484,22 +333,6 @@
   };
   if (themeSwitch) themeSwitch.addEventListener("click", onThemeClick);
   if (themeSwitchMobile) themeSwitchMobile.addEventListener("click", onThemeClick);
-
-  const footerAccessBtn = $("#footerAccessBtn");
-  if (footerAccessBtn) {
-    footerAccessBtn.addEventListener("click", () => {
-      openGate();
-      const err = $("#gateError");
-      if (err) err.textContent = "";
-    });
-  }
-
-  // ESC closes gate
-  document.addEventListener("keydown", (e) => {
-    if (e.key !== "Escape") return;
-    const gate = $("#accessGate");
-    if (gate && !gate.hidden) closeGate();
-  });
 
   // Horizontal timeline module (replaces previous vertical timeline)
   const root = document.getElementById("timeline");

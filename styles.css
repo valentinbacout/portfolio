@@ -1,7 +1,6 @@
 /*
   Modern rebuild (HTML/CSS/JS only)
   - keeps a dark / teal palette and a vertical timeline with scroll activation
-  - supports restricted mode by blurring [data-confidential]
 */
 
 :root {
@@ -32,7 +31,6 @@
   --scroll-pad-top: var(--header-h);
 
   /* Gate overlay tint (semi-transparent so backdrop blur is visible) */
-  --gate-overlay: rgba(255, 255, 255, .35);
 }
 
 html[data-theme="light"] {
@@ -53,7 +51,6 @@ html[data-theme="light"] {
   --accent-2: #7c3aed;
   --danger: #e11d48;
 
-  --gate-overlay: rgba(255, 255, 255, .35);
 }
 
 /* System dark preference (only used when user didn't force a theme) */
@@ -74,14 +71,12 @@ html[data-theme="light"] {
     --accent-2: #9b5cff;
     --danger: #ff5a7a;
 
-    --gate-overlay: rgba(0, 0, 0, .35);
   }
 }
 
 /* Forced themes (user toggle) */
 html[data-theme="light"] {
   color-scheme: light;
-  --gate-overlay: rgba(255, 255, 255, .35);
 }
 
 html[data-theme="dark"] {
@@ -102,7 +97,6 @@ html[data-theme="dark"] {
   --accent-2: #9b5cff;
   --danger: #ff5a7a;
 
-  --gate-overlay: rgba(0, 0, 0, .35);
 }
 
 * {
@@ -949,175 +943,6 @@ section[id] {
   font-size: 13px;
 }
 
-/* Access Gate */
-.gate {
-  position: fixed;
-  inset: 0;
-  z-index: 999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 22px;
-
-  /* Semi-transparent overlay so the website stays visible underneath */
-  background: color-mix(in oklab, var(--bg) 35%, transparent);
-
-  /* Blur what's behind the overlay */
-  backdrop-filter: blur(18px) saturate(1.2);
-  -webkit-backdrop-filter: blur(18px) saturate(1.2);
-}
-
-/* Optional fallback (browsers without backdrop-filter): blur the page when the gate is open */
-body.gate-open header,
-body.gate-open main {
-  filter: blur(10px);
-}
-
-.gate[hidden] {
-  display: none;
-}
-
-.gate__card {
-  width: min(560px, 100%);
-  border-radius: 26px;
-  border: 1px solid var(--stroke);
-  background: var(--bg);
-  /* opaque drawer */
-  box-shadow: var(--shadow);
-  padding: 20px;
-}
-
-.gate__badge {
-  display: inline-flex;
-  align-items: center;
-  padding: 8px 10px;
-  border-radius: 999px;
-  border: 1px solid var(--stroke);
-  background: color-mix(in oklab, var(--panel) 70%, transparent);
-  font-weight: 800;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  font-size: 11px;
-}
-
-.gate__title {
-  margin: 10px 0 8px;
-  letter-spacing: -.03em;
-}
-
-.gate__subtitle {
-  margin: 0 0 14px;
-  color: var(--muted);
-}
-
-.gate__form {
-  margin-top: 10px;
-}
-
-.gate__label {
-  display: block;
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  color: var(--faint);
-  margin-bottom: 8px;
-}
-
-.gate__row {
-  display: flex;
-  gap: 10px;
-}
-
-.gate__input {
-  flex: 1;
-  height: 46px;
-  border-radius: 14px;
-  border: 1px solid var(--stroke);
-  background: var(--panel);
-  color: var(--text);
-  padding: 0 12px;
-  font-size: 14px;
-  font-weight: 650;
-}
-
-.gate__input:focus {
-  outline: 2px solid color-mix(in oklab, var(--accent) 30%, transparent);
-  outline-offset: 2px;
-}
-
-.gate__error {
-  margin-top: 10px;
-  min-height: 18px;
-  color: color-mix(in oklab, var(--danger) 90%, var(--text));
-  font-weight: 700;
-}
-
-.gate__actions {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-top: 10px;
-}
-
-.gate__hint {
-  margin-top: 10px;
-  color: var(--muted);
-  border-top: 1px solid var(--stroke);
-  padding-top: 10px;
-}
-
-.gate__hint ul {
-  margin: 0;
-  padding-left: 18px;
-}
-
-.gate__hint li {
-  margin: 6px 0;
-}
-
-@media (max-width: 520px) {
-  .gate__row {
-    flex-direction: column;
-  }
-}
-
-/* Restricted mode */
-body.is-restricted [data-confidential] {
-  filter: blur(9px);
-  opacity: .8;
-  pointer-events: none;
-  user-select: none;
-}
-
-body.is-restricted [data-confidential]::selection {
-  background: transparent;
-}
-
-/* Provide a visible label overlay for confidential blocks */
-body.is-restricted [data-confidential] {
-  position: relative;
-}
-
-body.is-restricted [data-confidential]::after {
-  content: "Confidentiel";
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  padding: 6px 10px;
-  border-radius: 999px;
-  font-size: 11px;
-  font-weight: 900;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  border: 1px solid var(--stroke);
-  background: var(--bg);
-  /* opaque drawer */
-  color: var(--text);
-  filter: none;
-}
 
 /* Small helpers */
 html {
