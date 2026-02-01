@@ -293,9 +293,21 @@
 
   function initLang() {
     const saved = getSavedLang();
-    setLang(saved || LANGS.FR, false);
-  }
 
+    // ✅ Si l’utilisateur a déjà choisi → on garde
+    if (saved) {
+      setLang(saved, false);
+      return;
+    }
+
+    // ✅ Sinon : langue navigateur
+    const browserLang = navigator.language.toLowerCase();
+
+    const initial =
+      browserLang.startsWith("en") ? LANGS.EN : LANGS.FR;
+
+    setLang(initial, false);
+  }
 
   function applyTheme(theme, persist = false) {
     document.documentElement.dataset.theme = theme;
@@ -575,7 +587,7 @@
       function isInteractiveTarget(el) {
         if (!el) return false;
         return (
-          el.closest("input, textarea, select, button, a, label") !== null
+          el.closest("input, textarea, select, button, a, label, iframe, video, summary, details") !== null
         );
       }
 
@@ -1307,7 +1319,7 @@
       // --- Click navigation: left/right card centers it, center card does nothing ---
       scroller.addEventListener("click", (e) => {
         // Ignore clicks on interactive elements inside cards
-        const interactive = e.target?.closest?.("a, button, input, textarea, select, label, iframe, video");
+        const interactive = e.target?.closest?.("a, button, input, textarea, select, label, iframe, video, summary, details");
         if (interactive) return;
 
         const card = e.target?.closest?.(".project");
@@ -1341,7 +1353,7 @@
         window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
 
       // Will be assigned in carousel mode (>= 3 cards)
-      let normalizeIfOnClone = () => {};
+      let normalizeIfOnClone = () => { };
 
       const snapToClosest = (behavior = "smooth") => {
         if (!scroller.classList.contains("is-carousel")) return;
@@ -1495,7 +1507,7 @@
           },
           { passive: true }
         );
-}
+      }
 
 
       function updateScrollerFade() {
@@ -1533,7 +1545,7 @@
 
       function isInteractiveTarget(el) {
         if (!el) return false;
-        return el.closest("input, textarea, select, button, a, label, iframe, video") !== null;
+        return el.closest("input, textarea, select, button, a, label, iframe, video, summary, details") !== null;
       }
 
 
@@ -1724,6 +1736,104 @@
 
 
   // Apply left color stripe on project cards (Projects / Extras / Associatif)
+
+  // ===== Mobile: fold project cards (title + media only, rest in a <details>) =====
+  (() => {
+    const mq = window.matchMedia("(max-width: 700px)");
+
+    function foldProjectsForMobile() {
+      if (!mq.matches) return;
+
+      const selectors = [
+        "#projects .project",
+        "#projects-personal .project",
+        "#engagements-asso .project",
+      ].join(",");
+
+      document.querySelectorAll(selectors).forEach((card) => {
+        if (card.dataset.mobileFolded === "1") return;
+
+        const top = card.querySelector(":scope > .project__top");
+        if (!top) return;
+
+        // media can be either an <img.project__img> or a <div.project__media> (video)
+        const media = card.querySelector(":scope > .project__img, :scope > .project__media");
+
+        // Create details
+        const details = document.createElement("details");
+        details.className = "project__more";
+        details.setAttribute("data-no-carousel-nav", "1");
+
+        const summary = document.createElement("summary");
+        summary.className = "project__moreBtn";
+
+        // i18n-ready labels
+        const more = document.createElement("span");
+        more.className = "more";
+        more.setAttribute("data-i18n", "ui.seeMore");
+
+        // fallback (in case i18n is not applied yet)
+        more.textContent = "Voir plus";
+
+        const less = document.createElement("span");
+        less.className = "less";
+        less.setAttribute("data-i18n", "ui.seeLess");
+
+        // fallback (in case i18n is not applied yet)
+        less.textContent = "Voir moins";
+
+        summary.appendChild(more);
+        summary.appendChild(less);
+        details.appendChild(summary);
+
+        // Prevent carousel click handling / drag click
+        summary.addEventListener("click", (e) => {
+          e.stopPropagation();
+        });
+        details.addEventListener("click", (e) => {
+          e.stopPropagation();
+        });
+
+        // Move meta + pill into details (keep only title visible in top)
+        const meta = top.querySelector(".project__meta");
+        const pill = top.querySelector(".project__pill");
+        if (meta) details.appendChild(meta);
+        if (pill) details.appendChild(pill);
+
+        // Move everything after media into details (desc, grid, etc.)
+        const moveCandidates = [];
+        Array.from(card.children).forEach((child) => {
+          if (child === top) return;
+          if (child === media) return;
+          if (child === details) return;
+          moveCandidates.push(child);
+        });
+
+        moveCandidates.forEach((el) => details.appendChild(el));
+
+        // Insert details right after media (or after top if no media)
+        if (media && media.parentElement === card) {
+          media.insertAdjacentElement("afterend", details);
+        } else {
+          top.insertAdjacentElement("afterend", details);
+        }
+
+        card.dataset.mobileFolded = "1";
+      });
+
+      // If your i18n apply function runs on load only, you may need to re-apply it here.
+      // Re-apply translations because the button is injected dynamically on mobile
+
+      const lang = document.documentElement.dataset.lang || localStorage.getItem("vb_portfolio_lang") || "fr";
+      window.VBPortfolio?.setLang(lang, false);
+    }
+
+    // Run now + when layout changes
+    foldProjectsForMobile();
+    mq.addEventListener?.("change", foldProjectsForMobile);
+  })();
+
+
   function applyProjectAccents() {
     const map = window.VBTimelineColors;
 

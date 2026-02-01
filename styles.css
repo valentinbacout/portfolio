@@ -1770,3 +1770,50 @@ html[data-theme="light"] .scroll-btn:hover {
     transition: none !important;
   }
 }
+
+/* ===== Mobile fold: "Voir plus" details inside project cards ===== */
+.project__more {
+  margin-top: 10px;
+}
+
+.project__moreBtn {
+  list-style: none;
+  cursor: pointer;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 14px;
+
+  border: 1px solid var(--stroke);
+  background: color-mix(in oklab, var(--panel) 75%, transparent);
+  font-weight: 750;
+}
+
+.project__moreBtn::-webkit-details-marker {
+  display: none;
+}
+
+/* swap "Voir plus" / "Voir moins" */
+.project__moreBtn .less {
+  display: none;
+}
+.project__more[open] .project__moreBtn .more {
+  display: none;
+}
+.project__more[open] .project__moreBtn .less {
+  display: inline;
+}
+
+/* keep meta/pill nice when moved into details */
+.project__more .project__meta {
+  margin-top: 10px;
+}
+.project__more .project__pill {
+  margin-top: 10px;
+  display: inline-flex;
+  width: fit-content;
+}
