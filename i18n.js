@@ -54,7 +54,7 @@ const I18N = {
         "about.subtitle": "",
         "about.profile": "Profil",
         "about.profile.p1":
-            "Ingénieur orienté produit, avec une approche pragmatique : itération rapide, prototypage, validation, puis industrialisation. Je privilégie les solutions simples, réparables, et sûres.",        "about.find.title": "Ce que vous trouverez",
+            "Ingénieur orienté produit, avec une approche pragmatique : itération rapide, prototypage, validation, puis industrialisation. Je privilégie les solutions simples, réparables, et sûres.", "about.find.title": "Ce que vous trouverez",
         "about.find.li1": "Projets et réalisations (avec éléments floutés si nécessaire)",
         "about.find.li2": "Compétences (CAD, conception, essais, industrialisation)",
         "about.find.li3": "Timeline interactive (expérience / formation)",
@@ -90,33 +90,35 @@ const I18N = {
         "project.a.desc": `
         <ul>
             <li>Digitalisation maintenance & production dans un site industriel international.</li>
-            <li>Création d’un catalogue CAO de pièces de rechange (plans + STEP), réduisant les délais fournisseurs de plusieurs semaines à quelques jours</li>
+            <li>Conception et mise en plan de 120 pièces détachées critiques sous SolidWorks, intégrées dans un catalogue maintenance (plans ISO + fichiers STEP), réduisant les délais de sourcing de plusieurs semaines à quelques jours.</li>
             <li>Formalisation des process via Working Instructions (WI).</li>
         </ul>
         `,
-        "project.a.role.k": "Rôle",
-        "project.a.role.v": "Ingénieur conception & industrialisation",
+
         "project.a.details.k": "Enjeux",
         "project.a.details.v": "Amélioration des coûts et de l'efficacité",
         "project.a.deliverables.k": "Livrables",
         "project.a.deliverables.v": "Catalogue pièces + WI",
         "project.a.client.k": "Résultats",
         "project.a.client.v": "Maintenance standardisée & production optimisée",
+        "project.a.skills.k": "Compétences / Logiciels",
+        "project.a.skills.v": "SolidWorks",
 
         // --- Projet B (VINCI)
         "project.b.title": "Projet VINCI — Manutention de chariots médicaux",
         "project.b.meta": "INSA Hauts-de-France — 2 mois (2023–2024)",
         "project.b.pill": "Prototype",
         "project.b.desc":
-            "Conception d’une solution d’aide à la manutention, orientée ergonomie et sécurité utilisateur, avec approche développement produit.",
-        "project.b.tech.k": "Techno",
-        "project.b.tech.v": "Conception + prototypage",
-        "project.b.focus.k": "Focus",
-        "project.b.focus.v": "Ergonomie / sécurité",
-        "project.b.measures.k": "Livrables",
-        "project.b.measures.v": "CAO, preuve de concept, prototype fonctionnel",
-        "project.b.status.k": "Statut",
-        "project.b.status.v": "Prototype finalisé",
+            "Conception et prototypage d’un système de couplage permettant de former un train de chariots médicaux (preuve de concept).",
+
+        "project.b.details.k": "Enjeux",
+        "project.b.details.v": "Faciliter le déplacement simultané de plusieurs chariots médicaux en milieu hospitalier grâce à un système de liaison détachable, sans modification du matériel existant.",
+        "project.b.deliverables.k": "Livrables",
+        "project.b.deliverables.v": "Conception CAO et prototype démonstrateur d’un dispositif amovible de couplage pour chariots médicaux.",
+        "project.b.client.k": "Résultats",
+        "project.b.client.v": "Réalisation d’un prototype fonctionnel validant la faisabilité du système de couplage détachable (preuve de concept).",
+        "project.b.skills.k": "Compétences / Logiciels",
+        "project.b.skills.v": "Conception - prototypage - Catia V5",
 
         // --- Projet D (PLP)
         "project.d.title": "PLP (Plateau Projet) — PFE",
@@ -124,14 +126,15 @@ const I18N = {
         "project.d.pill": "PFE",
         "project.d.desc":
             "Étude de la capacité d’absorption de différentes structures lattices hybrides avec des gradients de réseaux.",
-        "project.d.work.k": "Travail",
-        "project.d.work.v": "Amélioration et prototypage d’un puit de chute existant",
-        "project.d.dev.k": "Développement",
-        "project.d.dev.v": "Code Python pour générer des géométries lattices sous FreeCAD",
-        "project.d.tools.k": "Outils",
-        "project.d.tools.v": "Python, FreeCAD, Catia V5",
-        "project.d.skills.k": "Compétences",
-        "project.d.skills.v": "Prototypage, Impression 3D",
+
+        "project.d.details.k": "Enjeux",
+        "project.d.details.v": "Comprendre l’influence de la géométrie et des gradients lattice sur l’absorption d’énergie en impact dynamique.",
+        "project.d.deliverables.k": "Livrables",
+        "project.d.deliverables.v": "Développement d’un banc d’essai dynamique et d’un outil Python pour générer et comparer plusieurs géométries lattices",
+        "project.d.client.k": "Résultats",
+        "project.d.client.v": "Protocole expérimental validé et identification d’une géométrie lattice présentant les meilleures performances d’absorption dans le cadre de l’étude.",
+        "project.d.skills.k": "Compétences / Logiciels",
+        "project.d.skills.v": "Prototypage - Impression 3D - FreeCAD",
 
         // --- Projet E SUBLIM
         "project.e.title": "Amélioration continue - SUBLIM",
@@ -139,14 +142,15 @@ const I18N = {
         "project.e.meta": "DELEO S.A.S. — Depuis 2025",
         "project.e.desc":
             " V&V et Amélioration continue de l'épilateur laser",
-        "project.e.role.k": "Rôle",
-        "project.e.role.v": "Chef de projet - Ingénieur Mécanique",
-        "project.e.client.k": "Résultats",
-        "project.e.client.v": "(Confidentiel)",
-        "project.e.deliverables.k": "Livrables",
-        "project.e.deliverables.v": "Méthodes, amélioration process",
+
         "project.e.details.k": "Enjeux",
-        "project.e.details.v": "Fiabilité / Amélioration continue",
+        "project.e.details.v": "(Confidentiel)",
+        "project.e.deliverables.k": "Livrables",
+        "project.e.deliverables.v": "Plans de validation, procédures d’essais, améliorations mécaniques et process industriels",
+        "project.e.client.k": "Résultats",
+        "project.e.client.v": "Amélioration de la fiabilité et support au maintien en conditions opérationnelles",
+        "project.e.skills.k": "Compétences - Logiciels",
+        "project.e.skills.v": "SolidWorks - Prototypage - Fournisseurs - V&V",
 
         // -------------------------------------------------------------------------
         // EXTRAS / ENGAGEMENTS (sections dédiées)
@@ -166,7 +170,8 @@ const I18N = {
         // -------------------------------------------------------------------------
         // FOOTER
         // -------------------------------------------------------------------------
-        "footer.rights": "Tous droits réservés.",    },
+        "footer.rights": "Tous droits réservés.",
+    },
 
     // ===========================================================================
     // 🇬🇧 ENGLISH
@@ -223,7 +228,7 @@ const I18N = {
         "about.subtitle": "",
         "about.profile": "Profile",
         "about.profile.p1":
-            "Product-oriented engineer with a pragmatic approach: fast iteration, prototyping, validation, then industrialization. I favor simple, repairable, safe solutions.",        "about.find.title": "What you'll find",
+            "Product-oriented engineer with a pragmatic approach: fast iteration, prototyping, validation, then industrialization. I favor simple, repairable, safe solutions.", "about.find.title": "What you'll find",
         "about.find.li1": "Projects and achievements (with blurred items if needed)",
         "about.find.li2": "Skills (CAD, design, testing, industrialization)",
         "about.find.li3": "Interactive timeline (experience / education)",
@@ -257,65 +262,79 @@ const I18N = {
         "project.a.meta": "Joubert S.A.(M) Sdn Bhd (Malaysia) — 5 months (2024)",
         "project.a.pill": "Industry",
         "project.a.desc": `
-  <ul>
-    <li>Digitization of maintenance & production in an international industrial site.</li>
-    <li>Created a CAD spare-parts catalog (drawings + STEP), cutting supplier lead times from several weeks to a few days.</li>
-    <li>Formalized processes through Working Instructions (WI).</li>
-  </ul>
+<ul>
+    <li>Maintenance & production digitalization in an international industrial plant.</li>
+    <li>Design and drafting of 120 critical spare parts in SolidWorks, integrated into a maintenance catalog (ISO drawings + STEP files), reducing sourcing time from several weeks to just a few days.</li>
+    <li>Process formalization through Working Instructions (WI).</li>
+</ul>
 `,
-        "project.a.role.k": "Role",
-        "project.a.role.v": "Design & industrialization engineer",
+
         "project.a.details.k": "Challenges",
-        "project.a.details.v": "Cost and efficiency improvement",
+        "project.a.details.v": "Improving costs and efficiency",
         "project.a.deliverables.k": "Deliverables",
-        "project.a.deliverables.v": "Spare-parts catalog + WI",
+        "project.a.deliverables.v": "Spare parts catalog + WI",
         "project.a.client.k": "Results",
         "project.a.client.v": "Standardized maintenance & optimized production",
+        "project.a.skills.k": "Skills / Software",
+        "project.a.skills.v": "SolidWorks",
 
         // --- Project B (VINCI)
-        "project.b.title": "VINCI Project — Medical cart handling",
+        "project.b.title": "VINCI Project — Medical Trolley Handling System",
         "project.b.meta": "INSA Hauts-de-France — 2 months (2023–2024)",
         "project.b.pill": "Prototype",
         "project.b.desc":
-            "Designed a handling-assist solution focused on ergonomics and user safety, using a product development approach.",
-        "project.b.tech.k": "Tech",
-        "project.b.tech.v": "Design + prototyping",
-        "project.b.focus.k": "Focus",
-        "project.b.focus.v": "Ergonomics / safety",
-        "project.b.measures.k": "Deliverables",
-        "project.b.measures.v": "CAD, proof of concept, functional prototype",
-        "project.b.status.k": "Status",
-        "project.b.status.v": "Completed prototype",
+            "Design and prototyping of a coupling system allowing several medical trolleys to be connected together (proof of concept).",
+
+        "project.b.details.k": "Challenges",
+        "project.b.details.v":
+            "Facilitating the simultaneous transport of several medical trolleys in hospital environments thanks to a detachable linking system, without modifying existing equipment.",
+        "project.b.deliverables.k": "Deliverables",
+        "project.b.deliverables.v":
+            "CAD design and demonstrator prototype of a removable coupling device for medical trolleys.",
+        "project.b.client.k": "Results",
+        "project.b.client.v":
+            "Development of a functional prototype validating the feasibility of the detachable coupling system (proof of concept).",
+        "project.b.skills.k": "Skills / Software",
+        "project.b.skills.v": "Design – prototyping – Catia V5",
 
         // --- Project D (PLP)
         "project.d.title": "PLP (Project Platform) — Final Year Project",
-        "project.d.meta": "INSA Hauts-de-France & LAMIH — Sep 2023 to Feb 2024",
-        "project.d.pill": "FYP",
+        "project.d.meta": "INSA Hauts-de-France & LAMIH — September 2023 to February 2024",
+        "project.d.pill": "Final Project",
         "project.d.desc":
-            "Study of the energy absorption capacity of various hybrid lattice structures with network gradients.",
-        "project.d.work.k": "Work",
-        "project.d.work.v": "Improvement and prototyping of an existing drop-tower shaft",
-        "project.d.dev.k": "Development",
-        "project.d.dev.v": "Python code to generate lattice geometries in FreeCAD",
-        "project.d.tools.k": "Tools",
-        "project.d.tools.v": "Python, FreeCAD, CATIA V5",
-        "project.d.skills.k": "Skills",
-        "project.d.skills.v": "Prototyping, 3D printing",
+            "Study of the energy absorption capacity of different hybrid lattice structures with network gradients.",
 
-        // --- Projet E SUBLIM
-        "project.e.title": "Continuous Improvement - SUBLIM",
+        "project.d.details.k": "Challenges",
+        "project.d.details.v":
+            "Understanding the influence of geometry and lattice gradients on energy absorption under dynamic impact.",
+        "project.d.deliverables.k": "Deliverables",
+        "project.d.deliverables.v":
+            "Development of a dynamic test bench and a Python tool to generate and compare multiple lattice geometries.",
+        "project.d.client.k": "Results",
+        "project.d.client.v":
+            "Validated experimental protocol and identification of the lattice geometry showing the best absorption performance within the study.",
+        "project.d.skills.k": "Skills / Software",
+        "project.d.skills.v": "Prototyping – 3D printing – FreeCAD",
+
+        // --- Project E (SUBLIM)
+        "project.e.title": "Continuous Improvement — SUBLIM",
         "project.e.pill": "Industry",
         "project.e.meta": "DELEO S.A.S. — Since 2025",
         "project.e.desc":
-            "V&V and Continuous Improvement of the Laser Hair Remover",
-        "project.e.role.k": "Role",
-        "project.e.role.v": "Project manager - Mechanical Engineer",
-        "project.e.client.k": "Results",
-        "project.e.client.v": "(Confidential)",
-        "project.e.deliverables.k": "Deliverables",
-        "project.e.deliverables.v": "Methods, process improvement",
+            "V&V and continuous improvement of the laser hair removal device.",
+
         "project.e.details.k": "Challenges",
-        "project.e.details.v": "Reliability / Continuous Improvement",
+        "project.e.details.v": "(Confidential)",
+        "project.e.deliverables.k": "Deliverables",
+        "project.e.deliverables.v":
+            "Validation plans, test procedures, mechanical improvements, and industrial process optimization",
+        "project.e.client.k": "Results",
+        "project.e.client.v":
+            "Improved reliability and support for operational maintenance",
+        "project.e.skills.k": "Skills / Software",
+        "project.e.skills.v":
+            "SolidWorks – Prototyping – Suppliers – V&V",
+
 
         // -------------------------------------------------------------------------
         // EXTRAS / ENGAGEMENTS
@@ -335,5 +354,6 @@ const I18N = {
         // -------------------------------------------------------------------------
         // FOOTER
         // -------------------------------------------------------------------------
-        "footer.rights": "All rights reserved.",    },
+        "footer.rights": "All rights reserved.",
+    },
 };
