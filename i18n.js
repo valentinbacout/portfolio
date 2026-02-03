@@ -300,7 +300,7 @@ const I18N = {
         // --- Project D (PLP)
         "project.d.title": "PLP (Project Platform) — Final Year Project",
         "project.d.meta": "INSA Hauts-de-France & LAMIH — September 2023 to February 2024",
-        "project.d.pill": "Final Project",
+        "project.d.pill": "FYP",
         "project.d.desc":
             "Study of the energy absorption capacity of different hybrid lattice structures with network gradients.",
 
