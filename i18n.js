@@ -35,7 +35,7 @@ const I18N = {
         "hero.cta.about": "À propos",
         "hero.cta.contact": "Contact",
         "hero.link.linkedin": "LinkedIn",
-        "hero.link.cv": "CV",
+        "hero.link.cv": "Télécharger mon CV",
 
         // -------------------------------------------------------------------------
         // META (cartes résumé sous le hero)
@@ -170,7 +170,45 @@ const I18N = {
         // -------------------------------------------------------------------------
         // FOOTER
         // -------------------------------------------------------------------------
-        "footer.rights": "Tous droits réservés.",
+        
+        // -------------------------------------------------------------------------
+        // LEGAL (Mentions légales)
+        // -------------------------------------------------------------------------
+        "legal.pageTitle": "Mentions légales",
+        "legal.back": "← Retour au portfolio",
+        "legal.updated": "Dernière mise à jour :",
+        "legal.content": `
+<h3>Éditeur du site</h3>
+<p><b>Nom :</b> Valentin Bacout<br/>
+<b>Contact :</b> <a href="mailto:valentinbacout@gmail.com">valentinbacout@gmail.com</a></p>
+
+<h3>Hébergement</h3>
+<p>Site hébergé via <b>GitHub Pages</b> (GitHub, Inc.).</p>
+
+<h3>Propriété intellectuelle</h3>
+<p>
+L’ensemble des contenus présents sur ce site (textes, images, projets, documents) est protégé par le droit d’auteur.
+Les images utilisées sont, sauf mention contraire, des réalisations personnelles.
+Les logos et marques affichés appartiennent à leurs propriétaires respectifs et sont utilisés uniquement à des fins d’illustration.
+Toute reproduction, représentation, modification ou diffusion, totale ou partielle, sans autorisation préalable est interdite.
+</p>
+
+<h3>Responsabilité</h3>
+<p>Les informations présentées sur ce site sont fournies à titre informatif. Malgré le soin apporté à leur mise à jour, l’éditeur ne saurait être tenu responsable des erreurs, omissions ou de l’indisponibilité de certaines informations.</p>
+
+<h3>Données personnelles</h3>
+<p>Ce site ne collecte pas de données personnelles à votre insu et n’utilise pas de cookies à des fins de suivi. En cas de contact par email, les informations transmises sont uniquement utilisées pour répondre à votre demande.</p>
+<p>
+Ce site peut contenir des liens vers des sites externes (réseaux sociaux, plateformes professionnelles, etc.).
+En cliquant sur ces liens, l’utilisateur quitte ce site.
+Ces sites tiers disposent de leurs propres politiques de confidentialité et règles de collecte de données personnelles, indépendantes de celles de ce site.
+L’éditeur ne peut être tenu responsable de l’utilisation des données effectuée par ces services externes.
+</p>
+
+<h3>Contact</h3>
+<p>Pour toute question, vous pouvez écrire à <a href="mailto:valentinbacout@gmail.com">valentinbacout@gmail.com</a>.</p>
+`,
+"footer.rights": "Tous droits réservés.",
     },
 
     // ===========================================================================
@@ -209,7 +247,7 @@ const I18N = {
         "hero.cta.about": "About",
         "hero.cta.contact": "Contact",
         "hero.link.linkedin": "LinkedIn",
-        "hero.link.cv": "Resume",
+        "hero.link.cv": "Download Resume",
 
         // -------------------------------------------------------------------------
         // META
@@ -354,6 +392,44 @@ const I18N = {
         // -------------------------------------------------------------------------
         // FOOTER
         // -------------------------------------------------------------------------
-        "footer.rights": "All rights reserved.",
+        
+        // -------------------------------------------------------------------------
+        // LEGAL (Legal notice)
+        // -------------------------------------------------------------------------
+        "legal.pageTitle": "Legal notice",
+        "legal.back": "← Back to portfolio",
+        "legal.updated": "Last updated:",
+        "legal.content": `
+<h3>Website owner</h3>
+<p><b>Name:</b> Valentin Bacout<br/>
+<b>Contact:</b> <a href="mailto:valentinbacout@gmail.com">valentinbacout@gmail.com</a></p>
+
+<h3>Hosting</h3>
+<p>This website is hosted via <b>GitHub Pages</b> (GitHub, Inc.).</p>
+
+<h3>Intellectual property</h3>
+<p>
+All content on this website (texts, images, projects, documents) is protected by copyright.
+Unless otherwise stated, the images shown are personal creations.
+Logos and trademarks displayed remain the property of their respective owners and are used for illustrative purposes only.
+Any reproduction, distribution, modification, or publication—whole or partial—without prior permission is prohibited.
+</p>
+
+<h3>Liability</h3>
+<p>Information provided on this website is for informational purposes only. While care is taken to keep it up to date, the owner cannot be held liable for errors, omissions, or temporary unavailability.</p>
+
+<h3>Personal data</h3>
+<p>This website does not collect personal data without your knowledge and does not use tracking cookies. If you contact me by email, your information is only used to reply to your request.</p>
+<p>
+This website may contain links to external websites (social networks, professional platforms, etc.).
+By clicking on these links, the user leaves this website.
+Third-party websites have their own privacy policies and data collection rules, independent from this site.
+The publisher cannot be held responsible for how these external services handle personal data.
+</p>
+
+<h3>Contact</h3>
+<p>For any question, please email <a href="mailto:valentinbacout@gmail.com">valentinbacout@gmail.com</a>.</p>
+`,
+"footer.rights": "All rights reserved.",
     },
 };
