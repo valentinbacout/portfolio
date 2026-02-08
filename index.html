@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+
+<html lang="fr">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="light dark" name="color-scheme" />
+  <title>Portfolio | Valentin Bacout</title>
+  <meta content="Portfolio de Valentin Bacout — projets, expérience, compétences." name="description" />
+  <link href="https://fonts.googleapis.com" rel="preconnect" />
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/png" sizes="16x16" href="img/valentin bacout.png">
+  <link href="styles.css" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+  
+</head>
+
+<body>
+  <div id="top"></div>
+
+  <!-- ===================== -->
+  <!-- DESKTOP HEADER -->
+  <header class="header header--desktop" id="headerDesktop">
+    <div class="header__inner container">
+
+      <div class="header__left">
+        <a href="#top" class="brand" aria-label="Go to top">
+          <img src="img/valentin bacout.png" alt="Logo" class="brand__logo" draggable="false" />
+          <span class="brand__name">Valentin Bacout</span>
+        </a>
+      </div>
+
+      <nav class="header__center" id="navMenu" aria-label="Primary navigation">
+        <a href="#timeline" class="nav__link">Parcours</a>
+        <a href="#projects" class="nav__link">Projects</a>
+        <a href="#projects-personal" class="nav__link">Extra</a>
+        <a href="#engagements-asso" class="nav__link">Engagements asso</a>
+        <a href="#skills" class="nav__link">Skills</a>
+      </nav>
+
+      <div class="header__right">
+        <!-- Lang switch (ex: FR/EN) -->
+        <button class="chip" id="langSwitch" type="button" aria-label="Switch language">FR / EN</button>
+        <!-- Theme switch -->
+        <button class="chip" id="themeSwitch" type="button" aria-label="Switch theme">🌙 / ☀️</button>
+      </div>
+    </div>
+  </header>
+  <!-- MOBILE HEADER -->
+  <header class="header header--mobile" id="headerMobile">
+    <button class="burger" id="burgerBtn" type="button" aria-label="Open menu" aria-controls="mobileSidebar"
+      aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+
+    <a href="#top" class="brand brand--mobile" aria-label="Go to top">
+      <span class="brand__name">Valentin Bacout</span>
+    </a>
+  </header>
+  <!-- Sidebar overlay -->
+  <div class="overlay" id="overlay" hidden></div>
+  <!-- Mobile sidebar -->
+  <aside class="sidebar" id="mobileSidebar" aria-hidden="true">
+    <div class="sidebar__top">
+      <span class="sidebar__title">Menu</span>
+      <button class="sidebar__close" id="sidebarClose" type="button" aria-label="Close menu">✕</button>
+    </div>
+
+    <nav class="sidebar__nav" id="navMenuMobile" aria-label="Mobile navigation">
+      <a href="#about" class="sidebar__link">About</a>
+      <a href="#timeline" class="sidebar__link">Parcours</a>
+      <a href="#projects" class="sidebar__link">Projects</a>
+      <a href="#projects-personal" class="sidebar__link">Extra</a>
+      <a href="#engagements-asso" class="sidebar__link">Engagements asso</a>
+      <a href="#skills" class="sidebar__link">Skills</a>
+      <a href="#contact" class="sidebar__link">Contact</a>
+    </nav>
+    <div class="sidebar__sep" aria-hidden="true"></div>
+
+    <div class="sidebar__actions">
+      <button class="chip chip--full" id="langSwitchMobile" type="button">FR / EN</button>
+      <button class="chip chip--full" id="themeSwitchMobile" type="button">🌙 / ☀️</button>
+    </div>
+  </aside>
+  <!-- ===================== -->
+
+
+  <!-- Spacer to prevent content hidden behind fixed headers -->
+  <div class="header-spacer" aria-hidden="true"></div>
+
+  <!-- ===================== -->
+  <!-- Main content -->
+  <!-- ===================== -->
+  <main>
+    <!--Hero-->
+    <section class="hero">
+      <div class="container hero__grid">
+        <div class="hero__content">
+          <h1 class="hero__title">Bonjour, je m'appelle <span class="accent">Valentin Bacout</span>.</h1>
+          <p class="hero__lead">
+            Je suis Ingénieur en conception mécanique.
+          </p>
+          <div class="hero__cta">
+            <a class="btn btn--primary" href="#timeline">Parcours</a>
+            <a class="btn btn--primary" href="#projects">Projets</a>
+            <a class="btn btn--primary" href="#skills">Compétences</a>
+          </div>
+          <div aria-label="Liens rapides" class="hero__links">
+            <a aria-label="LinkedIn" class="linkPill" href="https://www.linkedin.com/in/valentin-bacout-a363611b1/"
+              target="_blank">LinkedIn</a>
+            <a aria-label="CV" class="linkPill" href="img/CV_Valentin_Bacout.pdf" target="_blank"
+              draggable="false"></a>
+          </div>
+          <div aria-label="Résumé" class="hero__meta">
+            <div class="metaCard">
+              <div class="metaCard__label">Spécialité</div>
+              <div class="metaCard__value">Conception / CAO / prototypage</div>
+            </div>
+            <div class="metaCard">
+              <div class="metaCard__label">Références</div>
+              <div class="metaCard__value">(Confidentiel)</div>
+            </div>
+            <div class="metaCard">
+              <div class="metaCard__label">Localisation</div>
+              <div class="metaCard__value">France</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div aria-hidden="true" class="hero__bg"></div>
+    </section>
+
+    <!-- A propos -->
+    <section class="section" id="about">
+      <div class="container">
+        <div class="section__head">
+          <h2 class="section__title">À propos</h2>
+          <p class="section__subtitle"></p>
+        </div>
+        <div class="grid2">
+          <div class="card">
+            <h3>Profil</h3>
+            <p>
+              Ingénieur orienté produit, avec une approche pragmatique : itération rapide, prototypage, validation, puis
+              industrialisation.
+              Je privilégie les solutions simples, réparables, et sûres.
+            </p>
+            <p>
+          </div>
+          <div class="card">
+            <h3>Ce que vous trouverez</h3>
+            <ul class="list">
+              <li>Projets et réalisations (avec éléments floutés si nécessaire)</li>
+              <li>Compétences (CAD, conception, essais, industrialisation)</li>
+              <li>Timeline interactive (expérience / formation)</li>
+              <li>Liens de contact</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Timeline  -->
+    <section class="section section--alt" id="timeline">
+      <div class="container">
+        <div class="section__head">
+          <h2 class="section__title">Parcours</h2>
+        </div>
+        <div class="th-wrap">
+          <div class="th-controls">
+            <label>
+              Zoom
+              <input id="th-zoom" max="220" min="60" type="range" value="100" />
+            </label>
+          </div>
+          <div class="th-timeline">
+            <div class="th-scroller">
+              <div class="th-stage" id="th-stage">
+                <div class="th-axis"></div>
+                <div class="th-lanes" id="th-lanes"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Projets -->
+    <section class="section" id="projects">
+      <div class="container">
+        <div class="section__head">
+          <h2 class="section__title"></h2>
+          <p class="section__subtitle">
+          </p>
+        </div>
+        <div class="projects">
+          <!-- DELEO - SUBLIM-->
+          <article class="project" data-project="e" data-timeline="E12">
+            <div class="project__top">
+              <div class="project__head">
+                <h3 class="project__title" data-i18n="project.e.title"></h3>
+                <p class="project__meta" data-i18n="project.e.meta"></p>
+              </div>
+              <span class="project__pill" data-i18n="project.e.pill"></span>
+            </div>
+            <img alt="Illustration du projet" class="project__img" src="img/Sublim-1.png" draggable="false" />
+            <p class="project__desc" data-i18n="project.e.desc"></p>
+
+            <div class="project__grid">
+
+              <div class="project__stat">
+                <div class="k" data-i18n="project.e.details.k"></div>
+                <div class="v" data-i18n="project.e.details.v"></div>
+              </div>
+
+              <div class="project__stat">
+                <div class="k" data-i18n="project.e.deliverables.k"></div>
+                <div class="v" data-i18n="project.e.deliverables.v"></div>
+              </div>
+
+              <div class="project__stat">
+                <div class="k" data-i18n="project.e.client.k"></div>
+                <div class="v" data-i18n="project.e.client.v"></div>
+              </div>
+
+              <div class="project__stat">
+                <div class="k" data-i18n="project.e.skills.k"></div>
+                <div class="v" data-i18n="project.e.skills.v"></div>
+              </div>
+            </div>
+          </article>
+
+          <!-- JOUBERT-->
+          <article class="project" data-project="a" data-timeline="E9">
+            <div class="project__top">
+              <div class="project__head">
+                <h3 class="project__title" data-i18n="project.a.title"></h3>
+                <p class="project__meta" data-i18n="project.a.meta"></p>
+
+              </div>
+              <span class="project__pill" data-i18n="project.a.pill"></span>
+            </div>
+
+            <!--<img alt="Illustration du projet" class="project__img" src="img/joubert-1.PNG" draggable="false" />-->
+
+            <div class="project__desc" data-i18n-html="project.a.desc"></div>
+
+            <div class="project__grid">
+
+              <div class="project__stat">
+                <div class="k" data-i18n="project.a.details.k"></div>
+                <div class="v" data-i18n="project.a.details.v"></div>
+              </div>
+
+              <div class="project__stat">
+                <div class="k" data-i18n="project.a.deliverables.k"></div>
+                <div class="v" data-i18n="project.a.deliverables.v"></div>
+              </div>
+
+              <div class="project__stat">
+                <div class="k" data-i18n="project.a.client.k"></div>
+                <div class="v" data-i18n="project.a.client.v"></div>
+              </div>
+
+              <div class="project__stat">
+                <div class="k" data-i18n="project.a.skills.k"></div>
+                <div class="v" data-i18n="project.a.skills.v"></div>
+              </div>
+
+            </div>
+          </article>
+
+          <!-- PLP -->
+          <article class="project" data-project="d" data-timeline="E7">
+            <div class="project__top">
+              <div class="project__head">
+                <h3 class="project__title" data-i18n="project.d.title"></h3>
+                <p class="project__meta" data-i18n="project.d.meta"></p>
+              </div>
+              <span class="project__pill" data-i18n="project.d.pill"></span>
+            </div>
+
+            <!--<img alt="Illustration du projet" class="project__img" src="img/plp-1.png" draggable="false" />-->
+
+            <p class="project__desc" data-i18n="project.d.desc"></p>
+
+            <div class="project__grid">
+
+              <div class="project__stat">
+                <div class="k" data-i18n="project.d.details.k"></div>
+                <div class="v" data-i18n="project.d.details.v"></div>
+              </div>
+
+              <div class="project__stat">
+                <div class="k" data-i18n="project.d.deliverables.k"></div>
+                <div class="v" data-i18n="project.d.deliverables.v"></div>
+              </div>
+
+              <div class="project__stat">
+                <div class="k" data-i18n="project.d.client.k"></div>
+                <div class="v" data-i18n="project.d.client.v"></div>
+              </div>
+
+              <div class="project__stat">
+                <div class="k" data-i18n="project.d.skills.k"></div>
+                <div class="v" data-i18n="project.d.skills.v"></div>
+              </div>
+            </div>
+          </article>
+
+          <!--VINCI-->
+          <article class="project" data-project="b" data-timeline="E8">
+            <div class="project__top">
+              <div class="project__head">
+                <h3 class="project__title" data-i18n="project.b.title"></h3>
+                <p class="project__meta" data-i18n="project.b.meta"></p>
+              </div>
+              <span class="project__pill" data-i18n="project.b.pill"></span>
+            </div>
+
+            <!--<img alt="Illustration du projet" class="project__img" src="img/chariot-1.png" draggable="false" />-->
+
+            <p class="project__desc" data-i18n="project.b.desc"></p>
+
+            <div class="project__grid">
+
+              <div class="project__stat">
+                <div class="k" data-i18n="project.b.details.k"></div>
+                <div class="v" data-i18n="project.b.details.v"></div>
+              </div>
+
+              <div class="project__stat">
+                <div class="k" data-i18n="project.b.deliverables.k"></div>
+                <div class="v" data-i18n="project.b.deliverables.v"></div>
+              </div>
+
+              <div class="project__stat">
+                <div class="k" data-i18n="project.b.client.k"></div>
+                <div class="v" data-i18n="project.b.client.v"></div>
+              </div>
+
+              <div class="project__stat">
+                <div class="k" data-i18n="project.b.skills.k"></div>
+                <div class="v" data-i18n="project.b.skills.v"></div>
+              </div>
+            </div>
+          </article>
+
+          <!--CEREMA-->
+          <!--<article class="project" data-project="a">
+            <div class="project__top">
+              <div class="project__head">
+                <h3 class="project__title">Stage R&amp;D — Conception &amp; étude (Cerema)</h3>
+                <p class="project__meta">Cerema (Bron) — ~4 mois (2022)</p>
+              </div>
+              <span class="project__pill">Confidentiel</span>
+            </div>
+            <img alt="Illustration du projet" class="project__img" src="img/cerema-2.png" draggable="false"
+              data-confidential="" />
+            <p class="project__desc" data-confidential="">
+              Projet R&amp;D avec éléments techniques et livrables soumis à confidentialité : en mode restreint, cette
+              carte
+              sera floutée.
+            </p>
+            <div class="project__grid" data-confidential="">
+              <div class="project__stat">
+                <div class="k">Secteur</div>
+                <div class="v">(Confidentiel)</div>
+              </div>
+              <div class="project__stat">
+                <div class="k">Travail</div>
+                <div class="v">(Confidentiel)</div>
+              </div>
+              <div class="project__stat">
+                <div class="k">Résultat</div>
+                <div class="v">(Confidentiel)</div>
+              </div>
+              <div class="project__stat">
+                <div class="k">Dates</div>
+                <div class="v">(Confidentiel)</div>
+              </div>
+            </div>
+          </article>-->
+        </div>
+      </div>
+
+    </section>
+
+    <!-- Projets personnels et associatifs -->
+    <section class="section section--alt" id="projects-personal">
+      <div class="container">
+        <div class="section__head">
+          <h2 class="section__title">Projets extras</h2>
+          <p class="section__subtitle">Je suis également passionné par le montage photos/vidéos et les LEGO. J'ai eu
+            l'occasion de mettre à profit mes passions au sein de différents engagements associatifs ou de projets
+            personnels</p>
+        </div>
+
+        <div class="projects engagements">
+          <!-- Réalisation d'un vidéo de présentation-->
+          <article class="project" data-timeline="E11">
+            <div class="project__top">
+              <div class="project__head">
+                <h3 class="project__title">Réalisation d'une vidéo de présentation</h3>
+                <p class="project__meta">INSA Alumni HDF — Septembre 2025</p>
+              </div>
+              <span class="project__pill">Associatif</span>
+            </div>
+            <div class="project__media">
+              <iframe width="560" height="315" src="https://www.youtube.com/embed/FfRxwOQFKSk?si=whUJ0ZzsB-k9WGQN"
+                title="YouTube video player" frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+
+            <p class="project__desc">
+              Réalisation d'une vidéo de présentation de l'association diffusée lors de la rentrée 2025 à l'INSA HDF.
+            </p>
+
+            <div class="project__grid">
+              <div class="project__stat">
+                <div class="k">Compétences</div>
+                <div class="v">Montage vidéo</div>
+              </div>
+              <div class="project__stat">
+                <div class="k">Logicels et Outils</div>
+                <div class="v">Davinci Resolve</div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Développement de sites web en front-end (HTML, CSS et JavaScript) -->
+          <article class="project" data-color="#ffffff">
+            <div class="project__top">
+              <div class="project__head">
+                <h3 class="project__title">Développement de sites web en front-end (HTML, CSS et JavaScript)</h3>
+              </div>
+              <span class="project__pill">Personnel</span>
+            </div>
+            <div class="project__desc">
+              <ul>
+                <li>
+                  Portfolio personnel :
+                  <a href="https://valentinbacout.github.io/portfolio/" target="_blank" rel="noopener">
+                    valentinbacout.github.io/portfolio
+                  </a>
+                </li>
+                <li>
+                  Portfolio Lego :
+                  <a href="https://bricks44creations.github.io/website" target="_blank" rel="noopener">
+                    bricks44creations.github.io/website
+                  </a>
+                </li>
+                <li>
+                  Site INSA Alumni HDF :
+                  <a href="https://insaalumnihdf.github.io/site/" target="_blank" rel="noopener">
+                    insaalumnihdf.github.io/site
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div class="project__grid">
+              <div class="project__stat">
+                <div class="k">Compétences</div>
+                <div class="v">HTML, CSS, JavaScript</div>
+              </div>
+              <div class="project__stat">
+                <div class="k">Logicels et Outils</div>
+                <div class="v">Github, VS Code</div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Réalisation de films rétrospectifs-->
+          <article class="project" data-timeline="E6">
+            <div class="project__top">
+              <div class="project__head">
+                <h3 class="project__title">Réalisation de vidéos rétrospectives</h3>
+                <p class="project__meta">BDE INSA HDF — 2023 à 2024</p>
+              </div>
+              <span class="project__pill">Associatif</span>
+            </div>
+            <div class="project__media">
+              <div class="projects-wrapper">
+                <button class="scroll-btn left" aria-label="Scroll left">‹</button>
+
+                <div class="video-strip">
+                  <iframe width="560" height="315" src="https://www.youtube.com/embed/-bzoR3Ta0uU?si=YhIVyrewC3CbvrHS"
+                    title="YouTube video player" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                  <iframe width="560" height="315" src="https://www.youtube.com/embed/X0-CEotx8hI?si=Jvr5iaZIdMyuKBFh"
+                    title="YouTube video player" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                  <iframe width="560" height="315" src="https://www.youtube.com/embed/UM52jmoDyJU?si=3XCfGrusQTvrouTO"
+                    title="YouTube video player" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                </div>
+
+                <button class="scroll-btn right" aria-label="Scroll right">›</button>
+              </div>
+            </div>
+
+
+            <p class="project__desc">
+              Production, Tournage, Montage de films rétrospectifs d'évènements style "Aftermovie". (Vidéos ré-upload)
+            </p>
+
+            <div class="project__grid">
+              <div class="project__stat">
+                <div class="k">Compétences</div>
+                <div class="v">Montage vidéo</div>
+              </div>
+              <div class="project__stat">
+                <div class="k">Logicels et Outils</div>
+                <div class="v">Adobe Premiere, Photoshop</div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Réalisation d'un film de campagne
+          <article class="project">
+            <div class="project__top">
+              <div class="project__head">
+                <h3 class="project__title">Réalisation d'un film de campagne pour les élections du BDE 2022</h3>
+                <p class="project__meta">BDE INS'Avengers — 2022</p>
+              </div>
+              <span class="project__pill">Associatif</span>
+            </div>
+            <div class="project__media">
+              <iframe width="560" height="315" src="https://www.youtube.com/embed/XYFgU-wVLu4?si=4eCfT1fhOA4oz7Av"
+                title="YouTube video player" frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+
+            <p class="project__desc">
+              Production - Réalisation - Tournage d'un court métrage pour les campagnes de BDE 2022.
+            </p>
+
+            <div class="project__grid">
+              <div class="project__stat">
+                <div class="k">Compétences</div>
+                <div class="v">Gestion d'équipe</div>
+              </div>
+              <div class="project__stat">
+                <div class="k">Logicels et Outils</div>
+                <div class="v">Adobe Premiere</div>
+              </div>
+            </div>
+          </article>
+-->
+        </div>
+      </div>
+    </section>
+
+    <!-- Engagements associatifs -->
+    <section class="section" id="engagements-asso">
+      <div class="container">
+        <div class="section__head">
+          <h2 class="section__title">Engagements associatifs</h2>
+          <p class="section__subtitle"></p>
+        </div>
+
+        <div class="projects engagements">
+          <!-- INSA ALUMNI HDF -->
+          <article class="project" data-timeline="E11">
+            <div class="project__top">
+              <img src="img/insa-alumni-hdf.png" alt="Logo INSA Alumni" class="project__logo" draggable="false" />
+
+              <div class="project__head">
+
+                <h3 class="project__title">INSA Alumni Hauts-de-France</h3>
+                <p class="project__meta">Secrétaire & Responsable communication</p>
+              </div>
+            </div>
+            <div class="project__grid">
+              <div class="project__stat">
+                <div class="k">Compétences</div>
+                <div class="v">
+                  <ul>
+                    <li>Participation à la restructuration et à la redynamisation de l'association, avec une
+                      refonte des pratiques et des
+                      documents pour repartir sur de meilleures bases.</li>
+                    <li>Rédaction de documents formels (courriers, procès-verbaux, rapports)</li>
+                    <li>Création de contenus (posts pour les réseaux sociaux)</li>
+                  </ul> <br>
+                  <br>
+                </div>
+              </div>
+              <div class="project__stat">
+                <div class="k">Périmètre</div>
+                <div class="v">Réseau Alumni</div>
+              </div>
+              <div class="project__stat">
+                <div class="k">Durée</div>
+                <div class="v">Depuis Octobre 2024</div>
+              </div>
+            </div>
+          </article>
+          <!-- BDE INSA HDF -->
+          <article class="project" data-timeline="E6">
+            <div class="project__top">
+              <img src="img/bde.png" alt="Logo INSA Alumni" class="project__logo" draggable="false" />
+              <div class="project__head">
+                <h3 class="project__title">BDE INSA Hauts-de-France</h3>
+                <p class="project__meta">Responsable communication</p>
+              </div>
+            </div>
+            <div class="project__grid">
+              <div class="project__stat">
+                <div class="k">Compétences</div>
+                <div class="v">
+                  <ul>
+                    <li>Utilisation de logiciels de création graphique (Canva, Abode Creative Suite)
+                    </li>
+                    <li>Création de contenus (posts pour les réseaux sociaux, vidéos rétrospectives)
+                    </li>
+                    <li>Gestion des réseaux sociaux (Instagram, Facebook, Linkedin, Site web)
+                    </li>
+                    <li>Gestion de la communication (digitale et physique)
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="project__stat">
+                <div class="k">Public</div>
+                <div class="v">Étudiants</div>
+              </div>
+              <div class="project__stat">
+                <div class="k">Durée</div>
+                <div class="v">2023 – 2024</div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Compétences -->
+    <section class="section section--alt" id="skills">
+      <div class="container">
+        <div class="section__head">
+          <h2 class="section__title">Compétences</h2>
+          <p class="section__subtitle"></p>
+        </div>
+        <div class="skills">
+          <article class="card">
+            <h3>Conception</h3>
+            <ul class="tags">
+              <li>CAO - 3D</li>
+              <li>Choix matériaux</li>
+              <li>Tolérances géométriques</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>Prototypage &amp; essais</h3>
+            <ul class="tags">
+              <li>Impression 3D</li>
+              <li>Bancs d’essai</li>
+              <li>Validation</li>
+              <li>Procédures internes</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>Industrialisation</h3>
+            <ul class="tags">
+              <li>Injection plastique</li>
+              <li>Tôlerie</li>
+              <li>Assemblage</li>
+              <li>Fournisseurs</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>Gestion</h3>
+            <ul class="tags">
+              <li>Planification</li>
+              <li>Revues jalons</li>
+              <li>Budgets</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>Normes (exemples)</h3>
+            <ul class="tags">
+              <li>IEC 60601-1</li>
+              <li>MDD - MDR</li>
+              <li>ISO 286 - ISO 2768</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section class="section" id="contact">
+      <div class="container">
+        <div class="section__head">
+          <h2 class="section__title">Contact</h2>
+          <p class="section__subtitle"></p>
+        </div>
+        <div class="grid2">
+          <div class="card">
+            <h3>Me joindre</h3>
+            <div class="contact">
+              <a class="contact__link" href="#">valentin.bacout@gmail.com</a>
+              <a class="contact__link" href="https://www.linkedin.com/in/valentin-bacout-a363611b1/"
+                target="_blank">LinkedIn</a>
+              <a class="contact__link" href="img/CV_Valentin_Bacout.pdf" target="_blank">CV</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== -->
+    <!-- Footer -->
+    <!-- ===================== -->
+    <footer class="footer">
+      <div class="container footer__grid">
+
+        <!-- Colonne identité -->
+        <div class="footer__col">
+          <h4>Valentin Bacout</h4>
+          <p>Ingénieur conception mécanique <br> DELEO S.A.S - Créateur en médecine esthétique.</p>
+
+        </div>
+
+        <!-- Colonne navigation -->
+        <div class="footer__col">
+          <h4>Navigation</h4>
+          <a href="#projects">Projets</a>
+          <a href="#timeline">Parcours</a>
+          <a href="#skills">Compétences</a>
+          <a href="#contact">Contact</a>
+        </div>
+
+        <!-- Colonne contact -->
+        <div class="footer__col">
+          <h4>Contact</h4>
+          <a href="mailto:valentinbacout@gmail.com">Email</a>
+          <a href="https://www.linkedin.com/in/valentin-bacout-a363611b1/" target="_blank">LinkedIn</a>
+          <a href="img/CV_Valentin_Bacout.pdf" target="_blank">CV</a>
+        </div>
+
+                <div class="footer__col">
+          <h4>Mentions légales</h4>
+          <a href="mentions-legales.html">Mentions légales</a>
+        </div>
+      </div>
+
+      <!-- Ligne finale -->
+      <div class="footer__bottom">
+        <p class="footer__copy">© <span id="year"></span> Valentin Bacout — Tous droits réservés.</p>
+      </div>
+    </footer>
+
+  </main>
+  <script src="i18n.js"></script>
+  <script src="script.js" defer></script>
+</body>
+
+</html>
