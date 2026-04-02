@@ -354,8 +354,9 @@ const $ = (sel, root = document) => root.querySelector(sel);
       { id: "E8", type: "range", start: "2023-12-01", end: "2024-02-01", title: "Projet de parcours VINCI - Aide à la manutention de chariots médicaux", desc: "", color: "#303086" },
       { id: "E9", type: "range", start: "2024-03-05", end: "2024-07-19", title: "Stage ingénieur Process et Maintenance à Joubert", desc: "", color: "#0E5A88" },
       { id: "E10", type: "point", time: "2024-09-01", title: "Diplôme INSA Hauts-de-France - Ingénieur en mécanique énergétique", desc: "", color: "#e31017" },
-      { id: "E11", type: "range", start: "2024-10-01", end: "today", title: "Secrétaire Général INSA Alumni Hauts-de-France", desc: "", color: "#ffc0cb" },
+      { id: "E11", type: "range", start: "2024-10-01", end: "2026-03-28", title: "Secrétaire Général INSA Alumni Hauts-de-France", desc: "", color: "#ffc0cb" },
       { id: "E12", type: "range", start: "2025-03-01", end: "today", title: "Ingénieur en conception mécanique chez DELEO", desc: "", color: "#2a91dc" },
+      { id: "E13", type: "range", start: "2026-03-29", end: "today", title: "Secrétaire Adjoint INSA Alumni Hauts-de-France", desc: "", color: "#ffc0cb" },
 
 
       /* A dedicated “Today” point (kept as in original) */
