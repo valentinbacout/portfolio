@@ -42,8 +42,8 @@ const I18N = {
         // -------------------------------------------------------------------------
         "meta.specialty": "Spécialité",
         "meta.specialty.value": "Conception / CAO / prototypage",
-        "meta.references": "Références",
-        "meta.references.value": "(Confidentiel)",
+        "meta.school": "École / Université",
+        "meta.school.value": "INSA HDF",
         "meta.location": "Localisation",
         "meta.location.value": "France",
 
@@ -170,7 +170,7 @@ const I18N = {
         // -------------------------------------------------------------------------
         // FOOTER
         // -------------------------------------------------------------------------
-        
+
         // -------------------------------------------------------------------------
         // LEGAL (Mentions légales)
         // -------------------------------------------------------------------------
@@ -208,7 +208,7 @@ L’éditeur ne peut être tenu responsable de l’utilisation des données effe
 <h3>Contact</h3>
 <p>Pour toute question, vous pouvez écrire à <a href="mailto:valentinbacout@gmail.com">valentinbacout@gmail.com</a>.</p>
 `,
-"footer.rights": "Tous droits réservés.",
+        "footer.rights": "Tous droits réservés.",
     },
 
     // ===========================================================================
@@ -254,8 +254,8 @@ L’éditeur ne peut être tenu responsable de l’utilisation des données effe
         // -------------------------------------------------------------------------
         "meta.specialty": "Specialty",
         "meta.specialty.value": "Design / CAD / prototyping",
-        "meta.references": "References",
-        "meta.references.value": "(Confidential)",
+        "meta.school": "School / University",
+        "meta.school.value": "INSA HDF",
         "meta.location": "Location",
         "meta.location.value": "France",
 
@@ -392,7 +392,7 @@ L’éditeur ne peut être tenu responsable de l’utilisation des données effe
         // -------------------------------------------------------------------------
         // FOOTER
         // -------------------------------------------------------------------------
-        
+
         // -------------------------------------------------------------------------
         // LEGAL (Legal notice)
         // -------------------------------------------------------------------------
@@ -430,6 +430,6 @@ The publisher cannot be held responsible for how these external services handle 
 <h3>Contact</h3>
 <p>For any question, please email <a href="mailto:valentinbacout@gmail.com">valentinbacout@gmail.com</a>.</p>
 `,
-"footer.rights": "All rights reserved.",
+        "footer.rights": "All rights reserved.",
     },
 };

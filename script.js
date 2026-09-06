@@ -7,7 +7,7 @@
 */
 
 (() => {
-const $ = (sel, root = document) => root.querySelector(sel);
+  const $ = (sel, root = document) => root.querySelector(sel);
   const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
 
   const THEME_KEY = "vb_portfolio_theme";
@@ -82,6 +82,8 @@ const $ = (sel, root = document) => root.querySelector(sel);
       ctas.forEach((a) => {
         const href = a.getAttribute("href") || "";
         if (href === "#projects") a.textContent = t(lang, "hero.cta.projects");
+        if (href === "#timeline") a.textContent = t(lang, "nav.timeline");
+        if (href === "#skills") a.textContent = t(lang, "nav.skills");
         if (href === "#about") a.textContent = t(lang, "hero.cta.about");
         if (href === "#contact") a.textContent = t(lang, "hero.cta.contact");
       });
@@ -1022,7 +1024,7 @@ const $ = (sel, root = document) => root.querySelector(sel);
       if (scroller.dataset.mobileWatcher !== "1") {
         scroller.dataset.mobileWatcher = "1";
         let wasMobile = false;
-        try { wasMobile = window.matchMedia?.("(max-width: 700px)")?.matches || false; } catch (_) {}
+        try { wasMobile = window.matchMedia?.("(max-width: 700px)")?.matches || false; } catch (_) { }
         window.addEventListener(
           "resize",
           () => {
