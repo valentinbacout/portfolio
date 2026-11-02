@@ -1570,6 +1570,111 @@
     }
 
     scrollers.forEach(attach);
+
+    // Auto-navigation: only the two project sections, never the associative section.
+    // A user interaction postpones the next transition by a full 10 seconds.
+    const autoCarousels = scrollers.filter((el) =>
+      el.closest("#projects, #projects-personal") && el.classList.contains("is-carousel")
+    );
+    if (autoCarousels.length && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      const DELAY = 10000;
+      let lastActivity = Date.now();
+      let pointerHeld = false;
+      let nextTick = Date.now() + DELAY;
+      const playingFrames = new Set();
+      const playingVideos = new Set();
+
+      const markActivity = () => {
+        lastActivity = Date.now();
+        nextTick = lastActivity + DELAY;
+      };
+
+      // Capture actual user activity, not synthetic carousel scrolling.
+      ["pointerdown", "click", "wheel", "touchstart", "keydown"].forEach((type) =>
+        document.addEventListener(type, markActivity, { capture: true, passive: true })
+      );
+      document.addEventListener("pointermove", (event) => {
+        if (event.isTrusted) markActivity();
+      }, { capture: true, passive: true });
+      window.addEventListener("scroll", (event) => {
+        if (event.isTrusted) markActivity();
+      }, { capture: true, passive: true });
+      document.addEventListener("pointerdown", () => { pointerHeld = true; }, { passive: true });
+      ["pointerup", "pointercancel"].forEach((type) =>
+        window.addEventListener(type, () => { pointerHeld = false; }, { passive: true })
+      );
+      document.querySelectorAll("video").forEach((video) => {
+        video.addEventListener("play", () => { playingVideos.add(video); markActivity(); });
+        ["pause", "ended", "emptied"].forEach((type) =>
+          video.addEventListener(type, () => { playingVideos.delete(video); markActivity(); })
+        );
+      });
+
+      // Listen to YouTube's IFrame player state (1 = playing, 0 = ended, 2 = paused).
+      // Unlike a click heuristic, a paused or finished video does not block auto-scroll.
+      const youtubeFrames = Array.from(document.querySelectorAll('iframe[src*="youtube.com/embed/"]'));
+      youtubeFrames.forEach((frame) => {
+        try {
+          const url = new URL(frame.src);
+          url.searchParams.set("enablejsapi", "1");
+          frame.src = url.toString();
+        } catch (_) { return; }
+        const subscribe = () => {
+          playingFrames.delete(frame); // Reloaded/removed playback is no longer active.
+          try {
+            frame.contentWindow?.postMessage(JSON.stringify({ event: "listening", id: frame.id || "" }), "https://www.youtube.com");
+            frame.contentWindow?.postMessage(JSON.stringify({ event: "command", func: "addEventListener", args: ["onStateChange"] }), "https://www.youtube.com");
+          } catch (_) { /* iframe unavailable */ }
+        };
+        frame.addEventListener("load", subscribe);
+        subscribe();
+      });
+      window.addEventListener("message", (event) => {
+        if (!/^https:\/\/(www\.)?youtube(-nocookie)?\.com$/.test(event.origin)) return;
+        const frame = youtubeFrames.find((el) => el.contentWindow === event.source);
+        if (!frame) return;
+        let data = event.data;
+        try { if (typeof data === "string") data = JSON.parse(data); } catch (_) { return; }
+        if (!data || typeof data !== "object") return;
+        if (data.event === "onReady") {
+          try {
+            frame.contentWindow?.postMessage(JSON.stringify({ event: "command", func: "addEventListener", args: ["onStateChange"] }), event.origin);
+          } catch (_) { /* player unavailable */ }
+        }
+        const state = data.event === "onStateChange" ? Number(data.info) :
+          data.event === "infoDelivery" ? Number(data.info?.playerState) : NaN;
+        if (!Number.isFinite(state)) return;
+        if (state === 1 || state === 3) playingFrames.add(frame);
+        else playingFrames.delete(frame);
+        markActivity();
+      });
+
+      const advance = (scroller) => {
+        if (!scroller.isConnected || !scroller.classList.contains("is-carousel")) return;
+        const viewport = scroller.getBoundingClientRect();
+        if (viewport.bottom <= 0 || viewport.top >= window.innerHeight) return;
+        const cards = Array.from(scroller.querySelectorAll(":scope > .project"));
+        const midpoint = viewport.left + viewport.width / 2;
+        const centered = cards.reduce((best, card) =>
+          !best || Math.abs(card.getBoundingClientRect().left + card.offsetWidth / 2 - midpoint) <
+          Math.abs(best.getBoundingClientRect().left + best.offsetWidth / 2 - midpoint) ? card : best, null);
+        const next = centered?.nextElementSibling;
+        if (!next?.matches(".project")) return;
+        const rect = next.getBoundingClientRect();
+        scroller.scrollTo({
+          left: scroller.scrollLeft + rect.left + rect.width / 2 - midpoint,
+          behavior: "smooth"
+        });
+      };
+
+      window.setInterval(() => {
+        const now = Date.now();
+        if (now < nextTick || now - lastActivity < DELAY) return;
+        if (document.hidden || pointerHeld || playingFrames.size || playingVideos.size) return;
+        autoCarousels.forEach(advance);
+        nextTick = now + DELAY;
+      }, 250);
+    }
   })();
 })();
 
