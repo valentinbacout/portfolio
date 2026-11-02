@@ -1122,7 +1122,7 @@ html {
 /* Timeline scroller */
 #timeline .th-scroller {
   overflow-x: auto;
-  overflow-y: visible;
+  overflow-y: hidden; /* prevent the slight vertical scrolling; keep horizontal navigation */
   padding: 10px 6px 14px;
 
   cursor: grab;
@@ -2001,7 +2001,7 @@ main {
 }
 
 .section {
-  padding:clamp(65px,8vw,115px) 0;
+  padding:clamp(32.5px,4vw,57.5px) 0;
   scroll-margin-top:85px
 }
 
@@ -2110,7 +2110,7 @@ html.has-motion .motion-visible {
     top:16vh
   }
   .section {
-    padding:65px 0
+    padding:32.5px 0
   }
 }
 
@@ -2167,3 +2167,62 @@ html.has-motion .motion-visible {
   border-top: 0 !important;
   border-bottom: 0 !important;
 }
+
+/* Compact laptop displays: equivalent to Chrome's 75% page zoom.
+   Desktop screens wider than 1600px and mobile/tablet layouts remain unchanged. */
+@media screen and (min-width: 1024px) and (max-width: 1600px) and (hover: hover) and (pointer: fine) {
+  html {
+    zoom: 75%;
+  }
+}
+
+
+/* Fond mecanique : details plus lisibles en clair, plus discrets en sombre. */
+:root,
+html[data-theme="light"] {
+  --backdrop-opacity: .8;
+  --backdrop-grid-strength: 19.55%;
+  --backdrop-orbit-strength: 33%;
+  --backdrop-orbit-inner-strength: 42%;
+  --backdrop-cross-strength: 48%;
+  --backdrop-cross-line-strength: 58%;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --backdrop-opacity: .288;
+    --backdrop-grid-strength: 10.35%;
+    --backdrop-orbit-strength: 16%;
+    --backdrop-orbit-inner-strength: 26.4%;
+    --backdrop-cross-strength: 35%;
+    --backdrop-cross-line-strength: 45%;
+  }
+}
+html[data-theme="dark"] {
+  --backdrop-opacity: .288;
+  --backdrop-grid-strength: 10.35%;
+  --backdrop-orbit-strength: 16%;
+  --backdrop-orbit-inner-strength: 26.4%;
+  --backdrop-cross-strength: 35%;
+  --backdrop-cross-line-strength: 45%;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) .hero__bg {
+    display: none;
+  }
+}
+html[data-theme="dark"] .hero__bg {
+  display: none;
+}
+.mechanical-backdrop { opacity: var(--backdrop-opacity); }
+.mechanical-backdrop::before {
+  background-image:
+    linear-gradient(to right, color-mix(in srgb, var(--accent) var(--backdrop-grid-strength), transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--accent) var(--backdrop-grid-strength), transparent) 1px, transparent 1px);
+}
+.mechanical-orbit { border-color: color-mix(in srgb, var(--accent) var(--backdrop-orbit-strength), transparent); }
+.mechanical-orbit::before,
+.mechanical-orbit::after { border-color: color-mix(in srgb, var(--accent) var(--backdrop-orbit-inner-strength), transparent); }
+.mechanical-cross { border-color: color-mix(in srgb, var(--accent) var(--backdrop-cross-strength), transparent); }
+.mechanical-cross::before,
+.mechanical-cross::after { background: color-mix(in srgb, var(--accent) var(--backdrop-cross-line-strength), transparent); }

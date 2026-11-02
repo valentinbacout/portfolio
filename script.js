@@ -383,6 +383,8 @@
     const stage = root.querySelector("#th-stage");
     const lanesEl = root.querySelector("#th-lanes");
     const zoomEl = root.querySelector("#th-zoom");
+    // Always initialize timeline at a stronger zoom, even if the browser restores prior range state.
+    zoomEl.value = "200";
     const categoryFilters = {
       work: root.querySelector("#th-filter-work"),
       associative: root.querySelector("#th-filter-associative")
@@ -1016,10 +1018,10 @@
 
     render();
 
-    // Auto-scroll to the end at load (latest events)
+    // At load, show the rightmost part of the timeline without changing zoom.
     window.addEventListener("load", () => {
-      const scroller = root.querySelector(".th-scroller");
-      scroller.scrollLeft = scroller.scrollWidth;
+      const maxScroll = Math.max(0, scroller.scrollWidth - scroller.clientWidth);
+      scroller.scrollLeft = maxScroll;
       updateScrollerFade();
     });
   }
