@@ -1088,6 +1088,19 @@ html {
   color: var(--th-text);
 }
 
+/* Timeline without an outer frame; individual event cards remain styled. */
+#timeline.section--alt {
+  background: transparent;
+  border: 0;
+}
+
+#timeline .th-timeline {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
 #timeline * {
   box-sizing: border-box;
 }
@@ -2137,3 +2150,20 @@ html.has-motion .motion-visible {
 #timeline .th-event.th-event--muted { opacity: 0.16; }
 #timeline .th-event.th-event--muted .th-card { pointer-events: none; }
 @media (max-width: 600px) { #timeline .th-category-filters { padding-left: 0; border-left: 0; } }
+
+/* Timeline: completely transparent outer section and container. */
+#timeline.section.section--alt,
+#timeline .th-wrap,
+#timeline .th-timeline {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+#timeline.section.section--alt {
+  border-top: 0 !important;
+  border-bottom: 0 !important;
+}
