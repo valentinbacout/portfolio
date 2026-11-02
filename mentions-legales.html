@@ -21,7 +21,6 @@
 <body>
   <div id="top"></div>
 
-  <!-- ===================== -->
   <!-- DESKTOP HEADER -->
   <header class="header header--desktop" id="headerDesktop">
     <div class="header__inner container">
@@ -49,6 +48,7 @@
       </div>
     </div>
   </header>
+
   <!-- MOBILE HEADER -->
   <header class="header header--mobile" id="headerMobile">
     <button class="burger" id="burgerBtn" type="button" aria-label="Open menu" aria-controls="mobileSidebar"
@@ -60,8 +60,10 @@
       <span class="brand__name">Valentin Bacout</span>
     </a>
   </header>
+
   <!-- Sidebar overlay -->
   <div class="overlay" id="overlay" hidden></div>
+
   <!-- Mobile sidebar -->
   <aside class="sidebar" id="mobileSidebar" aria-hidden="true">
     <div class="sidebar__top">
@@ -85,12 +87,11 @@
       <button class="chip chip--full" id="themeSwitchMobile" type="button">🌙 / ☀️</button>
     </div>
   </aside>
-  <!-- ===================== -->
-
 
   <!-- Spacer to prevent content hidden behind fixed headers -->
   <div class="header-spacer" aria-hidden="true"></div>
 
+  <!-- Main content -->
   <main>
     <section class="section">
       <div class="container">
@@ -139,6 +140,7 @@
     </footer>
   </main>
 
+  <!-- Script -->
   <script src="i18n.js"></script>
   <script src="script.js" defer></script>
 </body>

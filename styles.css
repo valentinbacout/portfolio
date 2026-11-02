@@ -1,7 +1,13 @@
-/*
-  Modern rebuild (HTML/CSS/JS only)
-  - keeps a dark / teal palette and a vertical timeline with scroll activation
-*/
+/* ==========================================================================
+   PORTFOLIO - FEUILLE DE STYLE UNIQUE
+
+   Organisation :
+   1. Couleurs et variables (themes clair et sombre)
+   2. Styles de base et composants du site
+   3. Ajustements visuels du design modernise
+   ========================================================================== */
+
+/* 1. COULEURS ET VARIABLES : valeurs de base */
 
 :root {
   /* Default to system theme (light/dark) + allow form controls to match */
@@ -98,6 +104,53 @@ html[data-theme="dark"] {
   --danger: #ff5a7a;
 
 }
+
+/* 1. COULEURS ET VARIABLES : ajustements du design modernise */
+:root, html[data-theme="light"] {
+  --bg:#f3f6f8;
+  --panel:rgba(255,255,255,.76);
+  --panel-2:rgba(226,234,239,.75);
+  --text:#162631;
+  --muted:#526674;
+  --faint:#748691;
+  --stroke:rgba(52,82,99,.16);
+  --accent:#007c91;
+  --accent-2:#3276ba;
+  --shadow:0 16px 50px rgba(23,50,68,.09);
+  --radius:15px;
+  --radius-lg:22px;
+  --max:1200px;
+}
+
+@media(prefers-color-scheme:dark) {
+  :root:not([data-theme]) {
+    --bg:#09141e;
+    --panel:rgba(20,39,53,.84);
+    --panel-2:rgba(35,62,78,.65);
+    --text:#e9f2f6;
+    --muted:#b2c5ce;
+    --faint:#829ba8;
+    --stroke:rgba(164,203,220,.15);
+    --accent:#48d5dd;
+    --accent-2:#74aaf4;
+    --shadow:0 20px 60px rgba(0,0,0,.24);
+  }
+}
+
+html[data-theme="dark"] {
+  --bg:#09141e;
+  --panel:rgba(20,39,53,.84);
+  --panel-2:rgba(35,62,78,.65);
+  --text:#e9f2f6;
+  --muted:#b2c5ce;
+  --faint:#829ba8;
+  --stroke:rgba(164,203,220,.15);
+  --accent:#48d5dd;
+  --accent-2:#74aaf4;
+  --shadow:0 20px 60px rgba(0,0,0,.24);
+}
+
+/* 2. STYLES DE BASE ET COMPOSANTS (ancien styles.css) */
 
 * {
   box-sizing: border-box;
@@ -1720,5 +1773,358 @@ html[data-theme="light"] .scroll-btn:hover {
   .project,
   .engagement {
     box-shadow: none !important;
+  }
+}
+
+/* 3. AJUSTEMENTS VISUELS (ancien refresh.css) */
+html {
+  scroll-behavior:smooth;
+  scroll-padding-top:calc(var(--header-h) + 24px)
+}
+
+body {
+  font-family:'Inter',system-ui,sans-serif;
+  letter-spacing:-.009em;
+  background:var(--bg)
+}
+
+body::before {
+  display:none
+}
+
+main {
+  position:relative;
+  z-index:1
+}
+
+.mechanical-backdrop {
+  position:fixed;
+  inset:0;
+  z-index:0;
+  overflow:hidden;
+  pointer-events:none;
+  opacity:.65
+}
+
+.mechanical-backdrop::before {
+  content:"";
+  position:absolute;
+  inset:-15%;
+  background-image:linear-gradient(to right,color-mix(in srgb,var(--accent) 9%,transparent) 1px,transparent 1px),linear-gradient(to bottom,color-mix(in srgb,var(--accent) 9%,transparent) 1px,transparent 1px);
+  background-size:64px 64px;
+  transform:translate3d(0,calc(var(--page-scroll,0px)*-.10),0) rotate(-5deg);
+  mask-image:linear-gradient(110deg,transparent 4%,black 38%,black 80%,transparent 100%)
+}
+
+.mechanical-backdrop::after {
+  content:"";
+  position:absolute;
+  inset:0;
+  background:radial-gradient(ellipse 55% 45% at 75% 20%,color-mix(in srgb,var(--accent) 12%,transparent),transparent 85%),radial-gradient(ellipse 42% 38% at 15% 80%,color-mix(in srgb,var(--accent-2) 9%,transparent),transparent 88%)
+}
+
+.mechanical-orbit {
+  position:absolute;
+  top:8vh;
+  right:-16vw;
+  width:min(78vw,1000px);
+  aspect-ratio:1;
+  border:1px solid color-mix(in srgb,var(--accent) 20%,transparent);
+  border-radius:50%;
+  transform:translate3d(0,calc(var(--page-scroll,0px)*-.17),0) rotate(calc(var(--scroll-number,0) * .022deg));
+  will-change:transform
+}
+
+.mechanical-orbit::before,.mechanical-orbit::after {
+  content:"";
+  position:absolute;
+  border-radius:50%;
+  inset:9%;
+  border:1px dashed color-mix(in srgb,var(--accent) 33%,transparent)
+}
+
+.mechanical-orbit::after {
+  inset:25%;
+  border-style:solid;
+  border-width:2px;
+  box-shadow:0 0 0 35px color-mix(in srgb,var(--accent) 2%,transparent),0 0 0 100px color-mix(in srgb,var(--accent) 2%,transparent)
+}
+
+.mechanical-cross {
+  position:absolute;
+  top:32vh;
+  right:24vw;
+  width:24px;
+  height:24px;
+  border:1px solid color-mix(in srgb,var(--accent) 35%,transparent);
+  border-radius:50%;
+  transform:translateY(calc(var(--page-scroll,0px)*-.12))
+}
+
+.mechanical-cross::before,.mechanical-cross::after {
+  content:"";
+  position:absolute;
+  background:color-mix(in srgb,var(--accent) 45%,transparent)
+}
+
+.mechanical-cross::before {
+  height:1px;
+  width:48px;
+  left:-13px;
+  top:11px
+}
+
+.mechanical-cross::after {
+  width:1px;
+  height:48px;
+  top:-13px;
+  left:11px
+}
+
+.container {
+  padding-left:clamp(20px,4vw,44px);
+  padding-right:clamp(20px,4vw,44px)
+}
+
+.header {
+  background:color-mix(in srgb,var(--bg) 88%,transparent);
+  backdrop-filter:blur(22px);
+  -webkit-backdrop-filter:blur(22px);
+  border-bottom:1px solid var(--stroke)
+}
+
+.brand__name {
+  font-weight:800;
+  letter-spacing:-.045em
+}
+
+.nav__link,.sidebar__link {
+  transition:color .2s ease,background .2s ease
+}
+
+.hero {
+  min-height:min(790px,calc(100svh - var(--header-h)));
+  display:flex;
+  align-items:center;
+  padding:clamp(75px,11vw,140px) 0 95px;
+  isolation:isolate
+}
+
+.hero__grid {
+  width:100%
+}
+
+.hero__content {
+  max-width:900px;
+  position:relative
+}
+
+.hero__content::before {
+  content:'ENGINEERING  /  PORTFOLIO';
+  display:block;
+  margin-bottom:28px;
+  color:var(--accent);
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:.25em
+}
+
+.hero__title {
+  font-size:clamp(42px,6.8vw,94px);
+  font-weight:800;
+  line-height:1.04;
+  letter-spacing:-.075em;
+  margin-bottom:30px;
+  text-wrap:balance
+}
+
+.hero__lead {
+  font-size:clamp(17px,2vw,23px);
+  line-height:1.55;
+  max-width:670px;
+  margin-bottom:30px
+}
+
+.hero__bg {
+  inset:auto -10% -8% auto;
+  width:65%;
+  height:75%;
+  opacity:.35;
+  filter:blur(75px)
+}
+
+.btn,.linkPill,.chip {
+  transition:transform .23s ease,box-shadow .23s ease,border-color .23s ease,background .23s ease
+}
+
+.btn:hover,.linkPill:hover,.chip:hover {
+  transform:translateY(-2px)
+}
+
+.btn--primary {
+  box-shadow:0 8px 20px color-mix(in srgb,var(--accent) 16%,transparent)
+}
+
+.hero__cta {
+  gap:12px;
+  margin-bottom:20px
+}
+
+.hero__links {
+  margin-bottom:35px
+}
+
+.hero__meta {
+  gap:14px;
+  max-width:850px
+}
+
+.metaCard {
+  background:var(--panel);
+  backdrop-filter:blur(15px);
+  border-radius:14px;
+  padding:20px 22px;
+  border:1px solid var(--stroke)
+}
+
+.section {
+  padding:clamp(65px,8vw,115px) 0;
+  scroll-margin-top:85px
+}
+
+.section--alt {
+  background:color-mix(in srgb,var(--panel) 36%,transparent)
+}
+
+.section__head {
+  margin-bottom:34px
+}
+
+.section__title {
+  font-size:clamp(30px,3.6vw,49px);
+  font-weight:800;
+  letter-spacing:-.065em;
+  line-height:1.13
+}
+
+.section__title::before {
+  content:'';
+  display:block;
+  height:3px;
+  width:44px;
+  background:linear-gradient(90deg,var(--accent),var(--accent-2));
+  border-radius:3px;
+  margin-bottom:20px
+}
+
+.card,.project,.metaCard,.th-wrap {
+  box-shadow:var(--shadow)
+}
+
+.card,.project {
+  background:var(--panel);
+  backdrop-filter:blur(15px);
+  -webkit-backdrop-filter:blur(15px);
+  border:1px solid var(--stroke);
+  border-radius:var(--radius-lg)
+}
+
+.card {
+  padding:clamp(22px,3vw,34px)
+}
+
+.card h3 {
+  letter-spacing:-.035em
+}
+
+.project {
+  padding:clamp(20px,2.5vw,30px);
+  border-left:1px solid var(--stroke);
+  border-top:3px solid var(--project-accent,var(--accent));
+  transition:box-shadow .25s ease,border-color .25s ease
+}
+
+.project:hover {
+  box-shadow:0 25px 65px rgba(16,48,67,.16)
+}
+
+.project__img,.project__media {
+  border-radius:13px
+}
+
+.project__title {
+  letter-spacing:-.04em
+}
+
+.project__pill {
+  border-radius:7px;
+  text-transform:uppercase;
+  font-size:10px;
+  letter-spacing:.08em
+}
+
+.footer {
+  position:relative;
+  z-index:1
+}
+
+/* Reveal only non-interactive content to avoid disrupting carousels and timeline transforms. */
+html.has-motion .section__head,html.has-motion #about .card,html.has-motion #skills .card,html.has-motion #contact .card {
+  transition:opacity .8s ease,translate .8s cubic-bezier(.2,.7,.2,1)
+}
+
+html.has-motion .motion-pending {
+  opacity:0;
+  translate:0 24px
+}
+
+html.has-motion .motion-visible {
+  opacity:1;
+  translate:0 0
+}
+
+@media(max-width:820px) {
+  .hero {
+    min-height:auto;
+    padding:90px 0 75px
+  }
+  .hero__title {
+    font-size:clamp(40px,10vw,65px)
+  }
+  .mechanical-orbit {
+    width:110vw;
+    right:-60vw;
+    top:16vh
+  }
+  .section {
+    padding:65px 0
+  }
+}
+
+@media(max-width:700px) {
+  .hero__meta {
+    grid-template-columns:1fr
+  }
+  .hero__content::before {
+    font-size:10px
+  }
+  .hero__title {
+    letter-spacing:-.065em
+  }
+  .mechanical-backdrop {
+    opacity:.38
+  }
+}
+
+@media(prefers-reduced-motion:reduce) {
+  html {
+    scroll-behavior:auto
+  }
+  .mechanical-orbit,.mechanical-cross,.mechanical-backdrop::before {
+    transform:none!important
+  }
+  html.has-motion .motion-pending {
+    opacity:1;
+    translate:none
   }
 }

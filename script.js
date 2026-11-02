@@ -1,10 +1,4 @@
-/*
-  Portfolio rebuild
-  - access gate (password OR restricted mode)
-  - confidential blur: [data-confidential]
-  - mobile nav
-  - timeline: scroll activation + progress bar + dot navigation
-*/
+/* 1. FONCTIONNEMENT PRINCIPAL : navigation, langues, projets et interactions. */
 
 (() => {
   const $ = (sel, root = document) => root.querySelector(sel);
@@ -359,6 +353,12 @@
       { id: "E11", type: "range", start: "2024-10-01", end: "2026-03-28", title: "Secrétaire Général INSA Alumni Hauts-de-France", desc: "", color: "#ffc0cb" },
       { id: "E12", type: "range", start: "2025-03-01", end: "today", title: "Ingénieur en conception mécanique chez DELEO", desc: "", color: "#2a91dc" },
       { id: "E13", type: "range", start: "2026-03-29", end: "today", title: "Secrétaire Adjoint INSA Alumni Hauts-de-France", desc: "", color: "#ffc0cb" },
+      { id: "E14", type: "range", start: "2025-03-10", end: "2025-07-24", title: "V&V SUBLIM", desc: "", color: "#FFCF80" },
+      { id: "E15", type: "range", start: "2025-12-04", end: "today", title: "Développement Air Cooling", desc: "", color: "#73aff6" },
+      { id: "E16", type: "range", start: "2025-09-17", end: "2026-09-23", title: "Dossier MDR Origin & Sublim", desc: "", color: "#01B0DC" },
+      { id: "E17", type: "range", start: "2026-04-21", end: "2026-08-21", title: "Transfert en Production Cristal RF", desc: "", color: "#B8B9B9" },
+      { id: "E18", type: "range", start: "2026-06-17", end: "2026-08-26", title: "Conception Pied Parasol Lumera", desc: "", color: "#667691" },
+      
 
 
       /* A dedicated “Today” point (kept as in original) */
@@ -1753,4 +1753,61 @@
   // Run once on load; safe to call again if DOM is updated later
   applyProjectAccents();
 
+})();
+
+/* ==========================================================================
+   2. ANIMATIONS DECORATIVES ET EFFET DE DEFILEMENT
+
+   Ce bloc reprend refresh.js. Il reste independant de la logique principale.
+   Il ne s'active pas si l'utilisateur prefere limiter les animations.
+   ========================================================================== */
+
+(() => {
+  // Element racine : les variables CSS de defilement sont appliquees ici.
+  const root = document.documentElement;
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (reduced) return;
+
+  // Elements qui apparaissent progressivement lorsqu'ils deviennent visibles.
+  const targets = document.querySelectorAll('.section__head, #about .card, #skills .card, #contact .card');
+
+  const observer = 'IntersectionObserver' in window
+    ? new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.remove('motion-pending');
+            entry.target.classList.add('motion-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: .07, rootMargin: '0px 0px 40px 0px' })
+    : null;
+
+  if (observer) {
+    targets.forEach(el => {
+      el.classList.add('motion-pending');
+      observer.observe(el);
+    });
+    root.classList.add('has-motion');
+  }
+
+  // Limite les mises a jour pendant le defilement pour eviter les ralentissements.
+  let ticking = false;
+
+  const update = () => {
+    root.style.setProperty('--page-scroll', `${Math.round(window.scrollY)}px`);
+    root.style.setProperty('--scroll-number', String(Math.round(window.scrollY)));
+    ticking = false;
+  };
+
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      ticking = true;
+      requestAnimationFrame(update);
+    }
+  }, { passive: true });
+
+  // Premier calcul sans attendre que l'utilisateur fasse defiler la page.
+  update();
 })();
