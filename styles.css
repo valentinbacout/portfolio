@@ -2128,3 +2128,12 @@ html.has-motion .motion-visible {
     translate:none
   }
 }
+
+/* Timeline category visibility controls */
+#timeline .th-category-filters { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding-left: 12px; border-left: 1px solid var(--th-stroke); }
+#timeline .th-controls .th-filter { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; white-space: nowrap; color: var(--th-text); }
+#timeline .th-filter input { width: 15px; height: 15px; accent-color: var(--accent, #73aff6); cursor: pointer; }
+#timeline .th-event { transition: opacity 200ms ease; }
+#timeline .th-event.th-event--muted { opacity: 0.16; }
+#timeline .th-event.th-event--muted .th-card { pointer-events: none; }
+@media (max-width: 600px) { #timeline .th-category-filters { padding-left: 0; border-left: 0; } }

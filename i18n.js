@@ -65,6 +65,8 @@ const I18N = {
         // -------------------------------------------------------------------------
         "timeline.title": "Parcours",
         "timeline.zoom": "Zoom",
+        "timeline.work": "Travail",
+        "timeline.associative": "Associatif",
 
         // -------------------------------------------------------------------------
         // SKILLS
@@ -277,6 +279,8 @@ L’éditeur ne peut être tenu responsable de l’utilisation des données effe
         // -------------------------------------------------------------------------
         "timeline.title": "Career",
         "timeline.zoom": "Zoom",
+        "timeline.work": "Work",
+        "timeline.associative": "Volunteering",
 
         // -------------------------------------------------------------------------
         // SKILLS

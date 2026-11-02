@@ -164,6 +164,10 @@
 
     setText("#timeline .section__title", "timeline.title");
     setText("#timeline .section__subtitle", "timeline.subtitle");
+    const workFilterLabel = document.querySelector('#timeline [data-th-category-label="work"]');
+    const associativeFilterLabel = document.querySelector('#timeline [data-th-category-label="associative"]');
+    if (workFilterLabel) workFilterLabel.textContent = t(lang, "timeline.work");
+    if (associativeFilterLabel) associativeFilterLabel.textContent = t(lang, "timeline.associative");
     const zoomLabel = document.querySelector("#timeline .th-controls label");
     if (zoomLabel) {
       const input = zoomLabel.querySelector("input");
@@ -365,6 +369,14 @@
       { id: "TODAY", type: "point", time: "today", title: "Aujourd’hui", desc: "", color: "#ffffff" },
     ];
 
+    // The education/professional events belong to "work"; student/alumni
+    // associations are kept separate. TODAY is always visible.
+    const associativeIds = new Set(["E4", "E6", "E11", "E13"]);
+    for (const event of events) {
+      event.category = event.id === "TODAY" ? "neutral" :
+        associativeIds.has(event.id) ? "associative" : "work";
+    }
+
     // Build a quick lookup: timelineEventId -> color (for linking project cards to timeline colors)
     const timelineColorById = new Map(events.map(e => [e.id, e.color]));
     window.VBTimelineColors = timelineColorById;
@@ -376,6 +388,20 @@
     const stage = root.querySelector("#th-stage");
     const lanesEl = root.querySelector("#th-lanes");
     const zoomEl = root.querySelector("#th-zoom");
+    const categoryFilters = {
+      work: root.querySelector("#th-filter-work"),
+      associative: root.querySelector("#th-filter-associative")
+    };
+    function updateCategoryVisibility() {
+      root.querySelectorAll(".th-event[data-category]").forEach((element) => {
+        const category = element.dataset.category;
+        const filter = categoryFilters[category];
+        element.classList.toggle("th-event--muted", Boolean(filter && !filter.checked));
+      });
+    }
+    Object.values(categoryFilters).forEach((filter) => {
+      filter?.addEventListener("change", updateCategoryVisibility);
+    });
 
 
 
@@ -639,17 +665,17 @@
     /**
      * Lane vertical offset around axis:
      * lane 0 = 0
-     * lane 1 = +k
-     * lane 2 = -k
-     * lane 3 = +2k
-     * lane 4 = -2k
+     * lane 1 = -k (above)
+     * lane 2 = +k (below)
+     * lane 3 = -2k (above)
+     * lane 4 = +2k (below)
      * ...
      */
     function laneOffset(laneIndex) {
       if (laneIndex === 0) return 0;
 
       const k = Math.ceil(laneIndex / 2);
-      const sign = laneIndex % 2 === 1 ? +1 : -1;
+      const sign = laneIndex % 2 === 1 ? -1 : +1;
 
       return sign * k * (LANE_HEIGHT + LANE_GAP);
     }
@@ -757,6 +783,8 @@
       const width = Math.round(leftPad + span * pxPerMs + rightPad);
       stage.style.minWidth = width + "px";
 
+      // Read the baseline from CSS, not the dynamic value from a prior render.
+      root.style.removeProperty("--axis-y");
       const axisY =
         parseFloat(getComputedStyle(root).getPropertyValue("--axis-y")) || 240;
 
@@ -794,6 +822,7 @@
 
         const evEl = document.createElement("div");
         evEl.className = "th-event";
+        evEl.dataset.category = e.category;
 
         // Marker: segment or dot
         if (e.type === "range") {
@@ -855,87 +884,116 @@
           evEl,
           connectorEl: connector,
           cardEl: card,
-          isTop: idx % 2 === 0,
+          preferredTop: yOff <= 0,
         });
       });
 
       /* ------------------------------------------------------------------------
-         X anchoring:
-         - Left edge of card = connector x
-         ------------------------------------------------------------------------ */
-      for (const it of built) {
-        it.xLeft = Math.max(CARD_SAFE_PAD, it.xAnchor);
-        it.cardEl.style.left = `${it.xLeft}px`;
-        it.connectorEl.style.left = `${it.xLeft}px`;
-      }
-
-      /* ------------------------------------------------------------------------
-         Card widths:
-         - Each card width adapts so it does not overlap the next connector on the
-           same side (top/bottom), but capped to CARD_W()
-         ------------------------------------------------------------------------ */
-      function applySideWidths(list) {
-        const byX = [...list].sort((a, b) => a.xLeft - b.xLeft);
-
-        for (let i = 0; i < byX.length; i++) {
-          const it = byX[i];
-          const next = byX[i + 1];
-
-          if (!next) {
-            it.cardEl.style.width = `${CARD_W()}px`;
-            continue;
-          }
-
-          const maxW = Math.max(120, next.xLeft - it.xLeft - CARD_MARGIN_X);
-          it.cardEl.style.width = `${Math.min(CARD_W(), maxW)}px`;
-        }
-      }
-
-      applySideWidths(built.filter((it) => it.isTop));
-      applySideWidths(built.filter((it) => !it.isTop));
-
-      /* ------------------------------------------------------------------------
-         Y positioning:
-         - fixed top/bottom rows (no stacking)
+         Exactly ONE label row above and ONE below the timeline.
+         Prefer the side of the event bar, but move labels across when crowded.
+         On each side, compress widths to the available horizontal intervals;
+         normal CSS wrapping determines the height of this single row.
          ------------------------------------------------------------------------ */
       const cardGap = CARD_GAP();
-      const minConn = 70;
+      const minConn = 42;
+      const horizontalGap = CARD_MARGIN_X;
+      const maxUpperLane = Math.max(0, ...built.map(it => -it.yOffset));
+      const maxLowerLane = Math.max(0, ...built.map(it => it.yOffset));
+      const upperClearance = Math.max(minConn, maxUpperLane + 24);
+      const lowerClearance = Math.max(minConn, maxLowerLane + 24);
+      const minCardWidth = 72;
 
-      // Ensure stage is tall enough
-      stage.style.minHeight = `${axisY + minConn + cardGap + 200}px`;
+      // Estimate the horizontal congestion on either side before assigning.
+      // This preserves the preferred side unless moving produces a material gain.
+      const ordered = [...built].sort((a, b) => a.xAnchor - b.xAnchor || a.idx - b.idx);
+      const sides = { top: [], bottom: [] };
+      for (const it of ordered) {
+        const freeSpace = (side) => {
+          const previous = sides[side].at(-1);
+          const left = previous ? previous.xAnchor : CARD_SAFE_PAD;
+          return Math.max(0, it.xAnchor - left - (previous ? horizontalGap : 0));
+        };
+        const preferred = it.preferredTop ? 'top' : 'bottom';
+        const alternative = it.preferredTop ? 'bottom' : 'top';
+        const preferredSpace = freeSpace(preferred);
+        const alternateSpace = freeSpace(alternative);
+        // Moving is worthwhile only if the preferred side would create
+        // a cramped label, AND the other side has substantially more room.
+        const side = preferredSpace < minCardWidth + 12 &&
+          alternateSpace > preferredSpace + 30 ? alternative : preferred;
+        it.isTop = side === 'top';
+        sides[side].push(it);
+      }
 
-      for (const it of built) {
-        const yMark = axisY + it.yOffset;
-
-        // Marker Y positions:
-        if (it.e.type === "range") {
-          const seg = it.evEl.querySelector(".th-seg");
-          seg.style.top = `${yMark}px`;
-          seg.style.transform = "translateY(-50%)";
-        } else {
-          const dot = it.evEl.querySelector(".th-dot");
-          dot.style.top = `${axisY}px`;
+      // Responsive widths: each label fits before the next label on its side.
+      // Explicit width maintains the existing automatic line wrapping.
+      function fitLabels(group) {
+        for (let i = 0; i < group.length; i++) {
+          const it = group[i];
+          const next = group[i + 1];
+          const available = next ? next.xAnchor - it.xAnchor - horizontalGap : CARD_W();
+          const rightSpace = width - it.xAnchor - CARD_SAFE_PAD;
+          const desired = Math.max(minCardWidth,
+            Math.min(CARD_W(), available, rightSpace));
+          it.cardEl.style.width = it.e.id === 'TODAY' ? 'fit-content' : `${desired}px`;
+          it.width = it.cardEl.offsetWidth;
+          it.height = it.cardEl.offsetHeight;
+          it.xLeft = Math.max(CARD_SAFE_PAD,
+            Math.min(it.xAnchor, width - it.width - CARD_SAFE_PAD));
         }
-
-        // Cards are split between top & bottom (alternating)
-        if (it.isTop) {
-          const cardTop = axisY - minConn - cardGap - it.cardEl.offsetHeight;
-          it.cardEl.style.top = `${cardTop}px`;
-
-          const connTop = cardTop + it.cardEl.offsetHeight + cardGap;
-          const connHeight = Math.max(6, yMark - connTop);
-          it.connectorEl.style.top = `${connTop}px`;
-          it.connectorEl.style.height = `${connHeight}px`;
-        } else {
-          const cardTop = axisY + minConn + cardGap;
-          it.cardEl.style.top = `${cardTop}px`;
-
-          const connTop = yMark;
-          const connHeight = Math.max(6, cardTop - cardGap - connTop);
-          it.connectorEl.style.top = `${connTop}px`;
-          it.connectorEl.style.height = `${connHeight}px`;
+        // Keep labels in their one row, including around the right edge.
+        // Compress earlier labels again when right-edge clamping could overlap.
+        for (let i = group.length - 2; i >= 0; i--) {
+          const it = group[i];
+          const next = group[i + 1];
+          const room = next.xLeft - horizontalGap - it.xLeft;
+          if (it.e.id !== 'TODAY' && room >= minCardWidth && room < it.width) {
+            it.cardEl.style.width = `${room}px`;
+            it.width = it.cardEl.offsetWidth;
+            it.height = it.cardEl.offsetHeight;
+          }
         }
       }
+      fitLabels(sides.top);
+      fitLabels(sides.bottom);
+
+      const topHeight = Math.max(0, ...sides.top.map(it => it.height));
+      const bottomHeight = Math.max(0, ...sides.bottom.map(it => it.height));
+      const axisYActual = Math.max(axisY, upperClearance + cardGap + topHeight + 20);
+      const stageHeight = Math.ceil(axisYActual + lowerClearance + cardGap + bottomHeight + 40);
+      stage.style.minHeight = `${stageHeight}px`;
+      root.style.setProperty('--axis-y', `${axisYActual}px`);
+      const topRowTop = axisYActual - upperClearance - cardGap - topHeight;
+      const bottomRowTop = axisYActual + lowerClearance + cardGap;
+
+      for (const it of built) {
+        const yMark = axisYActual + it.yOffset;
+        // Both sides have exactly one baseline. Top labels are bottom-aligned;
+        // bottom labels are top-aligned even when some wrap over several lines.
+        const cardTop = it.isTop ? topRowTop + topHeight - it.height : bottomRowTop;
+        it.cardEl.style.left = `${it.xLeft}px`;
+        it.cardEl.style.top = `${cardTop}px`;
+        it.connectorEl.style.left = `${it.xAnchor}px`;
+        const gap = 5;
+        const connectorStart = it.isTop ? cardTop + it.height + gap : yMark;
+        const connectorEnd = it.isTop ? yMark : cardTop - gap;
+        it.connectorEl.style.top = `${Math.min(connectorStart, connectorEnd)}px`;
+        it.connectorEl.style.height = `${Math.max(0, Math.abs(connectorEnd - connectorStart))}px`;
+
+        if (it.e.type === 'range') {
+          const seg = it.evEl.querySelector('.th-seg');
+          seg.style.top = `${yMark}px`;
+          seg.style.transform = 'translateY(-50%)';
+        } else {
+          it.evEl.querySelector('.th-dot').style.top = `${axisYActual}px`;
+        }
+      }
+
+      lanesEl.querySelectorAll(':scope > div').forEach((guide, lane) => {
+        guide.style.top = `${axisYActual + laneOffset(lane)}px`;
+        guide.style.transform = 'none';
+      });
+      updateCategoryVisibility();
     }
 
     /* ==========================================================================
