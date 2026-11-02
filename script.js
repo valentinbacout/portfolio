@@ -26,12 +26,11 @@
   }
 
   function applyTranslations(lang) {
-    applyI18nGeneric(lang);
     const navMenu = document.getElementById("navMenu");
     if (navMenu) {
       const links = navMenu.querySelectorAll("a.nav__link");
       links.forEach((a) => {
-        const href = a.getAttribute("href") || "";
+        const href = (a.getAttribute("href") || "").replace(/^index\.html/, "");
         if (href === "#about") a.textContent = t(lang, "nav.about");
         if (href === "#skills") a.textContent = t(lang, "nav.skills");
         if (href === "#projects") a.textContent = t(lang, "nav.projects");
@@ -45,7 +44,7 @@
     if (navMenuMobile) {
       const links = navMenuMobile.querySelectorAll("a.sidebar__link");
       links.forEach((a) => {
-        const href = a.getAttribute("href") || "";
+        const href = (a.getAttribute("href") || "").replace(/^index\.html/, "");
         if (href === "#about") a.textContent = t(lang, "nav.about");
         if (href === "#skills") a.textContent = t(lang, "nav.skills");
         if (href === "#projects") a.textContent = t(lang, "nav.projects");
@@ -65,7 +64,7 @@
       const h1 = hero.querySelector(".hero__title");
       if (h1) {
         const accent = h1.querySelector(".accent");
-        const name = accent ? accent.textContent : "Valentin Bacout";
+        const name = "Valentin Bacout";
         h1.innerHTML = t(lang, "hero.title").replace("Valentin Bacout", `<span class="accent">${name}</span>`);
       }
 
@@ -74,7 +73,7 @@
 
       const ctas = hero.querySelectorAll(".hero__cta a.btn");
       ctas.forEach((a) => {
-        const href = a.getAttribute("href") || "";
+        const href = (a.getAttribute("href") || "").replace(/^index\.html/, "");
         if (href === "#projects") a.textContent = t(lang, "hero.cta.projects");
         if (href === "#timeline") a.textContent = t(lang, "nav.timeline");
         if (href === "#skills") a.textContent = t(lang, "nav.skills");
@@ -168,7 +167,7 @@
     const associativeFilterLabel = document.querySelector('#timeline [data-th-category-label="associative"]');
     if (workFilterLabel) workFilterLabel.textContent = t(lang, "timeline.work");
     if (associativeFilterLabel) associativeFilterLabel.textContent = t(lang, "timeline.associative");
-    const zoomLabel = document.querySelector("#timeline .th-controls label");
+    const zoomLabel = null; // Controlled by data-i18n, never replace its input.
     if (zoomLabel) {
       const input = zoomLabel.querySelector("input");
       zoomLabel.innerHTML = `${t(lang, "timeline.zoom")} `;
@@ -210,12 +209,7 @@
       if (btn) btn.textContent = t(lang, "contact.top");
     }
 
-    const footerCopy = document.querySelector(".footer__copy");
-    if (footerCopy) {
-      const year = document.getElementById("year");
-      const rights = t(lang, "footer.rights");
-      footerCopy.innerHTML = `© <span id="year">${year ? year.textContent : ""}</span> Valentin Bacout — ${rights}`;
-    }
+    applyI18nGeneric(lang);
   }
 
   function setLang(lang, persist = true) {
@@ -231,6 +225,7 @@
     if (btnB) btnB.textContent = `🌐 ${txt}`;
 
     applyTranslations(lang);
+    document.dispatchEvent(new CustomEvent("portfolio:languagechange", { detail: { lang } }));
   }
 
 
@@ -344,29 +339,29 @@
            - time / start / end can be "YYYY-MM-DD" or "today"
            ========================================================================== */
     const events = [
-      { id: "E1", type: "point", time: "2019-07-31", title: "Baccalauréat Scientifique - mention très bien", desc: "", color: "#73aff6" },
-      { id: "E2", type: "range", start: "2019-09-01", end: "2021-08-15", title: "INSA Hauts-de-France - Classes préparatoires intégrées", desc: "", color: "#e31017" },
-      { id: "E3", type: "range", start: "2021-09-01", end: "2024-07-19", title: "INSA Hauts-de-France - Cycle ingénieur", desc: "", color: "#e31017" },
-      { id: "E4", type: "range", start: "2021-12-01", end: "2022-05-15", title: "Responsable communication - Liste Campagne BDE", desc: "", color: "#ffc0cb" },
-      { id: "E5", type: "range", start: "2022-09-01", end: "2023-01-01", title: "Stage ingénieur R&D au Cerema de Bron", desc: "", color: "#E87900" },
-      { id: "E6", type: "range", start: "2023-02-01", end: "2024-02-01", title: "Responsable du pôle communication BDE INSA HDF", desc: "", color: "#ffc0cb" },
-      { id: "E7", type: "range", start: "2023-09-01", end: "2024-02-01", title: "PLP (Plateau Projet) - Projet de fin d'étude", desc: "", color: "#303086" },
-      { id: "E8", type: "range", start: "2023-12-01", end: "2024-02-01", title: "Projet de parcours VINCI - Aide à la manutention de chariots médicaux", desc: "", color: "#303086" },
-      { id: "E9", type: "range", start: "2024-03-05", end: "2024-07-19", title: "Stage ingénieur Process et Maintenance à Joubert", desc: "", color: "#0E5A88" },
-      { id: "E10", type: "point", time: "2024-09-01", title: "Diplôme INSA Hauts-de-France - Ingénieur en mécanique énergétique", desc: "", color: "#e31017" },
-      { id: "E11", type: "range", start: "2024-10-01", end: "2026-03-28", title: "Secrétaire Général INSA Alumni Hauts-de-France", desc: "", color: "#ffc0cb" },
-      { id: "E12", type: "range", start: "2025-03-01", end: "today", title: "Ingénieur en conception mécanique chez DELEO", desc: "", color: "#2a91dc" },
-      { id: "E13", type: "range", start: "2026-03-29", end: "today", title: "Secrétaire Adjoint INSA Alumni Hauts-de-France", desc: "", color: "#ffc0cb" },
-      { id: "E14", type: "range", start: "2025-03-10", end: "2025-07-24", title: "V&V SUBLIM", desc: "", color: "#FFCF80" },
-      { id: "E15", type: "range", start: "2025-12-04", end: "today", title: "Développement Air Cooling", desc: "", color: "#73aff6" },
-      { id: "E16", type: "range", start: "2025-09-17", end: "2026-09-23", title: "Dossier MDR Origin & Sublim", desc: "", color: "#01B0DC" },
-      { id: "E17", type: "range", start: "2026-04-21", end: "2026-08-21", title: "Transfert en Production Cristal RF", desc: "", color: "#B8B9B9" },
-      { id: "E18", type: "range", start: "2026-06-17", end: "2026-08-26", title: "Conception Pied Parasol Lumera", desc: "", color: "#667691" },
+      { id: "E1", type: "point", time: "2019-07-31", title: t(document.documentElement.lang || "fr", "timeline.event.e1"), desc: "", color: "#73aff6" },
+      { id: "E2", type: "range", start: "2019-09-01", end: "2021-08-15", title: t(document.documentElement.lang || "fr", "timeline.event.e2"), desc: "", color: "#e31017" },
+      { id: "E3", type: "range", start: "2021-09-01", end: "2024-07-19", title: t(document.documentElement.lang || "fr", "timeline.event.e3"), desc: "", color: "#e31017" },
+      { id: "E4", type: "range", start: "2021-12-01", end: "2022-05-15", title: t(document.documentElement.lang || "fr", "timeline.event.e4"), desc: "", color: "#ffc0cb" },
+      { id: "E5", type: "range", start: "2022-09-01", end: "2023-01-01", title: t(document.documentElement.lang || "fr", "timeline.event.e5"), desc: "", color: "#E87900" },
+      { id: "E6", type: "range", start: "2023-02-01", end: "2024-02-01", title: t(document.documentElement.lang || "fr", "timeline.event.e6"), desc: "", color: "#ffc0cb" },
+      { id: "E7", type: "range", start: "2023-09-01", end: "2024-02-01", title: t(document.documentElement.lang || "fr", "timeline.event.e7"), desc: "", color: "#303086" },
+      { id: "E8", type: "range", start: "2023-12-01", end: "2024-02-01", title: t(document.documentElement.lang || "fr", "timeline.event.e8"), desc: "", color: "#303086" },
+      { id: "E9", type: "range", start: "2024-03-05", end: "2024-07-19", title: t(document.documentElement.lang || "fr", "timeline.event.e9"), desc: "", color: "#0E5A88" },
+      { id: "E10", type: "point", time: "2024-09-01", title: t(document.documentElement.lang || "fr", "timeline.event.e10"), desc: "", color: "#e31017" },
+      { id: "E11", type: "range", start: "2024-10-01", end: "2026-03-28", title: t(document.documentElement.lang || "fr", "timeline.event.e11"), desc: "", color: "#ffc0cb" },
+      { id: "E12", type: "range", start: "2025-03-01", end: "today", title: t(document.documentElement.lang || "fr", "timeline.event.e12"), desc: "", color: "#2a91dc" },
+      { id: "E13", type: "range", start: "2026-03-29", end: "today", title: t(document.documentElement.lang || "fr", "timeline.event.e13"), desc: "", color: "#ffc0cb" },
+      { id: "E14", type: "range", start: "2025-03-10", end: "2025-07-24", title: t(document.documentElement.lang || "fr", "timeline.event.e14"), desc: "", color: "#FFCF80" },
+      { id: "E15", type: "range", start: "2025-12-04", end: "today", title: t(document.documentElement.lang || "fr", "timeline.event.e15"), desc: "", color: "#73aff6" },
+      { id: "E16", type: "range", start: "2025-09-17", end: "2026-09-23", title: t(document.documentElement.lang || "fr", "timeline.event.e16"), desc: "", color: "#01B0DC" },
+      { id: "E17", type: "range", start: "2026-04-21", end: "2026-08-21", title: t(document.documentElement.lang || "fr", "timeline.event.e17"), desc: "", color: "#B8B9B9" },
+      { id: "E18", type: "range", start: "2026-06-17", end: "2026-08-26", title: t(document.documentElement.lang || "fr", "timeline.event.e18"), desc: "", color: "#667691" },
       
 
 
       /* A dedicated “Today” point (kept as in original) */
-      { id: "TODAY", type: "point", time: "today", title: "Aujourd’hui", desc: "", color: "#ffffff" },
+      { id: "TODAY", type: "point", time: "today", title: t(document.documentElement.lang || "fr", "timeline.event.today"), desc: "", color: "#ffffff" },
     ];
 
     // The education/professional events belong to "work"; student/alumni
@@ -587,7 +582,8 @@
 
     function formatMonthYear(ms) {
       const d = new Date(ms);
-      const s = new Intl.DateTimeFormat("fr-FR", { month: "long", year: "numeric" }).format(d);
+      const locale = document.documentElement.lang?.toLowerCase().startsWith("en") ? "en-GB" : "fr-FR";
+      const s = new Intl.DateTimeFormat(locale, { month: "long", year: "numeric" }).format(d);
       return s.charAt(0).toUpperCase() + s.slice(1);
     }
 
@@ -1000,6 +996,10 @@
        EVENTS
        ========================================================================== */
     zoomEl.addEventListener("input", render);
+    document.addEventListener("portfolio:languagechange", () => {
+      events.forEach((event) => { event.title = t(document.documentElement.lang || "fr", "timeline.event." + event.id.toLowerCase()); });
+      render();
+    });
     window.addEventListener("resize", render);
 
     render();
@@ -1623,7 +1623,7 @@
     const a = e.target?.closest?.('a[href^="#"]');
     if (!a) return;
 
-    const href = a.getAttribute("href") || "";
+    const href = (a.getAttribute("href") || "").replace(/^index\.html/, "");
     const id = href.slice(1); // "#about" -> "about"
     if (!id) return;
 
@@ -1723,14 +1723,14 @@
         more.setAttribute("data-i18n", "ui.seeMore");
 
         // fallback (in case i18n is not applied yet)
-        more.textContent = "Voir plus";
+        more.textContent = t(document.documentElement.lang || "fr", "ui.seeMore");
 
         const less = document.createElement("span");
         less.className = "less";
         less.setAttribute("data-i18n", "ui.seeLess");
 
         // fallback (in case i18n is not applied yet)
-        less.textContent = "Voir moins";
+        less.textContent = t(document.documentElement.lang || "fr", "ui.seeLess");
 
         summary.appendChild(more);
         summary.appendChild(less);
