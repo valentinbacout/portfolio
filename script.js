@@ -637,10 +637,24 @@
       const laneEnds = [];
       const laneOf = new Map();
 
-      for (const e of sorted) {
-        let placed = false;
+      // The main lane follows the education and professional career chronology:
+      // Baccalaureat (E1, point on axis) -> INSA (E2, E3) -> DELEO (E12).
+      // Alumni associations and parallel internships/projects never shift this lane.
+      const mainLaneIds = new Set(["E2", "E3", "E12"]);
+      const mainLaneRanges = [];
+      for (const e of sorted.filter(event => mainLaneIds.has(event.id))) {
+        if (mainLaneRanges.every(other => e.endMs <= other.startMs || e.startMs >= other.endMs)) {
+          laneOf.set(e.id, 0);
+          mainLaneRanges.push(e);
+        }
+      }
+      laneEnds.push(-Infinity); // Lane 0 is never used by other categories.
 
-        for (let l = 0; l < laneEnds.length; l++) {
+      // Other events use secondary lanes; an association can never occupy lane 0.
+      for (const e of sorted) {
+        if (laneOf.has(e.id)) continue;
+        let placed = false;
+        for (let l = 1; l < laneEnds.length; l++) {
           if (laneEnds[l] <= e.startMs) {
             laneEnds[l] = e.endMs;
             laneOf.set(e.id, l);
@@ -648,13 +662,11 @@
             break;
           }
         }
-
         if (!placed) {
           laneEnds.push(e.endMs);
           laneOf.set(e.id, laneEnds.length - 1);
         }
       }
-
       return { laneOf, laneCount: laneEnds.length };
     }
 
